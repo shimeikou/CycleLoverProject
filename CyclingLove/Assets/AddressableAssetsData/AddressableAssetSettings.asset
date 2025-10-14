@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
+  m_Name: AddressableAssetSettings
+  m_EditorClassIdentifier: 
+  m_DefaultGroup: 58266da7a8fc148a0911bd05b7a15201
+  m_currentHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_OptimizeCatalogSize: 0
+  m_BuildRemoteCatalog: 0
+  m_CatalogRequestsTimeout: 0
+  m_DisableCatalogUpdateOnStart: 0
+  m_InternalIdNamingMode: 0
+  m_InternalBundleIdMode: 1
+  m_AssetLoadMode: 0
+  m_BundledAssetProviderType:
+    m_AssemblyName: 
+    m_ClassName: 
+  m_AssetBundleProviderType:
+    m_AssemblyName: 
+    m_ClassName: 
+  m_IgnoreUnsupportedFilesInBuild: 0
+  m_UniqueBundleIds: 0
+  m_EnableJsonCatalog: 0
+  m_NonRecursiveBuilding: 1
+  m_AllowNestedBundleFolders: 0
+  m_CCDEnabled: 0
+  m_maxConcurrentWebRequests: 3
+  m_UseUWRForLocalBundles: 0
+  m_BundleTimeout: 0
+  m_BundleRetryCount: 0
+  m_BundleRedirectLimit: -1
+  m_SharedBundleSettings: 0
+  m_SharedBundleSettingsCustomGroupIndex: 0
+  m_ContiguousBundles: 1
+  m_StripUnityVersionFromBundleBuild: 0
+  m_DisableVisibleSubAssetRepresentations: 0
+  m_BuiltInBundleNaming: 0
+  mBuiltInBundleCustomNaming: 
+  m_MonoScriptBundleNaming: 0
+  m_CheckForContentUpdateRestrictionsOption: 0
+  m_MonoScriptBundleCustomNaming: 
+  m_RemoteCatalogBuildPath:
+    m_Id: 9ce34d570e6824f8c8c753d0c6944d99
+  m_RemoteCatalogLoadPath:
+    m_Id: 8f646f9369752444599831de2b8b1251
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
+  m_CustomContentStateBuildPath: 
+  m_ContentStateBuildPath: 
+  m_BuildAddressablesWithPlayerBuild: 0
+  m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
+  m_GroupAssets:
+  - {fileID: 11400000, guid: a6ed78a5d3cfe4d77b8271a38b0b8f4d, type: 2}
+  m_BuildSettings:
+    m_LogResourceManagerExceptions: 1
+    m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
+  m_ProfileSettings:
+    m_Profiles:
+    - m_InheritedParent: 
+      m_Id: 319031dba143f4ab99678f444d77a726
+      m_ProfileName: Default
+      m_Values:
+      - m_Id: 720637923fce7404abeefdc107a45fc1
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 8f646f9369752444599831de2b8b1251
+        m_Value: <undefined>
+      - m_Id: 9ce34d570e6824f8c8c753d0c6944d99
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: c7414ce48e937432e8b4e81f764d018b
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: ff9e27f293e884088a81303d36ca5a06
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+    m_ProfileEntryNames:
+    - m_Id: 720637923fce7404abeefdc107a45fc1
+      m_Name: Local.LoadPath
+      m_InlineUsage: 0
+    - m_Id: 8f646f9369752444599831de2b8b1251
+      m_Name: Remote.LoadPath
+      m_InlineUsage: 0
+    - m_Id: 9ce34d570e6824f8c8c753d0c6944d99
+      m_Name: Remote.BuildPath
+      m_InlineUsage: 0
+    - m_Id: c7414ce48e937432e8b4e81f764d018b
+      m_Name: BuildTarget
+      m_InlineUsage: 0
+    - m_Id: ff9e27f293e884088a81303d36ca5a06
+      m_Name: Local.BuildPath
+      m_InlineUsage: 0
+    m_ProfileVersion: 1
+  m_LabelTable:
+    m_LabelNames:
+    - default
+  m_SchemaTemplates: []
+  m_GroupTemplateObjects:
+  - {fileID: 11400000, guid: 266c4ad1c638a4237bf363e9594b0673, type: 2}
+  m_InitializationObjects: []
+  m_CertificateHandlerType:
+    m_AssemblyName: 
+    m_ClassName: 
+  m_ActivePlayerDataBuilderIndex: 2
+  m_DataBuilders:
+  - {fileID: 11400000, guid: 90f9f0f3db20f45b7ac4903149b8ed34, type: 2}
+  - {fileID: 11400000, guid: 80411bb950a544d47b238706a40709d0, type: 2}
+  - {fileID: 11400000, guid: c82bb5f24aa9f4956a0338c531a7c5a7, type: 2}
+  m_ActiveProfileId: 319031dba143f4ab99678f444d77a726

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: 58266da7a8fc148a0911bd05b7a15201
+  m_SerializeEntries:
+  - m_GUID: a97d1afc293ca463b96beea63ff9fa8a
+    m_Address: Assets/Font/Eitai/KOT-Bold SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6f25e37a771d4cd9961707a09340af2
+    m_Address: Assets/Font/Eitai/KOT-Bold SDF_Title.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5710917adfb514c608d7406ee159db6f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3ac30e0f8e207490ea12a93e61a7006a, type: 2}
+    - {fileID: 11400000, guid: a8d68e93dd9d54e50b9d0eeed91307b9, type: 2}
