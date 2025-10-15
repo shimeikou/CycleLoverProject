@@ -1,5 +1,5 @@
 {
-    "name": "GameSceneAssembly",
+    "name": "Gamer.Scene",
     "rootNamespace": "",
     "references": [
         "GUID:dc47925d1a5fa2946bdd37746b2b5d48",
