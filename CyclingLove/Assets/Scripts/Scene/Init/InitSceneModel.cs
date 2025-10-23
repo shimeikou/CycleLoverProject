@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -5,18 +6,12 @@ namespace Scene.Init
 {
     public class InitSceneModel 
     {
-
         public async UniTask Init()
         {
-            //まああれよ。バージョン更新確認とかよ
-            await UniTask.DelayFrame(1);
-            return;
+            Application.targetFrameRate = 60;
+            await GameSession.InitConfig();
         }
 
-        public void Update()
-        {
-            //データリフレッシュ
-        }
-        
+
     }
 }

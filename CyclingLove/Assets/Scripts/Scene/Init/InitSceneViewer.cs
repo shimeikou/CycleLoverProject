@@ -33,9 +33,11 @@ namespace Scene.Init
         
         [SerializeField]
         private Volume volume;
-        
-        public bool IsInit { get; private set; }
-        public bool IsReady { get; private set; }
+
+        private ColorAdjustments _colorAdjustments;
+
+        public bool IsInit { get; set; }
+        public bool IsTransition{ get; private set; }
         public void Init(
             UnityAction onClickStart,
             UnityAction onClickLoad,
@@ -43,11 +45,11 @@ namespace Scene.Init
             UnityAction onClickExit)
         {
             IsInit = false;
-            volume.profile.TryGet(out ColorAdjustments colorAdjustments);
-            if (!colorAdjustments) return;
-            var originalColor = colorAdjustments.colorFilter.value;
+            volume.profile.TryGet(out _colorAdjustments);
+            if (!_colorAdjustments) return;
+            var originalColor = _colorAdjustments.colorFilter.value;
             var black = new Color(0, 0, 0, 0);
-            colorAdjustments.colorFilter.value = black;
+            _colorAdjustments.colorFilter.value = black;
 
             SetUpButtons(onClickStart, onClickLoad, onClickConfig, onClickExit);
 
@@ -59,6 +61,8 @@ namespace Scene.Init
             startButton.onClick.RemoveAllListeners();
             startButton.onClick.AddListener((()=>
             {
+                if(!IsInit)return;
+                onClickStart?.Invoke();
                 
             }));
             
@@ -74,17 +78,45 @@ namespace Scene.Init
 
         public void Show()
         {
-            volume.profile.TryGet(out ColorAdjustments colorAdjustments);
-            if(!colorAdjustments) return;
-            IsReady = false;
+            if (!_colorAdjustments)
+            {
+                volume.profile.TryGet(out _colorAdjustments);
+            }
+
+            if(!_colorAdjustments) return;
+            IsTransition = true;
             DOTween.To(
-                () => colorAdjustments.colorFilter.value,
-                x => colorAdjustments.colorFilter.value = x,
+                () => _colorAdjustments.colorFilter.value,
+                x => _colorAdjustments.colorFilter.value = x,
                 Color.white,
                 1.0f
             ).OnComplete(() =>
             {
-                IsReady = true;
+                IsTransition = false;
+            });
+        }
+
+        public void HideAndShowLoading(Color color,UnityAction onComplete = null)
+        {
+            if(IsTransition) return;
+            
+            if (!_colorAdjustments)
+            {
+                volume.profile.TryGet(out _colorAdjustments);
+            }
+
+            if(!_colorAdjustments) return;
+
+            IsTransition = true;
+            DOTween.To(
+                () => _colorAdjustments.colorFilter.value,
+                x => _colorAdjustments.colorFilter.value = x,
+                color,
+                1.0f
+            ).OnComplete(() =>
+            {
+                onComplete?.Invoke();
+                IsTransition = false;
             });
         }
     }

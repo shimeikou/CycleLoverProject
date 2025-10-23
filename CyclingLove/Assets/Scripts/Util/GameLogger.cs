@@ -26,13 +26,11 @@ namespace Util
         [Conditional("ENABLE_LOGS")]
         public static void LogInfo(string message, Object context = null)
         {
-            if (_currentLogLevel >= LogLevel.Info)
-            {
-                var stackTrace = new StackTrace();
-                var methodName = stackTrace.GetFrame(1)?.GetMethod()?.Name;
-                var objectName = context != null ? context.name : "Unknown";
-                Debug.Log($"[{objectName}][{methodName}] {message}", context);
-            }
+            if (_currentLogLevel < LogLevel.Info) return;
+            var stackTrace = new StackTrace();
+            var methodName = stackTrace.GetFrame(1)?.GetMethod()?.Name;
+            var objectName = context != null ? context.name : "Unknown";
+            Debug.Log($"[{objectName}][{methodName}] {message}", context);
         }
 
         [Conditional("ENABLE_LOGS")]

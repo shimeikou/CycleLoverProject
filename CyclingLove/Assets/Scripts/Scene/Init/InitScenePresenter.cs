@@ -1,6 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
+using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Util;
 
 namespace Scene.Init
@@ -27,7 +29,7 @@ namespace Scene.Init
 
         private void OnClickedExit()
         {
-            if(!view.IsReady)return;
+            if(!view.IsInit)return;
             GameLogger.LogInfo("[Init] OnClickedExit"); 
             
             Application.Quit();
@@ -36,22 +38,41 @@ namespace Scene.Init
 
         private void OnClickedConfig()
         {
-            if(!view.IsReady)return;
+            if(!view.IsInit)return;
             
             GameLogger.LogInfo("[Init] OnClickedConfig");
         }
 
         private void OnClickedLoad()
         {
-            if(!view.IsReady)return;
-            GameLogger.LogInfo("[Init] OnClickedLoad");  
+            if(!view.IsInit)return;
+            GameLogger.LogInfo("[Init] OnClickedLoad");
+
+            OpenSaveSlotSelectPanel();
+        }
+
+        private void OpenSaveSlotSelectPanel()
+        {
+            
         }
 
         private void OnClickedStart()
         {
-            if(!view.IsReady)return;
-            GameLogger.LogInfo("[Init] OnClickedStart");  
+            if(!view.IsInit)return;
+            GameLogger.LogInfo("[Init] OnClickedStart");
+
+            GameSession.IsNewGame = true;
+            view.HideAndShowLoading(Color.black, ()=>
+            {
+                GoToNewGame().Forget();
+            });
+           
         }
-        
+
+        private async UniTask GoToNewGame()
+        {
+            StandardUIManager.Instance.ShowLoading();
+            await SceneManager.LoadSceneAsync("MainGameScene");
+        }
     }
 }
