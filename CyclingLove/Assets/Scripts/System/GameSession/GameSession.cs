@@ -1,8 +1,9 @@
+using System.Data.Schedule;
+using System.Service;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using Util;
 
-namespace System
+namespace System.GameSession
 {
     public static class GameSession
     {
@@ -11,6 +12,8 @@ namespace System
         public static bool IsNewGame = true;
         public static string CurrentSaveSlot = "1";
         private static bool IsInitialized = false;
+        
+        public static GameDate CurrentDay = new ();
 
         // ========= データ構造 =========
         public static GameSystemConfig SystemConfig;
@@ -29,7 +32,7 @@ namespace System
             IsInitialized = true;
         }
         
-        public static async UniTask SetUpPlayerData(int loadDataSlot = 1)
+        public static async UniTask SetUpPlayerData()
         {
             if (IsNewGame)
             {
@@ -41,6 +44,17 @@ namespace System
                 PlayerData = await SaveDataService.Load(CurrentSaveSlot);
                 GameLogger.LogInfo("[GameSession] Loaded save slot " + CurrentSaveSlot);
             }
+
+            CurrentDay.Year = PlayerData.Year;
+            CurrentDay.Month = PlayerData.Month;
+            CurrentDay.Day = PlayerData.Day;
+            CurrentDay.ActionTiming = (ActionTiming)PlayerData.Timing;
+            
+        }
+
+        public static UniTask Save()
+        {
+            return UniTask.CompletedTask;
         }
     }
 }

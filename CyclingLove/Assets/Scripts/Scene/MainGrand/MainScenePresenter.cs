@@ -18,10 +18,10 @@ namespace Scene.MainGrand
                 if (_model == null)
                 {
                     _model = new MainSceneModel();
-                    await _model.Initialize();
+                    await MainSceneModel.Initialize();
                 }
 
-                var currentEvent = _model.GetCurrentEvent();
+                var currentEvent = MainSceneModel.GetCurrentEvent();
                 currentEvent?.Execute();
             }
         }

@@ -1,4 +1,4 @@
-namespace System
+namespace System.GameSession
 {
     [Serializable]
     public class GamePlayerData
@@ -9,8 +9,11 @@ namespace System
 
         // ========= ゲーム進行 =========
         public int Day = 1;
+        public int Month = 1;
+        public int Year = 1;
+        public int Timing = 0;
+        
         public int Money = 1000;
-        public string CurrentScene = "MainScene";
         public string LastVisitedPlace = "Home";
 
         // ========= ステータス =========
@@ -19,6 +22,7 @@ namespace System
         public int Smart = 5;      // 知識・スマート
         public int Charm = 5;      // 魅力・チャーム
         public int Appeal = 5;     // 表現力・アピール
+        
         
     }
 }

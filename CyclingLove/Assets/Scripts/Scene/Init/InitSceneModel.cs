@@ -1,4 +1,5 @@
 using System;
+using System.GameSession;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,7 +12,5 @@ namespace Scene.Init
             Application.targetFrameRate = 60;
             await GameSession.InitConfig();
         }
-
-
     }
 }

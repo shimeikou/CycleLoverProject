@@ -1,25 +1,29 @@
+using System;
 using System.Event;
+using System.GameSession;
+using System.Manager;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 
 namespace Scene.MainGrand
 {
-    public class MainSceneModel
+    public sealed class MainSceneModel
     {
-        public async UniTask Initialize()
+        public static UniTask Initialize()
         {
-            await LoadSchedule();
+            return GameScheduleManager.Instance.LoadSchedule();
+        }
+        
+
+        public static UniTaskVoid LoadMasterData()
+        {
+            return new UniTaskVoid();
         }
 
-        private async UniTask LoadSchedule()
+        public static GameEvent GetCurrentEvent()
         {
-           
-        }
-
-        public GameEvent GetCurrentEvent()
-        {
-
-            return new GameEvent();
+            var nextDate = GameSession.CurrentDay;
+            return GameScheduleManager.Instance.GetNextGameEvent(nextDate);
         }
     }
 }

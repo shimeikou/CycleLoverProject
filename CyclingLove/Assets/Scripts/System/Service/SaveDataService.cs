@@ -1,3 +1,4 @@
+using System.GameSession;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -5,7 +6,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace System
+namespace System.Service
 {
     public static class SaveDataService
     {
@@ -16,7 +17,7 @@ namespace System
         private static string SystemPath => Application.persistentDataPath + "/system.dat";
 
 
-        public static async UniTaskVoid Save(GamePlayerData data, string slot = "1")
+        public static async UniTask Save(GamePlayerData data, string slot = "1")
         {
             var json = JsonUtility.ToJson(data, true);
             var encrypted = await Encrypt(json);
@@ -24,7 +25,7 @@ namespace System
             Debug.Log($"[SaveSystem] Saved (encrypted) to {SavePath(slot)}");
         }
 
-        public static async UniTaskVoid SaveSystem(GameSystemConfig data)
+        public static async UniTask SaveSystem(GameSystemConfig data)
         {
             var json = JsonUtility.ToJson(data, true);
             var encrypted = await Encrypt(json);

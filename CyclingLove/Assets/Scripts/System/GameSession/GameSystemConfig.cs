@@ -1,4 +1,4 @@
-namespace System
+namespace System.GameSession
 {
     public class GameSystemConfig
     {
