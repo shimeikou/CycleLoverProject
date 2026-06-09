@@ -9,8 +9,8 @@ namespace System.GameSession
 
         // ========= ゲーム進行 =========
         public int Day = 1;
-        public int Month = 1;
-        public int Year = 1;
+        public int Month = 4;
+        public int Year = 2026;
         public int Timing = 0;
         
         public int Money = 1000;

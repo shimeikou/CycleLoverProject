@@ -22,5 +22,20 @@ namespace System.Data.Schedule
             Month = 1;
             Year++;
         }
+        public bool ToNextActionTiming()
+        {
+            if (ActionTiming == ActionTiming.Extra)
+            {
+                ActionTiming = ActionTiming.Morning;
+                return false;
+            }
+            ActionTiming++;
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return $"{Year}-{Month}-{Day} {ActionTiming}";
+        }
     }
 }

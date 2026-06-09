@@ -23,8 +23,7 @@ namespace UI
 
         private void Awake()
         {
-
-
+            
             if (targetText == null)
             {
                 GameLogger.LogError("TextMeshProUGUIコンポーネントが子要素に見つかりません。", this);

@@ -5,29 +5,42 @@ using System.Linq;
 using System.ScriptableObjectClass;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Util;
 
 namespace System.MasterDataHolder
 {
     public sealed class ScheduleMasterDataHolder : MasterDataHolderBase
     {
-        private List<List<ScheduleDay>> _schedule = new();
+        private SoTotalSchedule _schedule = new();
         
-        private const string LoadKey = "Assets/ScriptableObject/SO_MainSchedule.asset";
+        private const string LoadKey = "Assets/ScriptableObject/SO_TotalSchedule.asset";
 
+        private AsyncOperationHandle<SoTotalSchedule>? _handle;
         public override async UniTask LoadSo()
         {
-            var handle = Addressables.LoadAssetAsync<SoTotalSchedule>(LoadKey);
-            await handle.Task;
-            // if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
-            // {
-            //     _schedule = handle.Result;
-            // }
-            // else
-            // {
-            //     GameLogger.LogInfo("[ScheduleMasterDataHolder]Schedule load failed");
-            //     Clear();
-            // }
+            _handle = Addressables.LoadAssetAsync<SoTotalSchedule>(LoadKey);
+
+            try
+            {
+                await _handle.Value.Task;
+
+                if (_handle.Value.Status == AsyncOperationStatus.Succeeded)
+                {
+                    _schedule = _handle.Value.Result;
+                    
+                }
+                else
+                {
+                    GameLogger.LogError("[ScheduleMasterDataHolder] Schedule load failed");
+                    Clear();
+                }
+            }
+            catch (Exception e)
+            {
+                GameLogger.LogError($"[ScheduleMasterDataHolder] Exception: {e}");
+                Clear();
+            }
         }
 
         public override void Clear()
@@ -35,6 +48,12 @@ namespace System.MasterDataHolder
             _schedule?.Clear();
         }
 
+        public void Release()
+        {
+            if (!_handle.HasValue) return;
+            Addressables.Release(_handle);
+            _handle = null;
+        }
 
         public void GetByDate(in GameDate nextDate, out GameEvent gameEvent)
         {
@@ -42,23 +61,13 @@ namespace System.MasterDataHolder
             
             var nextMouth = nextDate.Month;
             var nextDay = nextDate.Day;
-            var mouthData = _schedule.SelectMany(x => x).Where(x => x.Day == nextMouth && x.Month == nextDay);
-            if (mouthData == null)
-            {
-                GameLogger.LogError("[ScheduleMasterDataHolder]Schedule load failed");
-                return;
-            }
+            var mouthData = _schedule.MonthScheduleDataPairs?.Where(x => x.Day == nextMouth && x.Month == nextDay);
             var dayData = mouthData.FirstOrDefault(x => x.Day == nextDay);
             if (dayData == null)
             {
                 GameLogger.LogError("[ScheduleMasterDataHolder]Schedule load failed");
                 return;
             }
-
-            var timing = nextDate.ActionTiming;
-            var eventKey = dayData.GetEventKey(timing);
-
-
         }
     }
 }

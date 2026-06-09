@@ -20,6 +20,11 @@ namespace System.Manager
             return nextGameEvent;
         }
         
+        public ScheduleMasterDataHolder GetData()
+        {
+            return _scheduleMasterData;
+        }
+
        
     }
 }

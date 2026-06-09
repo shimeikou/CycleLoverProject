@@ -11,6 +11,7 @@ namespace Scene.Init
         {
             Application.targetFrameRate = 60;
             await GameSession.InitConfig();
+            await GameSession.SetUpPlayerData();
         }
     }
 }

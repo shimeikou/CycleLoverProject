@@ -13,12 +13,12 @@ namespace System.GameSession
         public static string CurrentSaveSlot = "1";
         private static bool IsInitialized = false;
         
-        public static GameDate CurrentDay = new ();
+        public static readonly GameDate CurrentDay = new ();
 
         // ========= データ構造 =========
         public static GameSystemConfig SystemConfig;
         public static GamePlayerData PlayerData;
- 
+        
         public static async UniTask InitConfig()
         {
             if (IsInitialized)

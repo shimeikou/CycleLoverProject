@@ -9,18 +9,19 @@ namespace Scene.MainGrand
 {
     public sealed class MainSceneModel
     {
-        public static UniTask Initialize()
+        
+        public UniTask Initialize()
         {
             return GameScheduleManager.Instance.LoadSchedule();
         }
         
 
-        public static UniTaskVoid LoadMasterData()
+        public UniTaskVoid LoadMasterData()
         {
             return new UniTaskVoid();
         }
 
-        public static GameEvent GetCurrentEvent()
+        public GameEvent GetCurrentEvent()
         {
             var nextDate = GameSession.CurrentDay;
             return GameScheduleManager.Instance.GetNextGameEvent(nextDate);

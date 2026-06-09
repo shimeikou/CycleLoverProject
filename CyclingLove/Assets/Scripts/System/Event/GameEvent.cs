@@ -5,14 +5,30 @@ namespace System.Event
     {
         public string EventKey;
         
-        public GameEventType Type;
+        public GameEventType Type = GameEventType.None;
         
         public string Parameter;
         
+        public GameEventState State = GameEventState.None;
         
-        public void Execute()
+        public GameEventType Execute()
         {
-            
+
+            return GameEventType.None;
+        }
+
+        public void Start()
+        {
+         
+        }
+        public bool Running()
+        {
+
+            return false;   
+        }
+        public void Finish()
+        {
+         
         }
     }
     
@@ -22,5 +38,13 @@ namespace System.Event
         Scenario,
         FreeTime,
         Event,
+    }
+    
+    public enum GameEventState
+    {
+        None,
+        Start,
+        Running,
+        Finish,
     }
 }
