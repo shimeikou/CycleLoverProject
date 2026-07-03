@@ -24,7 +24,7 @@ namespace System.Data.Schedule
         }
         public bool ToNextActionTiming()
         {
-            if (ActionTiming == ActionTiming.Extra)
+            if (ActionTiming == ActionTiming.Special)
             {
                 ActionTiming = ActionTiming.Morning;
                 return false;

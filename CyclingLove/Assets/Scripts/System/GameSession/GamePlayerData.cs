@@ -1,3 +1,6 @@
+using System.Data.Schedule;
+using System.Collections.Generic;
+
 namespace System.GameSession
 {
     [Serializable]
@@ -11,18 +14,21 @@ namespace System.GameSession
         public int Day = 1;
         public int Month = 4;
         public int Year = 2026;
-        public int Timing = 0;
+        public ActionTiming Timing = ActionTiming.Morning;
         
         public int Money = 1000;
         public string LastVisitedPlace = "Home";
 
         // ========= ステータス =========
-        public int Physical = 5;   // 体力・フィジカル
-        public int Heart = 5;      // 精神力・ハート
-        public int Smart = 5;      // 知識・スマート
-        public int Charm = 5;      // 魅力・チャーム
-        public int Appeal = 5;     // 表現力・アピール
-        
-        
+        public int Physical = 5;    // 身体能力・フィジカル
+        public int Toughness = 5;   // 精神力・タフネス
+        public int Smart = 5;       // 知識・スマート
+        public int Empathy = 5;     // 共感力・エンパシー
+        public int Appeal = 5;      // 表現力・アピール
+
+        // ========= 進行フラグ =========
+        public List<string> ClearedEventKeys = new();
+        public List<string> ActiveRouteFlags = new();
+        public List<string> MetHeroineIds = new();
     }
 }

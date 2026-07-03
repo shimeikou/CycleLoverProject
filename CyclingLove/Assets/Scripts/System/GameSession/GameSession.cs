@@ -48,7 +48,7 @@ namespace System.GameSession
             CurrentDay.Year = PlayerData.Year;
             CurrentDay.Month = PlayerData.Month;
             CurrentDay.Day = PlayerData.Day;
-            CurrentDay.ActionTiming = (ActionTiming)PlayerData.Timing;
+            CurrentDay.ActionTiming = PlayerData.Timing;
             
         }
 

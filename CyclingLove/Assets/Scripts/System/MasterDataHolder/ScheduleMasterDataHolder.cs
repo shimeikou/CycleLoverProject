@@ -12,7 +12,8 @@ namespace System.MasterDataHolder
 {
     public sealed class ScheduleMasterDataHolder : MasterDataHolderBase
     {
-        private SoTotalSchedule _schedule = new();
+        private SoTotalSchedule _schedule;
+        private List<ScheduleDay> _debugScheduleDays = new();
         
         private const string LoadKey = "Assets/ScriptableObject/SO_TotalSchedule.asset";
 
@@ -28,24 +29,30 @@ namespace System.MasterDataHolder
                 if (_handle.Value.Status == AsyncOperationStatus.Succeeded)
                 {
                     _schedule = _handle.Value.Result;
-                    
+
+                    if (_schedule?.MonthScheduleDataPairs == null || _schedule.MonthScheduleDataPairs.Count == 0)
+                    {
+                        GameLogger.LogWarning("[ScheduleMasterDataHolder] Loaded schedule asset is empty. Fallback to debug schedule.");
+                        LoadDebugSchedule();
+                    }
                 }
                 else
                 {
                     GameLogger.LogError("[ScheduleMasterDataHolder] Schedule load failed");
-                    Clear();
+                    LoadDebugSchedule();
                 }
             }
             catch (Exception e)
             {
                 GameLogger.LogError($"[ScheduleMasterDataHolder] Exception: {e}");
-                Clear();
+                LoadDebugSchedule();
             }
         }
 
         public override void Clear()
         {
             _schedule?.Clear();
+            _debugScheduleDays?.Clear();
         }
 
         public void Release()
@@ -55,19 +62,34 @@ namespace System.MasterDataHolder
             _handle = null;
         }
 
-        public void GetByDate(in GameDate nextDate, out GameEvent gameEvent)
+        public bool TryGetScheduleDay(in GameDate nextDate, out ScheduleDay scheduleDay)
         {
-            gameEvent = null;
-            
-            var nextMouth = nextDate.Month;
-            var nextDay = nextDate.Day;
-            var mouthData = _schedule.MonthScheduleDataPairs?.Where(x => x.Day == nextMouth && x.Month == nextDay);
-            var dayData = mouthData.FirstOrDefault(x => x.Day == nextDay);
-            if (dayData == null)
+            if (_debugScheduleDays == null || _debugScheduleDays.Count == 0)
             {
-                GameLogger.LogError("[ScheduleMasterDataHolder]Schedule load failed");
-                return;
+                LoadDebugSchedule();
             }
+
+            var year = nextDate.Year;
+            var month = nextDate.Month;
+            var dayValue = nextDate.Day;
+
+            scheduleDay = _debugScheduleDays?.FirstOrDefault(day =>
+                day.Year == year &&
+                day.Month == month &&
+                day.Day == dayValue);
+
+            if (scheduleDay != null)
+            {
+                return true;
+            }
+
+            scheduleDay = null;
+            return false;
+        }
+
+        private void LoadDebugSchedule()
+        {
+            _debugScheduleDays = SampleScheduleFactory.CreateInitialThreeDays();
         }
     }
 }

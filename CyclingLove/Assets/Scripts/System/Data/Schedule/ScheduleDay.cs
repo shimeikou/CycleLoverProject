@@ -17,7 +17,24 @@ namespace System.Data.Schedule
         Morning,
         Afternoon,
         Evening,
-        Extra,
+        Special,
+    }
+
+    public enum Season
+    {
+        Spring,
+        Summer,
+        Autumn,
+        Winter,
+    }
+
+    public enum ScheduleSlotType
+    {
+        FixedEvent,
+        FreeChoice,
+        ConditionalEvent,
+        Summary,
+        SpecialEvent,
     }
     
     [Serializable]
@@ -26,29 +43,51 @@ namespace System.Data.Schedule
         public int Year;
         public int Month;
         public int Day;
-        
+
         public Weather Weather;
         public DayOfWeek CurrentDay;
+        public Season Season;
+        public bool IsHoliday;
+        public bool IsSpecialDay;
 
-        public List<ActionEventPair> ActionEvents = new ();
-        
+        public List<ScheduleSlot> Slots = new();
+
         public string GetEventKey(ActionTiming timing)
         {
-            return (from pair in ActionEvents where pair.Timing == timing select pair.EventKey).FirstOrDefault();
+            var slot = GetSlot(timing);
+            if (slot == null)
+            {
+                return null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(slot.FixedEventKey))
+            {
+                return slot.FixedEventKey;
+            }
+
+            return slot.CandidateEventKeys?.FirstOrDefault();
+        }
+
+        public ScheduleSlot GetSlot(ActionTiming timing)
+        {
+            return Slots?.FirstOrDefault(slot => slot.Timing == timing);
         }
     }
-    
+
     [Serializable]
-    public struct ActionEventPair
+    public class ScheduleSlot
     {
         public ActionTiming Timing;
-        public string EventKey;
-        
+        public ScheduleSlotType SlotType;
+        public string FixedEventKey;
+        public List<string> CandidateEventKeys = new();
+        public string FallbackEventKey;
 
-        public ActionEventPair(string eventKey)
+        public ScheduleSlot(ActionTiming timing, ScheduleSlotType slotType, string fixedEventKey = null)
         {
-            EventKey = eventKey;
-            Timing = ActionTiming.Morning;
+            Timing = timing;
+            SlotType = slotType;
+            FixedEventKey = fixedEventKey;
         }
     }
 }

@@ -7,7 +7,8 @@ namespace System.ScriptableObjectClass
     [CreateAssetMenu(fileName = "SO_MonthSchedule", menuName = "ScriptableObjects/MonthSchedule", order = 0)]
     public class SoMonthSchedule : ScriptableObject
     {
-        public int Month { get; private set; }
+        public int Year;
+        public int Month;
         public List<ScheduleDay> Days;
     }
 }
