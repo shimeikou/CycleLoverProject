@@ -5,6 +5,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Util;
+using System.Manager;
 
 namespace Scene.Init
 {
@@ -73,7 +74,11 @@ namespace Scene.Init
         private async UniTask GoToNewGame()
         {
             StandardUIManager.Instance.ShowLoading();
-            await SceneManager.LoadSceneAsync("MainGameScene");
+            await GameFlowManager.Instance.StartNewGameFlow();
+
+            var request = GameFlowManager.Instance.PeekCurrentRequest();
+            var sceneName = request?.UnitySceneName ?? "MainGameScene";
+            await SceneManager.LoadSceneAsync(sceneName);
         }
     }
 }

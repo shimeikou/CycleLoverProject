@@ -24,6 +24,8 @@
 - [12_スケジュールデータ設計.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/12_%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%87%E3%83%BC%E3%82%BF%E8%A8%AD%E8%A8%88.md)
 - [13_初期3日サンプル進行.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/13_%E5%88%9D%E6%9C%9F3%E6%97%A5%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E9%80%B2%E8%A1%8C.md)
 - [14_シーン設計案.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/14_%E3%82%B7%E3%83%BC%E3%83%B3%E8%A8%AD%E8%A8%88%E6%A1%88.md)
+- [15_シーン遷移前提の進行管理設計.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/15_%E3%82%B7%E3%83%BC%E3%83%B3%E9%81%B7%E7%A7%BB%E5%89%8D%E6%8F%90%E3%81%AE%E9%80%B2%E8%A1%8C%E7%AE%A1%E7%90%86%E8%A8%AD%E8%A8%88.md)
+- [16_MainGameScene_配置メモ.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/16_MainGameScene_%E9%85%8D%E7%BD%AE%E3%83%A1%E3%83%A2.md)
 
 ## 参照方針
 

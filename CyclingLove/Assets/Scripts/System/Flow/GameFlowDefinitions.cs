@@ -1,0 +1,77 @@
+using System.Data.Schedule;
+
+namespace System.Flow
+{
+    public enum GameFlowPhase
+    {
+        None,
+        Boot,
+        ResolveSchedule,
+        ActionSelection,
+        Novel,
+        MiniGameAction,
+        DailySummary,
+        AdvanceTime,
+        Finished,
+    }
+
+    public enum GameFlowSceneType
+    {
+        None,
+        Init,
+        ActionSelection,
+        Novel,
+        MiniGameAction,
+        Summary,
+        Result,
+    }
+
+    public enum GameFlowCompletionType
+    {
+        None,
+        EnterScene,
+        ActionSelected,
+        NovelClosed,
+        MiniGameFinished,
+        SummaryClosed,
+        ForcedAdvance,
+    }
+
+    public sealed class GameSceneRequest
+    {
+        public GameFlowPhase Phase;
+        public GameFlowSceneType SceneType;
+        public string UnitySceneName;
+        public string CurrentDateText;
+        public ActionTiming Timing;
+        public string EventKey;
+        public string ScenarioId;
+        public string ActionId;
+        public string DisplayName;
+    }
+
+    public sealed class GameSceneResult
+    {
+        public GameFlowCompletionType CompletionType;
+        public string SelectedActionId;
+        public int MiniGameScore;
+        public string Notes;
+    }
+
+    public static class GameSceneRouteTable
+    {
+        public static string ResolveUnitySceneName(GameFlowSceneType sceneType)
+        {
+            return sceneType switch
+            {
+                GameFlowSceneType.Init => "InitScene",
+                GameFlowSceneType.ActionSelection => "MainGameScene",
+                GameFlowSceneType.Novel => "MainGameScene",
+                GameFlowSceneType.MiniGameAction => "MainGameScene",
+                GameFlowSceneType.Summary => "MainGameScene",
+                GameFlowSceneType.Result => "MainGameScene",
+                _ => "MainGameScene",
+            };
+        }
+    }
+}

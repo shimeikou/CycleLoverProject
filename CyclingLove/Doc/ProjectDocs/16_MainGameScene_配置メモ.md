@@ -1,0 +1,128 @@
+# MainGameScene 配置メモ
+
+この文書は、`MainGameScene` を仮UIで動かすために、
+Unity エディタ上で何を置いて、何を Inspector で結線するかをまとめたメモです。
+
+## 目的
+
+- `ActionSelection`
+- `Novel`
+- `MiniGameAction`
+- `DailySummary`
+
+の4フェイズを、`MainGameScene` 1つの中で切り替えて確認できるようにする。
+
+## 追加したスクリプト
+
+- [MainSceneViewer.cs](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Assets/Scripts/Scene/MainGrand/MainSceneViewer.cs)
+
+## シーン上で必要な構成
+
+`MainGameScene` に以下のような GameObject を置く。
+
+```text
+MainScenePresenter
+MainSceneViewer
+Canvas
+  BaseHUD
+    PhaseText
+    DateText
+    TimingText
+    PlayerStatusText
+    DebugText
+  ActionSelectionPanel
+    TitleText
+    DescriptionText
+    ActionButtonPrimary
+      Label
+    ActionButtonSecondary
+      Label
+    ActionButtonTertiary
+      Label
+  NovelPanel
+    TitleText
+    BodyText
+    ContinueButton
+  MiniGamePanel
+    TitleText
+    BodyText
+    ContinueButton
+  SummaryPanel
+    TitleText
+    BodyText
+    ContinueButton
+```
+
+## 参照アサイン
+
+### MainScenePresenter
+
+- `View`
+  - `MainSceneViewer` を持つ GameObject をアサイン
+
+### MainSceneViewer
+
+Base HUD:
+
+- `Phase Text`
+- `Date Text`
+- `Timing Text`
+- `Player Status Text`
+- `Debug Text`
+
+Panels:
+
+- `Action Selection Panel`
+- `Novel Panel`
+- `Mini Game Panel`
+- `Summary Panel`
+
+Action Selection:
+
+- `Action Title Text`
+- `Action Description Text`
+- `Action Button Primary`
+- `Action Button Primary Label`
+- `Action Button Secondary`
+- `Action Button Secondary Label`
+- `Action Button Tertiary`
+- `Action Button Tertiary Label`
+
+Novel:
+
+- `Novel Title Text`
+- `Novel Body Text`
+- `Novel Continue Button`
+
+Mini Game:
+
+- `Mini Game Title Text`
+- `Mini Game Body Text`
+- `Mini Game Continue Button`
+
+Summary:
+
+- `Summary Title Text`
+- `Summary Body Text`
+- `Summary Continue Button`
+
+## 推奨コンポーネント
+
+- テキスト: `TextMeshProUGUI`
+- ボタン: `Button`
+- パネル: `GameObject` または `RectTransform` を持つ通常 UI
+
+## 最初の確認ポイント
+
+1. `InitScene` の Start から入る
+2. `MainGameScene` が開く
+3. フェイズに応じて Panel が1つだけ表示される
+4. `ActionSelection` でいずれかのボタンを押せる
+5. `Novel` で Continue を押せる
+6. `Summary` で Continue を押せる
+
+## いまの注意点
+
+- 見た目はまだ仮でよい
+- ボタンの文言も仮でよい
+- 配色やレイアウト調整より、まず進行がつながることを優先する
