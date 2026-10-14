@@ -34,7 +34,7 @@ namespace Scene.MainGrand
         {
             var request = GameFlowManager.Instance.PeekCurrentRequest();
             _shownRevision = request.Revision;
-            view.Render(request, GameSession.PlayerData, new MainSceneModel().GetActionOptions(), "");
+            view.Render(request, GameSession.PlayerData, GameFlowManager.Instance.GetActionOptions(), "");
         }
 
         private async UniTask Advance(GameFlowCompletionType completion, string action = null)

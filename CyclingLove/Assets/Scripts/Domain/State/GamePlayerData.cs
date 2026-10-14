@@ -28,6 +28,8 @@ namespace System.GameSession
 
         // The three-day prototype stores its exact interaction checkpoint.
         public int FlowVersion;
+        public string CampaignId;
+        public int ContentVersion;
         public System.Flow.GameFlowPhase SavedPhase = System.Flow.GameFlowPhase.Novel;
         public int NarrativePage;
         public string SelectedActionId;

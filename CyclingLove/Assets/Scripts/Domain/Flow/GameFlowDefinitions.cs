@@ -37,12 +37,19 @@ namespace System.Flow
         ForcedAdvance,
     }
 
+    public sealed class GameActionOption
+    {
+        public string ActionId, Label, Description;
+        public bool CanExecute;
+    }
+
     public sealed class GameSceneRequest
     {
         public GameFlowPhase Phase;
         public GameFlowSceneType SceneType;
         public string UnitySceneName;
         public string CurrentDateText;
+        public int DayNumber, TotalDays;
         public ActionTiming Timing;
         public string EventKey;
         public string ScenarioId;

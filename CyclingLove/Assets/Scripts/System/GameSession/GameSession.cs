@@ -9,11 +9,9 @@ namespace System.GameSession
     {
         
         // ========= 現在のセッション状態 =========
-        public static bool IsNewGame = true;
         public static string CurrentSaveSlot = "prototype";
         private static bool IsInitialized = false;
         
-        public static readonly GameDate CurrentDay = new ();
 
         // ========= データ構造 =========
         public static GameSystemConfig SystemConfig;
@@ -32,26 +30,6 @@ namespace System.GameSession
             IsInitialized = true;
         }
         
-        public static async UniTask SetUpPlayerData()
-        {
-            if (IsNewGame)
-            {
-                PlayerData = new GamePlayerData();
-                GameLogger.LogInfo("[GameSession] New game started.");
-            }
-            else
-            {
-                PlayerData = await SaveDataService.Load(CurrentSaveSlot);
-                GameLogger.LogInfo("[GameSession] Loaded save slot " + CurrentSaveSlot);
-            }
-
-            CurrentDay.Year = PlayerData.Year;
-            CurrentDay.Month = PlayerData.Month;
-            CurrentDay.Day = PlayerData.Day;
-            CurrentDay.ActionTiming = PlayerData.Timing;
-            
-        }
-
         public static UniTask Save()
         {
             return SaveDataService.Save(PlayerData, CurrentSaveSlot);

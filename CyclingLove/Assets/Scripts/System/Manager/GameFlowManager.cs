@@ -8,16 +8,16 @@ namespace System.Manager
 {
     public sealed class GameFlowManager : MonoSingleton<GameFlowManager>
     {
-        private readonly ThreeDayGameService _flow = new();
+        private CampaignGameService _flow;
+        private CampaignGameService Flow => _flow ??= new CampaignGameService(CampaignContentLoader.LoadPrototype());
+        public System.Collections.Generic.IReadOnlyList<GameActionOption> GetActionOptions() => Flow.GetActionOptions(GameSessionState.PlayerData);
         public GameFlowPhase CurrentPhase => GameSessionState.PlayerData?.SavedPhase ?? GameFlowPhase.None;
         public GameSceneRequest CurrentRequest { get; private set; }
-        public EventApplicationResult LastEventApplicationResult => null;
 
         public async UniTask StartNewGameFlow()
         {
             await GameSessionState.InitConfig();
-            GameSessionState.IsNewGame = true;
-            GameSessionState.PlayerData = _flow.NewGame();
+            GameSessionState.PlayerData = Flow.NewGame();
             BuildNextRequest();
         }
 
@@ -25,34 +25,28 @@ namespace System.Manager
         {
             // Do not replace a live session until the load has been validated.
             var loaded = await SaveDataService.Load(GameSessionState.CurrentSaveSlot);
-            _flow.Validate(loaded);
+            Flow.Validate(loaded);
             GameSessionState.PlayerData = loaded;
-            GameSessionState.IsNewGame = false;
             BuildNextRequest();
         }
 
         public async UniTask ResumeCurrentFlow()
         {
             await GameSessionState.InitConfig();
-            if (GameSessionState.PlayerData == null || GameSessionState.PlayerData.FlowVersion != ThreeDayGameService.Version)
-                GameSessionState.PlayerData = _flow.NewGame();
+            if (GameSessionState.PlayerData == null)
+                GameSessionState.PlayerData = Flow.NewGame();
             BuildNextRequest();
         }
 
         public GameSceneRequest PeekCurrentRequest() => CurrentRequest;
         public GameSceneRequest BuildNextRequest()
         {
-            var d = GameSessionState.PlayerData;
-            GameSessionState.CurrentDay.Year = d.Year;
-            GameSessionState.CurrentDay.Month = d.Month;
-            GameSessionState.CurrentDay.Day = d.Day;
-            GameSessionState.CurrentDay.ActionTiming = d.Timing;
-            return CurrentRequest = _flow.Request(d);
+            return CurrentRequest = Flow.Request(GameSessionState.PlayerData);
         }
 
         public GameSceneRequest SubmitSceneResult(GameSceneResult result)
         {
-            _flow.Submit(GameSessionState.PlayerData, result);
+            Flow.Submit(GameSessionState.PlayerData, result);
             return BuildNextRequest();
         }
     }

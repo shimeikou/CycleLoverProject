@@ -12,7 +12,9 @@ namespace Scene.MainGrand
     {
         private UnityAction<string> _onSelectAction;
         private bool _busy;
-        private GamePlayerData _playerData;
+        private int _actionPage;
+        private Button _previousActions, _nextActions;
+        private IReadOnlyList<GameActionOption> _actionOptions;
         [SerializeField] private Button saveButton;
         [SerializeField] private Button titleButton;
         [SerializeField] private TextMeshProUGUI messageText;
@@ -34,11 +36,43 @@ namespace Scene.MainGrand
         }
         private void UpdateActionAvailability()
         {
-            if (_playerData == null) return;
-            var flow = new System.Service.ThreeDayGameService();
-            if (actionButtonPrimary != null) actionButtonPrimary.interactable = !_busy && flow.CanChoose(_playerData, System.Service.ThreeDayGameService.Training);
-            if (actionButtonSecondary != null) actionButtonSecondary.interactable = !_busy && flow.CanChoose(_playerData, System.Service.ThreeDayGameService.Town);
-            if (actionButtonTertiary != null) actionButtonTertiary.interactable = !_busy;
+            if (_previousActions != null) _previousActions.interactable = !_busy;
+            if (_nextActions != null) _nextActions.interactable = !_busy;
+            var buttons = new[] { actionButtonPrimary, actionButtonSecondary, actionButtonTertiary };
+            for (int i = 0; i < buttons.Length; i++)
+                if (buttons[i] != null) buttons[i].interactable = !_busy && _actionOptions != null && i + _actionPage * 3 < _actionOptions.Count && _actionOptions[i + _actionPage * 3].CanExecute;
+        }
+
+        private void EnsureActionPaging()
+        {
+            if (_nextActions != null || actionButtonPrimary == null) return;
+            _previousActions = CreatePageButton("PreviousActions", "前の行動", 32, -1);
+            _nextActions = CreatePageButton("NextActions", "次の行動", 490, 1);
+        }
+        private Button CreatePageButton(string name, string text, float x, int direction)
+        {
+            var button = Instantiate(actionButtonPrimary, actionButtonPrimary.transform.parent);
+            button.name = name;
+            var rect = (RectTransform)button.transform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0, 1);
+            rect.pivot = new Vector2(0, 1);
+            rect.anchoredPosition = new Vector2(x, -530);
+            rect.sizeDelta = new Vector2(400, 32);
+            var label = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null) { label.text = text; label.fontSize = 18; }
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(() => { if (_busy) return; _actionPage += direction; RenderActionPage(); });
+            return button;
+        }
+        private void RenderActionPage()
+        {
+            EnsureActionPaging();
+            ApplyActionOption(actionButtonPrimary, actionButtonPrimaryLabel, _actionOptions, _actionPage * 3);
+            ApplyActionOption(actionButtonSecondary, actionButtonSecondaryLabel, _actionOptions, _actionPage * 3 + 1);
+            ApplyActionOption(actionButtonTertiary, actionButtonTertiaryLabel, _actionOptions, _actionPage * 3 + 2);
+            if (_previousActions != null) _previousActions.gameObject.SetActive(_actionPage > 0);
+            if (_nextActions != null) _nextActions.gameObject.SetActive(_actionOptions != null && (_actionPage + 1) * 3 < _actionOptions.Count);
+            UpdateActionAvailability();
         }
 
         [Header("Base HUD")]
@@ -97,9 +131,9 @@ namespace Scene.MainGrand
             HideAllPanels();
         }
 
-        public void Render(GameSceneRequest request, GamePlayerData playerData, IReadOnlyList<MainSceneActionOption> actionOptions, string progressState)
+        public void Render(GameSceneRequest request, GamePlayerData playerData, IReadOnlyList<GameActionOption> actionOptions, string progressState)
         {
-            _playerData = playerData;
+            _actionOptions = actionOptions;
             UpdateHud(request, playerData, progressState);
             HideAllPanels();
 
@@ -138,12 +172,12 @@ namespace Scene.MainGrand
         {
             if (phaseText != null)
             {
-                phaseText.text = request?.Phase == GameFlowPhase.Finished ? "3日間の試作・終了" : $"3日間の試作　{playerData.Day} / 3日";
+                phaseText.text = request?.Phase == GameFlowPhase.Finished ? "終了" : $"進行　{request?.DayNumber} / {request?.TotalDays}日";
             }
 
             if (dateText != null)
             {
-                dateText.text = request?.Phase == GameFlowPhase.Finished ? "試作クリア" : $"4月{playerData.Day}日";
+                dateText.text = request?.Phase == GameFlowPhase.Finished ? "試作クリア" : request?.CurrentDateText;
             }
 
             if (timingText != null)
@@ -160,11 +194,11 @@ namespace Scene.MainGrand
 
             if (debugText != null)
             {
-                debugText.text = playerData.MetHeroineIds.Contains("hero_bikeshop") ? "出会い：自転車屋の娘" : "この町で、新しい暮らしを。";
+                debugText.text = playerData.MetHeroineIds.Count > 0 ? $"出会った人　{playerData.MetHeroineIds.Count}人" : "この町で、新しい暮らしを。";
             }
         }
 
-        private void ShowActionSelection(GameSceneRequest request, IReadOnlyList<MainSceneActionOption> actionOptions)
+        private void ShowActionSelection(GameSceneRequest request, IReadOnlyList<GameActionOption> actionOptions)
         {
             if (actionSelectionPanel != null)
             {
@@ -181,10 +215,8 @@ namespace Scene.MainGrand
                 actionDescriptionText.text = request.BodyText;
             }
 
-            ApplyActionOption(actionButtonPrimary, actionButtonPrimaryLabel, actionOptions, 0);
-            ApplyActionOption(actionButtonSecondary, actionButtonSecondaryLabel, actionOptions, 1);
-            ApplyActionOption(actionButtonTertiary, actionButtonTertiaryLabel, actionOptions, 2);
-            UpdateActionAvailability();
+            _actionPage = 0;
+            RenderActionPage();
         }
 
         private void ShowNovel(GameSceneRequest request)
@@ -247,7 +279,7 @@ namespace Scene.MainGrand
             }
         }
 
-        private void ApplyActionOption(Button button, TextMeshProUGUI label, IReadOnlyList<MainSceneActionOption> actionOptions, int index)
+        private void ApplyActionOption(Button button, TextMeshProUGUI label, IReadOnlyList<GameActionOption> actionOptions, int index)
         {
             if (button == null)
             {

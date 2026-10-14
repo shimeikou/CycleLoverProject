@@ -26,7 +26,7 @@ namespace System.Service
 
         public static async UniTask Save(GamePlayerData data, string slot = "1")
         {
-            new ThreeDayGameService().Validate(data);
+            PlayerSaveValidator.Validate(data);
             // Serialize on the main thread before awaiting, producing a consistent snapshot.
             var json = JsonUtility.ToJson(data, true);
             var encrypted = await Encrypt(json);
@@ -60,7 +60,7 @@ namespace System.Service
             var encrypted = await File.ReadAllTextAsync(path);
             var json = await Decrypt(encrypted);
             var data = JsonUtility.FromJson<GamePlayerData>(json);
-            new ThreeDayGameService().Validate(data);
+            PlayerSaveValidator.Validate(data);
             return data;
         }
 

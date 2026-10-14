@@ -1,0 +1,7 @@
+{
+    "name": "Game.Domain",
+    "rootNamespace": "CyclingLove",
+    "references": [],
+    "autoReferenced": true,
+    "noEngineReferences": true
+}

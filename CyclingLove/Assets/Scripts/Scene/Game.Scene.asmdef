@@ -13,7 +13,8 @@
         "GUID:4fde3db26c5be43599c561f26c43edb0",
         "GUID:1bf08b86be2534e82928955064bf82db",
         "GUID:5e7252f2ad23f42ee8c43ab235df0bf1",
-        "GUID:84651a3751eca9349aac36a66bba901b"
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "Game.Domain"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

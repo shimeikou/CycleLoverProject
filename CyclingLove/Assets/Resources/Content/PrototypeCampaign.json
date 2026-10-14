@@ -1,0 +1,132 @@
+{
+  "Id": "prototype",
+  "Version": 1,
+  "StartYear": 2026,
+  "StartMonth": 4,
+  "StartDay": 1,
+  "OvernightRecovery": 20,
+  "EndingTitle": "新しい暮らしの、はじまり",
+  "EndingBody": "祖父のロードバイクと、この町で出会った人たち。\n新しい毎日は、まだ始まったばかり。\n\n3日間の試作はここまでです。\n保存すると、この終了地点から再開できます。",
+  "Actions": [
+    {
+      "Id": "act_training_roadwork_001",
+      "Name": "基礎練習",
+      "StaminaCost": 20,
+      "MoneyCost": 0,
+      "Pages": [
+        "自転車に乗る準備として、川沿いで基礎トレーニングをした。\n息は上がったけれど、風が心地いい。\n\n昨日より、少し遠くまで行けそうだ。\n［フィジカル +2 ／ タフネス +1 ／ 体力 -20］"
+      ],
+      "Effects": {
+        "Physical": 2,
+        "Toughness": 1,
+        "Empathy": 0,
+        "Appeal": 0,
+        "Stamina": 0
+      }
+    },
+    {
+      "Id": "act_town_walk_001",
+      "Name": "町へ行く",
+      "StaminaCost": 10,
+      "MoneyCost": 100,
+      "Pages": [
+        "町を歩き、店先で地元の人と話した。\n百円のおやつを買って、教えてもらった道を覚える。\n\n知らなかった町に、顔なじみが増えていく。\n［エンパシー +2 ／ アピール +1 ／ 資金 -100 ／ 体力 -10］"
+      ],
+      "Effects": {
+        "Physical": 0,
+        "Toughness": 0,
+        "Empathy": 2,
+        "Appeal": 1,
+        "Stamina": 0
+      }
+    },
+    {
+      "Id": "act_rest_home_001",
+      "Name": "家で休む",
+      "StaminaCost": 0,
+      "MoneyCost": 0,
+      "Pages": [
+        "縁側に座って、ゆっくりと体を休めた。\n何もしない時間にも、意味があるのかもしれない。\n\n明日は、また自分のペースで動こう。\n［タフネス +1 ／ 体力 +30（上限100）］"
+      ],
+      "Effects": {
+        "Physical": 0,
+        "Toughness": 1,
+        "Empathy": 0,
+        "Appeal": 0,
+        "Stamina": 30
+      }
+    }
+  ],
+  "Days": [
+    {
+      "Id": "trial_day1",
+      "Title": "祖母の家で迎える朝",
+      "MorningPages": [
+        "窓の向こうから、鳥の声が聞こえる。\n祖母の家で迎えた朝は、都会で過ごした日々よりも静かだった。\n\n祖母「急がなくていいよ。まずは朝ごはんにしようか」",
+        "食事を終え、持ってきたパソコンを開く。\n顔なじみの取引先から届いた依頼を、一つずつ片づけていく。\n\n今日の仕事を終えた。午後は、自分のために使おう。\n［資金 +500 ／ スマート +1］"
+      ],
+      "MorningEffects": {
+        "Money": 500,
+        "Smart": 1
+      },
+      "AfternoonPages": [
+        "物置の奥で、ほこりをかぶったロードバイクを見つけた。\n祖母「おじいちゃんが、大切にしていた自転車だよ」\n\nすぐには乗れそうにない。まずは、自分にできることから始めよう。"
+      ],
+      "ActionIds": [
+        "act_training_roadwork_001",
+        "act_town_walk_001",
+        "act_rest_home_001"
+      ],
+      "AfternoonEffects": {},
+      "SummaryNote": ""
+    },
+    {
+      "Id": "trial_day2",
+      "Title": "暮らしのリズム",
+      "MorningPages": [
+        "朝の光が、机の上を照らしている。\n昨日見つけた祖父のロードバイクが、少し気になった。\n\nまずは仕事。午後にまた、あの自転車を見てみよう。",
+        "予定していた修正を終え、取引先に成果を送った。\n祖母が置いてくれたお茶は、まだ温かい。\n\nこういう暮らしも、悪くない。\n［資金 +500 ／ スマート +1］"
+      ],
+      "MorningEffects": {
+        "Money": 500,
+        "Smart": 1
+      },
+      "AfternoonPages": [
+        "祖父の自転車を拭いていると、細かな傷に気づいた。\nどんな景色を、一緒に見てきたのだろう。\n\n修理のことは専門の人に聞くとして、今日の午後を過ごそう。"
+      ],
+      "ActionIds": [
+        "act_training_roadwork_001",
+        "act_town_walk_001",
+        "act_rest_home_001"
+      ],
+      "AfternoonEffects": {},
+      "SummaryNote": ""
+    },
+    {
+      "Id": "trial_day3",
+      "Title": "少しずつ、この町へ",
+      "MorningPages": [
+        "この家の朝にも、少し慣れてきた。\n窓を開けると、遠くに山の景色が見える。\n\nいつか、あの向こうまで走れるだろうか。",
+        "午前の依頼を仕上げて、パソコンを閉じる。\n祖母から、自転車屋へ寄ってみるよう勧められた。\n\n今日は、町に新しい知り合いができるかもしれない。\n［資金 +500 ／ スマート +1］"
+      ],
+      "MorningEffects": {
+        "Money": 500,
+        "Smart": 1
+      },
+      "AfternoonPages": [
+        "祖母に教わった自転車屋に寄ると、娘さんが顔を上げた。\n\n娘「古い自転車？ まずは状態を見せてください。乗る前に点検です」\n\n真剣な声にうなずく。新しい一歩を踏み出せた気がした。"
+      ],
+      "ActionIds": [
+        "act_training_roadwork_001",
+        "act_town_walk_001",
+        "act_rest_home_001"
+      ],
+      "AfternoonEffects": {
+        "HeroineId": "hero_bikeshop",
+        "RouteFlag": "route_bikeshop_intro_started"
+      },
+      "SummaryNote": "自転車屋の娘と知り合った。"
+    }
+  ],
+  "ChoiceDescription": "練習で体を鍛える。町で人とつながる。家でゆっくり休む。\n今日の選択が、明日の自分を少し変えていく。"
+}
