@@ -11,6 +11,35 @@ namespace Scene.MainGrand
     public sealed class MainSceneViewer : MonoBehaviour
     {
         private UnityAction<string> _onSelectAction;
+        private bool _busy;
+        private GamePlayerData _playerData;
+        [SerializeField] private Button saveButton;
+        [SerializeField] private Button titleButton;
+        [SerializeField] private TextMeshProUGUI messageText;
+
+        public void BindSessionControls(UnityAction save, UnityAction title)
+        {
+            RebindButton(saveButton, save);
+            RebindButton(titleButton, title);
+            SetMessage("タイトルに戻る前に、保存してください。");
+        }
+
+        public void SetMessage(string message) { if (messageText != null) messageText.text = message; }
+        public void SetBusy(bool busy)
+        {
+            _busy = busy;
+            foreach (var b in new[] { saveButton, titleButton, novelContinueButton, miniGameContinueButton, summaryContinueButton })
+                if (b != null) b.interactable = !busy;
+            UpdateActionAvailability();
+        }
+        private void UpdateActionAvailability()
+        {
+            if (_playerData == null) return;
+            var flow = new System.Service.ThreeDayGameService();
+            if (actionButtonPrimary != null) actionButtonPrimary.interactable = !_busy && flow.CanChoose(_playerData, System.Service.ThreeDayGameService.Training);
+            if (actionButtonSecondary != null) actionButtonSecondary.interactable = !_busy && flow.CanChoose(_playerData, System.Service.ThreeDayGameService.Town);
+            if (actionButtonTertiary != null) actionButtonTertiary.interactable = !_busy;
+        }
 
         [Header("Base HUD")]
         [SerializeField] private TextMeshProUGUI phaseText;
@@ -70,6 +99,7 @@ namespace Scene.MainGrand
 
         public void Render(GameSceneRequest request, GamePlayerData playerData, IReadOnlyList<MainSceneActionOption> actionOptions, string progressState)
         {
+            _playerData = playerData;
             UpdateHud(request, playerData, progressState);
             HideAllPanels();
 
@@ -89,6 +119,7 @@ namespace Scene.MainGrand
                 case GameFlowPhase.MiniGameAction:
                     ShowMiniGame(request);
                     break;
+                case GameFlowPhase.Finished:
                 case GameFlowPhase.DailySummary:
                     ShowSummary(request);
                     break;
@@ -107,32 +138,29 @@ namespace Scene.MainGrand
         {
             if (phaseText != null)
             {
-                phaseText.text = request?.Phase.ToString() ?? "None";
+                phaseText.text = request?.Phase == GameFlowPhase.Finished ? "3日間の試作・終了" : $"3日間の試作　{playerData.Day} / 3日";
             }
 
             if (dateText != null)
             {
-                dateText.text = GameSession.CurrentDay.ToString();
+                dateText.text = request?.Phase == GameFlowPhase.Finished ? "試作クリア" : $"4月{playerData.Day}日";
             }
 
             if (timingText != null)
             {
-                timingText.text = GameSession.CurrentDay.ActionTiming.ToString();
+                timingText.text = request?.Phase == GameFlowPhase.Finished ? "" : playerData.Timing switch { System.Data.Schedule.ActionTiming.Morning => "午前・仕事", System.Data.Schedule.ActionTiming.Afternoon => "午後・自由時間", _ => "夜・振り返り" };
             }
 
             if (playerStatusText != null && playerData != null)
             {
                 playerStatusText.text =
-                    $"Money {playerData.Money} / Physical {playerData.Physical} / Toughness {playerData.Toughness}\n" +
-                    $"Smart {playerData.Smart} / Empathy {playerData.Empathy} / Appeal {playerData.Appeal}";
+                    $"資金　{playerData.Money} 円\n体力　{playerData.Stamina} / 100\n\n" +
+                    $"フィジカル　{playerData.Physical}\nタフネス　{playerData.Toughness}\nスマート　{playerData.Smart}\nエンパシー　{playerData.Empathy}\nアピール　{playerData.Appeal}";
             }
 
             if (debugText != null)
             {
-                debugText.text =
-                    $"{progressState}\n" +
-                    $"Event: {request?.EventKey ?? "-"}\n" +
-                    $"Scenario: {request?.ScenarioId ?? "-"}";
+                debugText.text = playerData.MetHeroineIds.Contains("hero_bikeshop") ? "出会い：自転車屋の娘" : "この町で、新しい暮らしを。";
             }
         }
 
@@ -150,12 +178,13 @@ namespace Scene.MainGrand
 
             if (actionDescriptionText != null)
             {
-                actionDescriptionText.text = "行動を1つ選んで次のフェイズへ進みます。今は仮選択UIです。";
+                actionDescriptionText.text = request.BodyText;
             }
 
             ApplyActionOption(actionButtonPrimary, actionButtonPrimaryLabel, actionOptions, 0);
             ApplyActionOption(actionButtonSecondary, actionButtonSecondaryLabel, actionOptions, 1);
             ApplyActionOption(actionButtonTertiary, actionButtonTertiaryLabel, actionOptions, 2);
+            UpdateActionAvailability();
         }
 
         private void ShowNovel(GameSceneRequest request)
@@ -172,9 +201,9 @@ namespace Scene.MainGrand
 
             if (novelBodyText != null)
             {
-                novelBodyText.text =
-                    $"ScenarioId: {request.ScenarioId ?? "-"}\n\n" +
-                    "ここにノベル再生UIを接続します。今は Continue ボタンで読み終わり扱いです。";
+                novelBodyText.text = request.BodyText;
+                var label = novelContinueButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (label != null) label.text = request.ContinueLabel;
             }
         }
 
@@ -212,7 +241,9 @@ namespace Scene.MainGrand
 
             if (summaryBodyText != null)
             {
-                summaryBodyText.text = "ここに日次まとめや結果表示を接続します。今は Continue ボタンで次へ進みます。";
+                summaryBodyText.text = request.BodyText;
+                var label = summaryContinueButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (label != null) label.text = request.ContinueLabel;
             }
         }
 
@@ -234,7 +265,7 @@ namespace Scene.MainGrand
             var option = actionOptions[index];
             if (label != null)
             {
-                label.text = option.Label;
+                label.text = option.Label + "\n" + option.Description;
             }
 
             BindActionButton(button, option.ActionId);

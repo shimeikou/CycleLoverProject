@@ -10,7 +10,7 @@ namespace System.GameSession
         
         // ========= 現在のセッション状態 =========
         public static bool IsNewGame = true;
-        public static string CurrentSaveSlot = "1";
+        public static string CurrentSaveSlot = "prototype";
         private static bool IsInitialized = false;
         
         public static readonly GameDate CurrentDay = new ();
@@ -54,7 +54,7 @@ namespace System.GameSession
 
         public static UniTask Save()
         {
-            return UniTask.CompletedTask;
+            return SaveDataService.Save(PlayerData, CurrentSaveSlot);
         }
     }
 }

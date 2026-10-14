@@ -3,6 +3,13 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
+# OS metadata and local IDE state (do not rely on global Git ignores)
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+/.idea/
+
 /[Ll]ibrary/
 /[Tt]emp/
 /tmp/
@@ -44,6 +51,7 @@ ExportedObj/
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.user
@@ -98,3 +106,16 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Local Codex MCP configuration contains machine-specific paths
+/.codex/config.toml
+
+# Local verification captures and save snapshots (results are documented in ProjectDocs)
+/Doc/Verification/
+
+# Local Unity AI Assistant preferences and checkpoint setup
+/ProjectSettings/Packages/com.unity.ai.assistant/Settings.json
+
+# Disposable Unity inspection captures
+/Assets/tmp/
+/Assets/tmp.meta

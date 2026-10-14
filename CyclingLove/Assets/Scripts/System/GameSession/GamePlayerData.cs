@@ -26,6 +26,15 @@ namespace System.GameSession
         public int Empathy = 5;     // 共感力・エンパシー
         public int Appeal = 5;      // 表現力・アピール
 
+        // The three-day prototype stores its exact interaction checkpoint.
+        public int FlowVersion;
+        public System.Flow.GameFlowPhase SavedPhase = System.Flow.GameFlowPhase.Novel;
+        public int NarrativePage;
+        public string SelectedActionId;
+        public int Revision;
+        public int Stamina = 100;
+        public int[] DayStartStats;
+
         // ========= 進行フラグ =========
         public List<string> ClearedEventKeys = new();
         public List<string> ActiveRouteFlags = new();

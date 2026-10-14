@@ -27,6 +27,12 @@
 - [15_シーン遷移前提の進行管理設計.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/15_%E3%82%B7%E3%83%BC%E3%83%B3%E9%81%B7%E7%A7%BB%E5%89%8D%E6%8F%90%E3%81%AE%E9%80%B2%E8%A1%8C%E7%AE%A1%E7%90%86%E8%A8%AD%E8%A8%88.md)
 - [16_MainGameScene_配置メモ.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/16_MainGameScene_%E9%85%8D%E7%BD%AE%E3%83%A1%E3%83%A2.md)
 
+## 進捗管理・検証
+
+- [17_実行用タスク一覧.md](17_実行用タスク一覧.md)：進捗管理の正本。タスクごとの状態と残作業。
+- [18_初回動作確認.md](18_初回動作確認.md)：初回調査と修正の経緯。
+- [19_3日間試作の実装と検証.md](19_3日間試作の実装と検証.md)：現在の試作仕様、操作方法、検証結果。
+
 ## 参照方針
 
 - 内容は PDF の要約ではなく、実装で追いやすい単位に再編集しています

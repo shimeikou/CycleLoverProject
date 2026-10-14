@@ -48,6 +48,9 @@ namespace System.Flow
         public string ScenarioId;
         public string ActionId;
         public string DisplayName;
+        public string BodyText;
+        public string ContinueLabel;
+        public int Revision;
     }
 
     public sealed class GameSceneResult
@@ -55,6 +58,7 @@ namespace System.Flow
         public GameFlowCompletionType CompletionType;
         public string SelectedActionId;
         public int MiniGameScore;
+        public int ExpectedRevision = -1;
         public string Notes;
     }
 

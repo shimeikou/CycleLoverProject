@@ -34,6 +34,17 @@ namespace Scene.Init
         [SerializeField]
         private Volume volume;
 
+        [SerializeField] private TextMeshProUGUI statusText;
+        private bool _loadAvailable;
+        public void SetMessage(string message) { if (statusText != null) statusText.text = message; }
+        public void SetLoadAvailable(bool available) { _loadAvailable = available; loadButton.interactable = available; }
+        public void SetBusy(bool busy)
+        {
+            startButton.interactable = !busy;
+            loadButton.interactable = !busy && _loadAvailable;
+            configButton.interactable = !busy;
+            exitButton.interactable = !busy;
+        }
         private ColorAdjustments _colorAdjustments;
 
         public bool IsInit { get; set; }
@@ -45,11 +56,10 @@ namespace Scene.Init
             UnityAction onClickExit)
         {
             IsInit = false;
-            volume.profile.TryGet(out _colorAdjustments);
-            if (!_colorAdjustments) return;
-            var originalColor = _colorAdjustments.colorFilter.value;
+            if (volume != null && volume.profile != null) volume.profile.TryGet(out _colorAdjustments);
+
             var black = new Color(0, 0, 0, 0);
-            _colorAdjustments.colorFilter.value = black;
+            if (_colorAdjustments != null) _colorAdjustments.colorFilter.value = black;
 
             SetUpButtons(onClickStart, onClickLoad, onClickConfig, onClickExit);
 
@@ -80,7 +90,7 @@ namespace Scene.Init
         {
             if (!_colorAdjustments)
             {
-                volume.profile.TryGet(out _colorAdjustments);
+                if (volume != null && volume.profile != null) volume.profile.TryGet(out _colorAdjustments);
             }
 
             if(!_colorAdjustments) return;
@@ -102,7 +112,7 @@ namespace Scene.Init
             
             if (!_colorAdjustments)
             {
-                volume.profile.TryGet(out _colorAdjustments);
+                if (volume != null && volume.profile != null) volume.profile.TryGet(out _colorAdjustments);
             }
 
             if(!_colorAdjustments) return;

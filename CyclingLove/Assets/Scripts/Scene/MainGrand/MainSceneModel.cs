@@ -38,9 +38,9 @@ namespace Scene.MainGrand
         {
             return new List<MainSceneActionOption>
             {
-                new() { ActionId = "act_training_roadwork_001", Label = "基礎練習", Description = "ロード練習をしてフィジカルを鍛える仮行動。" },
-                new() { ActionId = "act_town_walk_001", Label = "町へ行く", Description = "町を見て回って交流のきっかけを作る仮行動。" },
-                new() { ActionId = "act_rest_home_001", Label = "家で休む", Description = "体力管理のために休息する仮行動。" },
+                new() { ActionId = "act_training_roadwork_001", Label = "基礎練習", Description = "体力 -20　フィジカル +2 / タフネス +1" },
+                new() { ActionId = "act_town_walk_001", Label = "町へ行く", Description = "体力 -10 / 100円　エンパシー +2 / アピール +1" },
+                new() { ActionId = "act_rest_home_001", Label = "家で休む", Description = "体力 +30（上限100）/ タフネス +1" },
             };
         }
 

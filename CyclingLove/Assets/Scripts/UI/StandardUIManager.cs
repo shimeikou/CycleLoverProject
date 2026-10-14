@@ -33,6 +33,11 @@ namespace UI
             loadingIconRoot.SetActive(false);
         }
 
+        public void HideLoading()
+        {
+            if (loadingIconRoot != null) loadingIconRoot.SetActive(false);
+        }
+
         public void ShowLoading()
         {
             loadingIconRoot.SetActive(true);

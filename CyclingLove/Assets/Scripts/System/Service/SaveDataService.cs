@@ -13,16 +13,33 @@ namespace System.Service
         private const string EncryptionKey = "RGame2025_Key";
         private const string EncryptionIv = "RBG_IV_2025_Seed";
 
-        private static string SavePath(string slot) => Application.persistentDataPath + $"/save_{slot}.dat";
+        public static string SavePath(string slot)
+        {
+            if (string.IsNullOrWhiteSpace(slot) || slot.Length > 64 ||
+                !System.Text.RegularExpressions.Regex.IsMatch(slot, @"^[a-zA-Z0-9_-]+$"))
+                throw new ArgumentException("Invalid save slot", nameof(slot));
+            return Path.Combine(Application.persistentDataPath, $"save_{slot}.dat");
+        }
+        public static bool Exists(string slot) => File.Exists(SavePath(slot));
         private static string SystemPath => Application.persistentDataPath + "/system.dat";
 
 
         public static async UniTask Save(GamePlayerData data, string slot = "1")
         {
+            new ThreeDayGameService().Validate(data);
+            // Serialize on the main thread before awaiting, producing a consistent snapshot.
             var json = JsonUtility.ToJson(data, true);
             var encrypted = await Encrypt(json);
-            await File.WriteAllTextAsync(SavePath(slot), encrypted);
-            Debug.Log($"[SaveSystem] Saved (encrypted) to {SavePath(slot)}");
+            var path = SavePath(slot);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            var temporary = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            try
+            {
+                await File.WriteAllTextAsync(temporary, encrypted);
+                if (File.Exists(path)) File.Replace(temporary, path, path + ".bak");
+                else File.Move(temporary, path);
+            }
+            finally { if (File.Exists(temporary)) File.Delete(temporary); }
         }
 
         public static async UniTask SaveSystem(GameSystemConfig data)
@@ -37,13 +54,14 @@ namespace System.Service
             var path = SavePath(slot);
             if (!File.Exists(path))
             {
-                Debug.LogWarning("[SaveSystem] No save file found, creating new data.");
-                return new GamePlayerData();
+                throw new FileNotFoundException("保存データがありません。", path);
             }
 
             var encrypted = await File.ReadAllTextAsync(path);
             var json = await Decrypt(encrypted);
-            return JsonUtility.FromJson<GamePlayerData>(json);
+            var data = JsonUtility.FromJson<GamePlayerData>(json);
+            new ThreeDayGameService().Validate(data);
+            return data;
         }
 
         public static async UniTask<GameSystemConfig> LoadSystem()
@@ -75,7 +93,7 @@ namespace System.Service
                 }
                 
                 return Convert.ToBase64String(ms.ToArray());
-            }, false, CancellationToken.None);
+            }, true, CancellationToken.None);
         }
 
         private static async UniTask<string>  Decrypt(string cipherText)

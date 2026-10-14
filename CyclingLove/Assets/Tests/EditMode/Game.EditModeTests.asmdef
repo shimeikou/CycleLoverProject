@@ -1,7 +1,8 @@
 {
     "name": "Game.EditModeTests",
     "references": [
-        "Game.System"
+        "Game.System",
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor"
