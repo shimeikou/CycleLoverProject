@@ -1,6 +1,14 @@
 # Cycle Lover 企画整理資料
 
-このディレクトリは [Cycle Lover.pdf](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/Cycle%20Lover.pdf) の内容を、実装や仕様確認に使いやすい形へ分解したものです。
+このディレクトリは [Cycle Lover.pdf](../Cycle%20Lover.pdf) の内容を、実装や仕様確認に使いやすい形へ分解したものです。
+
+## 最初に読むもの
+
+作業を再開するときは、次の順に読む。
+
+1. [29_別端末再開メモ.md](29_別端末再開メモ.md)：再開手順、Git管理外のもの、検証済みの状態、次の実装単位。
+2. [17_実行用タスク一覧.md](17_実行用タスク一覧.md)：進捗管理の正本。
+3. [30_実装齟齬一覧.md](30_実装齟齬一覧.md)：資料と実装の食い違い、要判断事項、実装リスク。
 
 ## 目的
 
@@ -8,47 +16,59 @@
 - キャラクター、ゲームシステム、世界設定を分離して参照しやすくする
 - 現在のコード実装と照らしたときの差分や未確定事項を見つけやすくする
 
-## 構成
+## 資料の位置づけ
 
-- [01_ゲーム概要.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/01_%E3%82%B2%E3%83%BC%E3%83%A0%E6%A6%82%E8%A6%81.md)
-- [02_ゲーム進行とコアループ.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/02_%E3%82%B2%E3%83%BC%E3%83%A0%E9%80%B2%E8%A1%8C%E3%81%A8%E3%82%B3%E3%82%A2%E3%83%AB%E3%83%BC%E3%83%97.md)
-- [03_キャラクター_メイン.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/03_%E3%82%AD%E3%83%A3%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%BC_%E3%83%A1%E3%82%A4%E3%83%B3.md)
-- [04_キャラクター_サブ.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/04_%E3%82%AD%E3%83%A3%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%BC_%E3%82%B5%E3%83%96.md)
-- [05_ブランドと機材設定.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/05_%E3%83%96%E3%83%A9%E3%83%B3%E3%83%89%E3%81%A8%E6%A9%9F%E6%9D%90%E8%A8%AD%E5%AE%9A.md)
-- [06_パラメータ設計.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/06_%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E8%A8%AD%E8%A8%88.md)
-- [07_実装向け論点整理.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/07_%E5%AE%9F%E8%A3%85%E5%90%91%E3%81%91%E8%AB%96%E7%82%B9%E6%95%B4%E7%90%86.md)
-- [08_実装タスク分解.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/08_%E5%AE%9F%E8%A3%85%E3%82%BF%E3%82%B9%E3%82%AF%E5%88%86%E8%A7%A3.md)
-- [09_開発の進め方.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/09_%E9%96%8B%E7%99%BA%E3%81%AE%E9%80%B2%E3%82%81%E6%96%B9.md)
-- [10_データ設計.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/10_%E3%83%87%E3%83%BC%E3%82%BF%E8%A8%AD%E8%A8%88.md)
-- [11_用語統一メモ.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/11_%E7%94%A8%E8%AA%9E%E7%B5%B1%E4%B8%80%E3%83%A1%E3%83%A2.md)
-- [12_スケジュールデータ設計.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/12_%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%87%E3%83%BC%E3%82%BF%E8%A8%AD%E8%A8%88.md)
-- [13_初期3日サンプル進行.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/13_%E5%88%9D%E6%9C%9F3%E6%97%A5%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E9%80%B2%E8%A1%8C.md)
-- [14_シーン設計案.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/14_%E3%82%B7%E3%83%BC%E3%83%B3%E8%A8%AD%E8%A8%88%E6%A1%88.md)
-- [15_シーン遷移前提の進行管理設計.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/15_%E3%82%B7%E3%83%BC%E3%83%B3%E9%81%B7%E7%A7%BB%E5%89%8D%E6%8F%90%E3%81%AE%E9%80%B2%E8%A1%8C%E7%AE%A1%E7%90%86%E8%A8%AD%E8%A8%88.md)
-- [16_MainGameScene_配置メモ.md](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Doc/ProjectDocs/16_MainGameScene_%E9%85%8D%E7%BD%AE%E3%83%A1%E3%83%A2.md)
+「現行」は今の実装に合わせて保守している資料。「記録」は作成時点の内容を残している資料で、冒頭に現行との差を注記している。
 
-## 進捗管理・検証
+### 企画の整理（01〜09、11、12）
 
-- [17_実行用タスク一覧.md](17_実行用タスク一覧.md)：進捗管理の正本。タスクごとの状態と残作業。
-- [18_初回動作確認.md](18_初回動作確認.md)：初回調査と修正の経緯。
-- [19_3日間試作の実装と検証.md](19_3日間試作の実装と検証.md)：現在の試作仕様、操作方法、検証結果。
+企画書の内容と、初期の開発方針。11は名称の正本で、実装に合わせて更新している。
 
-- [20_全企画要件を踏まえた構成レビュー.md](20_全企画要件を踏まえた構成レビュー.md)：現物の問題、全要件への対応、構成の移行設計と改修順。
+- [01_ゲーム概要.md](01_%E3%82%B2%E3%83%BC%E3%83%A0%E6%A6%82%E8%A6%81.md)
+- [02_ゲーム進行とコアループ.md](02_%E3%82%B2%E3%83%BC%E3%83%A0%E9%80%B2%E8%A1%8C%E3%81%A8%E3%82%B3%E3%82%A2%E3%83%AB%E3%83%BC%E3%83%97.md)
+- [03_キャラクター_メイン.md](03_%E3%82%AD%E3%83%A3%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%BC_%E3%83%A1%E3%82%A4%E3%83%B3.md)
+- [04_キャラクター_サブ.md](04_%E3%82%AD%E3%83%A3%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%BC_%E3%82%B5%E3%83%96.md)
+- [05_ブランドと機材設定.md](05_%E3%83%96%E3%83%A9%E3%83%B3%E3%83%89%E3%81%A8%E6%A9%9F%E6%9D%90%E8%A8%AD%E5%AE%9A.md)
+- [06_パラメータ設計.md](06_%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E8%A8%AD%E8%A8%88.md)
+- [07_実装向け論点整理.md](07_%E5%AE%9F%E8%A3%85%E5%90%91%E3%81%91%E8%AB%96%E7%82%B9%E6%95%B4%E7%90%86.md)
+- [08_実装タスク分解.md](08_%E5%AE%9F%E8%A3%85%E3%82%BF%E3%82%B9%E3%82%AF%E5%88%86%E8%A7%A3.md)
+- [09_開発の進め方.md](09_%E9%96%8B%E7%99%BA%E3%81%AE%E9%80%B2%E3%82%81%E6%96%B9.md)
+- [11_用語統一メモ.md](11_%E7%94%A8%E8%AA%9E%E7%B5%B1%E4%B8%80%E3%83%A1%E3%83%A2.md)：現行
+- [12_スケジュールデータ設計.md](12_%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%83%87%E3%83%BC%E3%82%BF%E8%A8%AD%E8%A8%88.md)
 
-- [21_拡張基盤の初回整備.md](21_拡張基盤の初回整備.md)：定義データ化・Domain分離の実装、追加方法、検証と残作業。
+### 初期の設計案（記録）
 
-- [22_外部データの編集ガイド.md](22_外部データの編集ガイド.md)：初期値・行動・日程の編集方法、保存互換性、検証結果。
+現在の実行経路とは異なる。冒頭の注記を参照。
 
-## 参照方針
+- [10_データ設計.md](10_%E3%83%87%E3%83%BC%E3%82%BF%E8%A8%AD%E8%A8%88.md)
+- [13_初期3日サンプル進行.md](13_%E5%88%9D%E6%9C%9F3%E6%97%A5%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E9%80%B2%E8%A1%8C.md)
+- [14_シーン設計案.md](14_%E3%82%B7%E3%83%BC%E3%83%B3%E8%A8%AD%E8%A8%88%E6%A1%88.md)
+- [15_シーン遷移前提の進行管理設計.md](15_%E3%82%B7%E3%83%BC%E3%83%B3%E9%81%B7%E7%A7%BB%E5%89%8D%E6%8F%90%E3%81%AE%E9%80%B2%E8%A1%8C%E7%AE%A1%E7%90%86%E8%A8%AD%E8%A8%88.md)
+- [16_MainGameScene_配置メモ.md](16_MainGameScene_%E9%85%8D%E7%BD%AE%E3%83%A1%E3%83%A2.md)
+
+### 進捗管理・検証
+
+- [17_実行用タスク一覧.md](17_実行用タスク一覧.md)：現行。進捗管理の正本。タスクごとの状態と残作業。
+- [18_初回動作確認.md](18_初回動作確認.md)：記録。初回調査と修正の経緯。
+- [19_3日間試作の実装と検証.md](19_3日間試作の実装と検証.md)：記録。3日版の仕様、操作方法、検証結果。実行対象は現在10日版。
+- [20_全企画要件を踏まえた構成レビュー.md](20_全企画要件を踏まえた構成レビュー.md)：記録。構成の問題、全要件への対応、移行設計と改修順。
+- [21_拡張基盤の初回整備.md](21_拡張基盤の初回整備.md)：記録。定義データ化・Domain分離の実装、追加方法、検証と残作業。
+- [22_外部データの編集ガイド.md](22_外部データの編集ガイド.md)：現行。初期値・行動・日程の編集方法、保存互換性、ビルド前検証。
+- [29_別端末再開メモ.md](29_別端末再開メモ.md)：現行。再開手順、Git管理外のもの、検証済みの状態、次の実装単位。
+- [30_実装齟齬一覧.md](30_実装齟齬一覧.md)：現行。資料と実装の食い違い、要判断事項、実装リスク。
+
+### 仕様（現行）
 
 - [23_REDox導入評価.md](23_REDox導入評価.md)：Unityとの互換性、配布基盤との関係、採用判断と再評価条件。
-- [24_自転車屋の娘_短期ルート仕様.md](24_自転車屋の娘_短期ルート仕様.md)：最初の10日ルート、イベント、分岐、結末条件、必要素材。
+- [24_自転車屋の娘_短期ルート仕様.md](24_自転車屋の娘_短期ルート仕様.md)：最初の10日ルート、イベント、分岐、結末条件、必要素材。実装との差は30のB。
 - [25_macOS表示・素材制作仕様.md](25_macOS表示・素材制作仕様.md)：13インチMacBookのフルスクリーンを基準にした表示、素材寸法、セーフエリア、受け入れ条件。
 - [26_短期ルート素材台帳.md](26_短期ルート素材台帳.md)：10日ルートの背景、衣装、表情、ScenarioId／NodeIdと制作状況。
 - [27_レース計算仕様.md](27_レース計算仕様.md)：平坦・登坂の決定論的スコア、係数、目標値、報酬接続の境界。
 - [28_年間進行基盤仕様.md](28_年間進行基盤仕様.md)：1年間・四季・休日・特別枠・季節目標・年末判定の外部データ構造と残作業。
-- [29_別端末再開メモ.md](29_別端末再開メモ.md)：Git上の再開地点、検証済み状態、次の実装単位、別端末での接続手順。
+
+## 書き方の方針
 
 - 内容は PDF の要約ではなく、実装で追いやすい単位に再編集しています
 - 断定しづらい箇所は「未確定」や「要確認」と明記しています
 - ページ番号は PDF 原本の参照用です
+- リンクは相対パスで書く（別端末でも開けるように）

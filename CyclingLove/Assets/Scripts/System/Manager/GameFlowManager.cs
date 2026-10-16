@@ -87,7 +87,10 @@ namespace System.Manager
         public RaceResolution PreviewRace(string raceId) =>
             RacePreview.Evaluate(GameSessionState.PlayerData, raceId);
 
-        public RaceApplicationResult RunRace(string raceId, string attemptId) =>
-            Races.ResolveAndApply(GameSessionState.PlayerData, raceId, attemptId);
+        public RaceApplicationResult RunRace(string raceId) =>
+            Races.ResolveAndApply(GameSessionState.PlayerData, raceId);
+
+        public bool HasAttemptedRaceToday(string raceId) =>
+            RaceProgressService.HasAttemptedToday(GameSessionState.PlayerData, raceId);
     }
 }

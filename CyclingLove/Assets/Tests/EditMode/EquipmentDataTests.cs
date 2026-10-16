@@ -46,4 +46,24 @@ public sealed class EquipmentDataTests
             FramePartId = "wheels_takumi_endurance_01"
         }));
     }
+
+    [Test]
+    public void LegacySaveWithoutBikeGetsStarterLoadoutOnLoad()
+    {
+        var catalog = EquipmentContentLoader.LoadRuntime();
+        var flow = new CampaignGameService(CampaignContentLoader.LoadRuntime(), catalog);
+        var data = flow.NewGame();
+        data.FlowVersion = 2;
+        data.OwnedPartIds = null;
+        data.EquippedBike = null;
+
+        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        flow.Validate(restored);
+
+        Assert.AreEqual(3, restored.OwnedPartIds.Count);
+        Assert.AreEqual("frame_musashi_touring_01", restored.EquippedBike.FramePartId);
+        Assert.AreEqual("components_takumi_reliable_01", restored.EquippedBike.ComponentsPartId);
+        Assert.AreEqual("wheels_takumi_endurance_01", restored.EquippedBike.WheelPartId);
+        Assert.DoesNotThrow(() => new BikePerformanceService(catalog).Calculate(restored));
+    }
 }

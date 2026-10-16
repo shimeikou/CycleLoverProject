@@ -24,7 +24,7 @@ public sealed class EquipmentRaceLoopTests
         Assert.AreEqual(performance.BasePerformance.Comfort + 2, performance.TotalPerformance.Comfort);
         Assert.AreEqual(performance.BasePerformance.Handling + 2, performance.TotalPerformance.Handling);
 
-        var result = race.ResolveAndApply(data, "race_hillclimb_trial", "integration_hill_001");
+        var result = race.ResolveAndApply(data, "race_hillclimb_trial");
         Assert.IsTrue(result.Succeeded);
         Assert.AreEqual(7000, result.RewardMoney);
         Assert.Contains("race_hillclimb_trial_cleared", data.ActiveRouteFlags);

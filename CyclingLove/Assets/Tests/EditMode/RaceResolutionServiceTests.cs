@@ -52,8 +52,8 @@ public sealed class RaceResolutionServiceTests
         data.Toughness = 8;
         var moneyBefore = data.Money;
 
-        var first = service.ResolveAndApply(data, "race_hillclimb_trial", "spring_hill_001");
-        var repeated = service.ResolveAndApply(data, "race_hillclimb_trial", "spring_hill_001");
+        var first = service.ResolveAndApply(data, "race_hillclimb_trial");
+        var repeated = service.ResolveAndApply(data, "race_hillclimb_trial");
 
         Assert.IsTrue(first.Applied);
         Assert.IsTrue(first.Succeeded);
@@ -79,12 +79,35 @@ public sealed class RaceResolutionServiceTests
         var service = new RaceProgressService(RaceContentLoader.LoadRuntime(), equipment);
         var moneyBefore = data.Money;
 
-        var result = service.ResolveAndApply(data, "race_hillclimb_trial", "spring_hill_retry_001");
+        var result = service.ResolveAndApply(data, "race_hillclimb_trial");
 
         Assert.IsFalse(result.Succeeded);
         Assert.AreEqual(0, result.RewardMoney);
         Assert.AreEqual(moneyBefore, data.Money);
         Assert.Contains("race_hillclimb_trial_retry", data.ActiveRouteFlags);
         Assert.IsFalse(new CampaignCondition { Type = "race_succeeded", Id = "race_hillclimb_trial" }.IsMet(data));
+    }
+
+    [Test]
+    public void SameRaceIsAppliedOncePerDayWithoutUiAttemptIds()
+    {
+        var equipment = EquipmentContentLoader.LoadRuntime();
+        var data = new CampaignGameService(CampaignContentLoader.LoadRuntime(), equipment).NewGame();
+        var service = new RaceProgressService(RaceContentLoader.LoadRuntime(), equipment);
+        data.Physical = 8;
+        data.Toughness = 8;
+        var moneyBefore = data.Money;
+
+        Assert.IsTrue(service.ResolveAndApply(data, "race_hillclimb_trial").Applied);
+        Assert.IsFalse(service.ResolveAndApply(data, "race_hillclimb_trial").Applied);
+        Assert.IsTrue(RaceProgressService.HasAttemptedToday(data, "race_hillclimb_trial"));
+        Assert.IsFalse(RaceProgressService.HasAttemptedToday(data, "race_town_flat_trial"));
+        Assert.AreEqual(moneyBefore + 7000, data.Money);
+
+        data.Day++;
+        Assert.IsFalse(RaceProgressService.HasAttemptedToday(data, "race_hillclimb_trial"));
+        Assert.IsTrue(service.ResolveAndApply(data, "race_hillclimb_trial").Applied);
+        Assert.AreEqual(moneyBefore + 14000, data.Money);
+        Assert.AreEqual(2, data.RaceAttempts.Count);
     }
 }

@@ -64,10 +64,23 @@ namespace System.Service
             return data;
         }
 
+        private void FillMissingLoadout(GamePlayerData data)
+        {
+            if (data.EquippedBike.LoadoutId != null) return;
+            var initial = content.Rules.InitialPlayer;
+            foreach (var partId in initial.OwnedPartIds)
+                if (!data.OwnedPartIds.Contains(partId)) data.OwnedPartIds.Add(partId);
+            var bike = data.EquippedBike;
+            if (string.IsNullOrWhiteSpace(bike.FramePartId)) bike.FramePartId = initial.EquippedBike.FramePartId;
+            if (string.IsNullOrWhiteSpace(bike.ComponentsPartId)) bike.ComponentsPartId = initial.EquippedBike.ComponentsPartId;
+            if (string.IsNullOrWhiteSpace(bike.WheelPartId)) bike.WheelPartId = initial.EquippedBike.WheelPartId;
+        }
+
         public void Validate(GamePlayerData data)
         {
             PlayerSaveMigration.UpgradeToCurrent(data);
             PlayerSaveValidator.Validate(data);
+            FillMissingLoadout(data);
             equipment?.ValidateLoadout(data.OwnedPartIds, data.EquippedBike);
             bool legacy = string.IsNullOrEmpty(data.CampaignId) && data.ContentVersion == 0;
             if (legacy ? content.Id != "prototype" || content.Version != 1 : data.CampaignId != content.Id || data.ContentVersion != content.Version)

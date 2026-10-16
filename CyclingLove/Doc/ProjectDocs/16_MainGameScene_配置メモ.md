@@ -1,5 +1,7 @@
 # MainGameScene 配置メモ
 
+> **2026-10-16 注記:** 本書の配置図は初期版。現行のMainGameSceneには背景、保存・タイトル・メッセージ欄、会話選択フェーズがあり、自転車メニューのボタン・ページ送り・立ち絵は実行時に生成する（`MainSceneViewer.cs`）。レースは `MiniGamePanel` ではなく行動パネル側で表示する。
+
 この文書は、`MainGameScene` を仮UIで動かすために、
 Unity エディタ上で何を置いて、何を Inspector で結線するかをまとめたメモです。
 
@@ -14,7 +16,7 @@ Unity エディタ上で何を置いて、何を Inspector で結線するかを
 
 ## 追加したスクリプト
 
-- [MainSceneViewer.cs](/Users/shi_meikou/Documents/CycleLoverProject/CyclingLove/Assets/Scripts/Scene/MainGrand/MainSceneViewer.cs)
+- [MainSceneViewer.cs](../../Assets/Scripts/Scene/MainGrand/MainSceneViewer.cs)
 
 ## シーン上で必要な構成
 

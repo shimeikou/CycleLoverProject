@@ -22,18 +22,23 @@ namespace System.Service
             resolver = new RaceResolutionService(races, equipment);
         }
 
-        public RaceApplicationResult ResolveAndApply(GamePlayerData data, string raceId, string attemptId)
+        // "ui_" prefix matches attempts saved by earlier builds, so they still count for their day.
+        public static string DailyAttemptId(GamePlayerData data, string raceId) =>
+            $"ui_{raceId}_{data.Year:0000}{data.Month:00}{data.Day:00}";
+
+        public static bool HasAttemptedToday(GamePlayerData data, string raceId)
+        {
+            var attemptId = DailyAttemptId(data, raceId);
+            return data.RaceAttempts?.Any(record => record != null && record.AttemptId == attemptId) == true;
+        }
+
+        public RaceApplicationResult ResolveAndApply(GamePlayerData data, string raceId)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            if (string.IsNullOrWhiteSpace(attemptId)) throw new ArgumentException("Race attempt ID is required", nameof(attemptId));
+            var attemptId = DailyAttemptId(data, raceId);
             data.RaceAttempts ??= new System.Collections.Generic.List<RaceAttemptRecord>();
             var existing = data.RaceAttempts.FirstOrDefault(record => record.AttemptId == attemptId);
-            if (existing != null)
-            {
-                if (existing.RaceId != raceId)
-                    throw new InvalidOperationException("Race attempt ID is already used by another race");
-                return FromRecord(existing, false);
-            }
+            if (existing != null) return FromRecord(existing, false);
 
             var resolution = resolver.Evaluate(data, raceId);
             var resultFlag = resolution.Succeeded ? resolution.SuccessRouteFlag : resolution.FailureRouteFlag;

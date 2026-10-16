@@ -150,14 +150,11 @@ namespace Scene.MainGrand
         private void ShowRaces()
         {
             _utilityScreen = UtilityScreen.Races;
-            var data = GameSession.PlayerData;
             var options = new List<GameActionOption>();
             foreach (var race in GameFlowManager.Instance.GetRaces())
             {
                 var preview = GameFlowManager.Instance.PreviewRace(race.Id);
-                var attemptId = RaceAttemptId(data, race.Id);
-                var attemptedToday = data.RaceAttempts?.Exists(record =>
-                    record != null && record.AttemptId == attemptId) == true;
+                var attemptedToday = GameFlowManager.Instance.HasAttemptedRaceToday(race.Id);
                 options.Add(new GameActionOption
                 {
                     ActionId = "race:" + race.Id,
@@ -172,8 +169,7 @@ namespace Scene.MainGrand
 
         private void RunRace(string raceId)
         {
-            var attemptId = RaceAttemptId(GameSession.PlayerData, raceId);
-            var result = GameFlowManager.Instance.RunRace(raceId, attemptId);
+            var result = GameFlowManager.Instance.RunRace(raceId);
             _utilityScreen = UtilityScreen.RaceResult;
             var title = result.Succeeded ? "レース成功" : "レース完走・目標未達";
             var body = $"スコア　{result.Score} / {result.TargetScore}\n" +
@@ -228,8 +224,6 @@ namespace Scene.MainGrand
         };
 
         private static string CourseName(string course) => course == "climb" ? "登坂" : "平坦";
-        private static string RaceAttemptId(GamePlayerData data, string raceId) =>
-            $"ui_{raceId}_{data.Year:0000}{data.Month:00}{data.Day:00}";
         private static string StyleName(RiderStyle style) => style switch
         {
             RiderStyle.Sprinter => "スプリンター",
