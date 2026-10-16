@@ -13,6 +13,7 @@ namespace System.Flow
         DailySummary,
         AdvanceTime,
         Finished,
+        NovelChoice,
     }
 
     public enum GameFlowSceneType
@@ -35,6 +36,7 @@ namespace System.Flow
         MiniGameFinished,
         SummaryClosed,
         ForcedAdvance,
+        NovelChoiceSelected,
     }
 
     public sealed class GameActionOption
@@ -49,10 +51,18 @@ namespace System.Flow
         public GameFlowSceneType SceneType;
         public string UnitySceneName;
         public string CurrentDateText;
-        public int DayNumber, TotalDays;
+        public int DayNumber, TotalDays, MaxStamina;
+        public string SeasonId, SeasonDisplayName;
+        public bool IsHoliday, IsAnnualFinalDay;
+        public string[] SpecialSlotIds;
         public ActionTiming Timing;
         public string EventKey;
         public string ScenarioId;
+        public string NodeId;
+        public string BackgroundId;
+        public string CharacterId;
+        public string OutfitId;
+        public string ExpressionId;
         public string ActionId;
         public string DisplayName;
         public string BodyText;
@@ -64,6 +74,7 @@ namespace System.Flow
     {
         public GameFlowCompletionType CompletionType;
         public string SelectedActionId;
+        public string SelectedChoiceId;
         public int MiniGameScore;
         public int ExpectedRevision = -1;
         public string Notes;

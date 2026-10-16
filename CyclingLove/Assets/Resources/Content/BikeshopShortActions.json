@@ -1,0 +1,160 @@
+{
+  "Actions": [
+    {
+      "Id": "act_training_roadwork_001",
+      "Name": "基礎練習",
+      "NodeId": "action_roadwork", "BackgroundId": "riverside_day",
+      "StaminaCost": 20,
+      "Pages": ["川沿いでペダリングと呼吸を意識して走った。昨日より少しだけ、体をうまく使えた気がする。"],
+      "Effects": { "Physical": 2, "Toughness": 1, "BikeMastery": 2 }
+    },
+    {
+      "Id": "act_town_walk_001",
+      "Name": "町へ行く",
+      "NodeId": "action_town_walk", "BackgroundId": "town_street",
+      "StaminaCost": 10,
+      "MoneyCost": 100,
+      "Pages": ["町を歩き、店先で地元の人と話した。知らなかった道と、新しい顔を覚えた。"],
+      "Effects": { "Empathy": 2, "Appeal": 1 }
+    },
+    {
+      "Id": "act_rest_home_001",
+      "Name": "家で休む",
+      "NodeId": "action_rest_home", "BackgroundId": "grandmother_veranda_day",
+      "Pages": ["縁側でゆっくり体を休めた。焦らず続けることも、走るための準備だ。"],
+      "Effects": { "Toughness": 1, "Stamina": 30 }
+    },
+    {
+      "Id": "act_bikeshop_visit",
+      "Name": "自転車屋へ行く",
+      "NodeId": "action_bikeshop_visit", "BackgroundId": "bikeshop_interior",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "shop", "ExpressionId": "neutral",
+      "StaminaCost": 5,
+      "Pages": ["祖父の自転車を見せると、彼女は傷の一つひとつを確かめた。\n娘「古いけど、丁寧に乗られてた。直せますよ」"],
+      "Effects": { "HeroineId": "hero_bikeshop", "Affection": 1, "RouteStep": 2, "RouteFlag": "route_bikeshop_short" }
+    },
+    {
+      "Id": "evt_bikeshop_first_lesson",
+      "Name": "初めての練習",
+      "NodeId": "event_first_lesson", "BackgroundId": "riverside_day",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "cycling", "ExpressionId": "strict",
+      "ChoicePrompt": "彼女に、どんな走り方を身につけたいか聞かれた。",
+      "Pages": ["休日の河川敷。彼女はヘルメットの位置からブレーキのかけ方まで、順番に教えてくれた。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 2, "BikeMastery": 3 },
+      "Choices": [
+        {
+          "Id": "lesson_speed", "Label": "速くなりたい", "Description": "フィジカルを伸ばす",
+          "NodeId": "event_first_lesson_speed", "ExpressionId": "strict",
+          "Pages": ["娘「じゃあ、まずは正しい姿勢。速さはそのあとです」厳しい言葉の奥に、期待が見えた。"],
+          "Effects": { "Physical": 2 }
+        },
+        {
+          "Id": "lesson_safe", "Label": "安全に長く走りたい", "Description": "タフネスと好感度を伸ばす",
+          "NodeId": "event_first_lesson_safe", "ExpressionId": "smile",
+          "Pages": ["娘「それ、大事です。長く走れたら、見える景色も増えるから」彼女は少し笑った。"],
+          "Effects": { "Toughness": 2, "HeroineId": "hero_bikeshop", "Affection": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_bikeshop_conflict",
+      "Name": "店に残された自転車",
+      "NodeId": "event_bikeshop_conflict", "BackgroundId": "bikeshop_interior",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "shop", "ExpressionId": "troubled",
+      "ChoicePrompt": "父親が作った自転車について、彼女は言葉を止めた。",
+      "Pages": ["店の奥に、売り物ではない一台が置かれていた。彼女はフレームを撫でながら、視線を落とす。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 3 },
+      "Choices": [
+        {
+          "Id": "conflict_ask", "Label": "込められた意味を聞く", "Description": "好感度2以上で選択可能",
+          "NodeId": "event_bikeshop_conflict_ask", "ExpressionId": "neutral",
+          "Pages": ["急かさず待つと、彼女は父との思い出を少しずつ話してくれた。"],
+          "Conditions": [{ "Type": "affection", "Id": "hero_bikeshop", "Value": 2 }],
+          "Effects": { "HeroineId": "hero_bikeshop", "Affection": 1 }
+        },
+        {
+          "Id": "conflict_fallback", "Label": "店の仕事を手伝う", "Description": "いつでも選べる代替イベント",
+          "NodeId": "event_bikeshop_conflict_help", "ExpressionId": "smile",
+          "Pages": ["深くは聞かず、工具を片づけた。言葉は少なくても、一緒にいる時間は穏やかだった。"],
+          "Effects": { "Empathy": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "act_hill_training",
+      "Name": "坂道練習",
+      "NodeId": "action_hill_training", "BackgroundId": "hill_road_day",
+      "StaminaCost": 25,
+      "Pages": ["短い坂を、無理のないペースで何度も上った。脚だけでなく、諦めない呼吸の作り方を覚えた。"],
+      "Effects": { "Physical": 2, "Toughness": 2, "BikeMastery": 4 }
+    },
+    {
+      "Id": "act_maintenance_study",
+      "Name": "整備を学ぶ",
+      "NodeId": "action_maintenance_study", "BackgroundId": "bikeshop_interior",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "shop", "ExpressionId": "neutral",
+      "StaminaCost": 5,
+      "Pages": ["彼女に教わりながら、空気圧と変速を確認した。状態を知れば、走り方も変えられる。"],
+      "Effects": { "Smart": 2, "HeroineId": "hero_bikeshop", "Affection": 1, "BikeMastery": 1 }
+    },
+    {
+      "Id": "evt_bikeshop_eve",
+      "Name": "挑戦の前夜",
+      "NodeId": "event_hillclimb_eve", "BackgroundId": "bikeshop_exterior_evening",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "casual", "ExpressionId": "neutral",
+      "ChoicePrompt": "明日、何のために坂を上るのか。",
+      "Pages": ["店先で、明日のコース図を二人で眺めた。彼女は答えを急かさず、こちらを見ている。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 4 },
+      "Choices": [
+        {
+          "Id": "eve_fun", "Label": "一緒に走る景色を楽しみたい", "Description": "好感度と準備フラグを得る",
+          "NodeId": "event_hillclimb_eve_together", "ExpressionId": "smile",
+          "Pages": ["娘「それなら、明日はきっと大丈夫」彼女の表情から緊張がほどけた。"],
+          "Effects": { "HeroineId": "hero_bikeshop", "Affection": 1, "RouteFlag": "goal_bikeshop_hill_ready" }
+        },
+        {
+          "Id": "eve_win", "Label": "自分の力を試したい", "Description": "アピールを伸ばす",
+          "NodeId": "event_hillclimb_eve_challenge", "ExpressionId": "strict",
+          "Pages": ["娘「うん。でも、無理だけはしないで」真剣な声で念を押された。"],
+          "Effects": { "Appeal": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_bikeshop_hillclimb",
+      "Name": "二人のヒルクライム",
+      "NodeId": "event_hillclimb", "BackgroundId": "mountain_road_day",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "cycling", "ExpressionId": "neutral",
+      "ChoicePrompt": "ここまでの準備を確かめ、走り方を決めよう。",
+      "Pages": ["朝の坂道に、二台の自転車が並ぶ。頂上は遠い。それでも、ここまで積み重ねた日々が背中を押した。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 5, "BikeMastery": 5 },
+      "Choices": [
+        {
+          "Id": "hill_success", "Label": "二人のペースで頂上を目指す", "Description": "好感度3・フィジカル7・タフネス7・必須イベント完了",
+          "NodeId": "event_hillclimb_success", "BackgroundId": "mountain_summit_day", "ExpressionId": "smile",
+          "Pages": ["苦しい区間を越え、最後までペダルを回した。頂上で息を整えると、彼女が笑う。\n娘「次も、一緒に走りたいです」"],
+          "Conditions": [
+            { "Type": "affection", "Id": "hero_bikeshop", "Value": 3 },
+            { "Type": "physical", "Value": 7 },
+            { "Type": "toughness", "Value": 7 },
+            { "Type": "event_cleared", "Id": "short_day5_Afternoon" },
+            { "Type": "event_cleared", "Id": "short_day9_Afternoon" }
+          ],
+          "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 5, "RouteFlag": "result_bikeshop_short_success" }
+        },
+        {
+          "Id": "hill_retry", "Label": "ペースを落として完走する", "Description": "条件未達でも進行できる",
+          "NodeId": "event_hillclimb_retry", "BackgroundId": "mountain_summit_day", "ExpressionId": "smile",
+          "Pages": ["途中で速度を落としたが、自分の脚で最後まで走り切った。\n娘「次はもっと先へ行けます。だから、また走りましょう」"],
+          "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 5, "RouteFlag": "result_bikeshop_short_retry" }
+        }
+      ]
+    }
+  ]
+}

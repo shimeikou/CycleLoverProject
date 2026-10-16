@@ -9,7 +9,7 @@ namespace System.GameSession
     {
         
         // ========= 現在のセッション状態 =========
-        public static string CurrentSaveSlot = "prototype";
+        public static string CurrentSaveSlot = "bikeshop_short";
         private static bool IsInitialized = false;
         
 

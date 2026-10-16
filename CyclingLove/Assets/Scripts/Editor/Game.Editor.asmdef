@@ -1,0 +1,5 @@
+{
+    "name": "Game.Editor",
+    "references": ["Game.System", "Game.Domain"],
+    "includePlatforms": ["Editor"]
+}

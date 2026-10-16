@@ -207,7 +207,15 @@ namespace System.Event
                     AddUnique(playerData.ActiveRouteFlags, StringValue);
                     break;
                 case RewardType.MarkHeroineMet:
-                    AddUnique(playerData.MetHeroineIds, string.IsNullOrWhiteSpace(StringValue) ? heroineId : StringValue);
+                    var metId = string.IsNullOrWhiteSpace(StringValue) ? heroineId : StringValue;
+                    AddUnique(playerData.MetHeroineIds, metId);
+                    if (!string.IsNullOrWhiteSpace(metId))
+                    {
+                        var progress = playerData.EnsureHeroineProgress(metId);
+                        progress.IsMet = true;
+                        progress.IsUnlocked = true;
+                        if (progress.RouteStep == 0) progress.RouteStep = 1;
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

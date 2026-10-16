@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Flow;
 using System.GameSession;
 using TMPro;
@@ -15,22 +16,43 @@ namespace Scene.MainGrand
         private int _actionPage;
         private Button _previousActions, _nextActions;
         private IReadOnlyList<GameActionOption> _actionOptions;
+        private UnityEngine.UI.Image _backgroundImage;
+        private Sprite _defaultBackgroundSprite;
+        private Color _defaultBackgroundColor;
+        private UnityEngine.UI.Image _characterImage;
+        private Vector2 _novelBodyOriginalSize;
+        private Button _bikeMenuButton;
         [SerializeField] private Button saveButton;
         [SerializeField] private Button titleButton;
         [SerializeField] private TextMeshProUGUI messageText;
 
-        public void BindSessionControls(UnityAction save, UnityAction title)
+        public void BindSessionControls(UnityAction save, UnityAction title, UnityAction bikeMenu)
         {
             RebindButton(saveButton, save);
             RebindButton(titleButton, title);
+            EnsureBikeMenuButton(bikeMenu);
             SetMessage("タイトルに戻る前に、保存してください。");
+        }
+
+        private void EnsureBikeMenuButton(UnityAction callback)
+        {
+            if (_bikeMenuButton == null && saveButton != null)
+            {
+                _bikeMenuButton = Instantiate(saveButton, saveButton.transform.parent);
+                _bikeMenuButton.name = "BikeMenuButton";
+                var rect = (RectTransform)_bikeMenuButton.transform;
+                rect.anchoredPosition = ((RectTransform)saveButton.transform).anchoredPosition + new Vector2(-144, 0);
+                var label = _bikeMenuButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (label != null) label.text = "自転車";
+            }
+            RebindButton(_bikeMenuButton, callback);
         }
 
         public void SetMessage(string message) { if (messageText != null) messageText.text = message; }
         public void SetBusy(bool busy)
         {
             _busy = busy;
-            foreach (var b in new[] { saveButton, titleButton, novelContinueButton, miniGameContinueButton, summaryContinueButton })
+            foreach (var b in new[] { saveButton, titleButton, _bikeMenuButton, novelContinueButton, miniGameContinueButton, summaryContinueButton })
                 if (b != null) b.interactable = !busy;
             UpdateActionAvailability();
         }
@@ -128,6 +150,8 @@ namespace Scene.MainGrand
             RebindButton(miniGameContinueButton, onMiniGameContinue);
             RebindButton(summaryContinueButton, onSummaryContinue);
 
+            EnsureVisualLayers();
+
             HideAllPanels();
         }
 
@@ -135,6 +159,7 @@ namespace Scene.MainGrand
         {
             _actionOptions = actionOptions;
             UpdateHud(request, playerData, progressState);
+            RenderVisuals(request);
             HideAllPanels();
 
             if (request == null)
@@ -145,6 +170,7 @@ namespace Scene.MainGrand
             switch (request.Phase)
             {
                 case GameFlowPhase.ActionSelection:
+                case GameFlowPhase.NovelChoice:
                     ShowActionSelection(request, actionOptions);
                     break;
                 case GameFlowPhase.Novel:
@@ -158,6 +184,64 @@ namespace Scene.MainGrand
                     ShowSummary(request);
                     break;
             }
+        }
+
+        public void ShowOptionPanel(string title, string description, IReadOnlyList<GameActionOption> options)
+        {
+            _actionOptions = options;
+            HideAllPanels();
+            if (actionSelectionPanel != null) actionSelectionPanel.SetActive(true);
+            if (actionTitleText != null) actionTitleText.text = title;
+            if (actionDescriptionText != null) actionDescriptionText.text = description;
+            _actionPage = 0;
+            RenderActionPage();
+        }
+
+        private void EnsureVisualLayers()
+        {
+            if (_characterImage != null || novelPanel == null) return;
+            var canvas = GetComponentInParent<Canvas>();
+            _backgroundImage = canvas == null ? null : canvas.GetComponentsInChildren<UnityEngine.UI.Image>(true)
+                .FirstOrDefault(image => image.name == "PrototypeBackground");
+            if (_backgroundImage != null)
+            {
+                _defaultBackgroundSprite = _backgroundImage.sprite;
+                _defaultBackgroundColor = _backgroundImage.color;
+            }
+            var go = new GameObject("CharacterPortrait", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Image));
+            go.transform.SetParent(novelPanel.transform, false);
+            var rect = (RectTransform)go.transform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0, 1);
+            rect.pivot = new Vector2(0, 1);
+            rect.anchoredPosition = new Vector2(560, -70);
+            rect.sizeDelta = new Vector2(310, 440);
+            _characterImage = go.GetComponent<UnityEngine.UI.Image>();
+            _characterImage.preserveAspect = true;
+            _characterImage.raycastTarget = false;
+            rect.SetSiblingIndex(1);
+            if (novelBodyText != null) _novelBodyOriginalSize = novelBodyText.rectTransform.sizeDelta;
+            go.SetActive(false);
+        }
+
+        private void RenderVisuals(GameSceneRequest request)
+        {
+            EnsureVisualLayers();
+            if (_backgroundImage != null)
+            {
+                var background = VisualResourceResolver.LoadBackground(request?.BackgroundId);
+                _backgroundImage.sprite = background != null ? background : _defaultBackgroundSprite;
+                _backgroundImage.color = background != null ? Color.white : _defaultBackgroundColor;
+                _backgroundImage.preserveAspect = background != null;
+            }
+            if (_characterImage == null) return;
+            var show = request?.Phase == GameFlowPhase.Novel && !string.IsNullOrWhiteSpace(request.CharacterId);
+            _characterImage.sprite = show
+                ? VisualResourceResolver.LoadCharacter(request.CharacterId, request.OutfitId, request.ExpressionId)
+                : null;
+            show &= _characterImage.sprite != null;
+            _characterImage.gameObject.SetActive(show);
+            if (novelBodyText != null)
+                novelBodyText.rectTransform.sizeDelta = show ? new Vector2(500, _novelBodyOriginalSize.y) : _novelBodyOriginalSize;
         }
 
         public void UpdateDebug(string debugMessage)
@@ -187,9 +271,11 @@ namespace Scene.MainGrand
 
             if (playerStatusText != null && playerData != null)
             {
+                var heroine = playerData.HeroineProgresses?.FirstOrDefault(x => x != null && x.IsUnlocked);
+                var relationship = heroine == null ? "" : $"\n\n好感度　{heroine.Affection} / 100\nルート段階　{heroine.RouteStep}";
                 playerStatusText.text =
-                    $"資金　{playerData.Money} 円\n体力　{playerData.Stamina} / 100\n\n" +
-                    $"フィジカル　{playerData.Physical}\nタフネス　{playerData.Toughness}\nスマート　{playerData.Smart}\nエンパシー　{playerData.Empathy}\nアピール　{playerData.Appeal}";
+                    $"資金　{playerData.Money} 円\n体力　{playerData.Stamina} / {request?.MaxStamina}\n\n" +
+                    $"フィジカル　{playerData.Physical}\nタフネス　{playerData.Toughness}\nスマート　{playerData.Smart}\nエンパシー　{playerData.Empathy}\nアピール　{playerData.Appeal}" + relationship;
             }
 
             if (debugText != null)

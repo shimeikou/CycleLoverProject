@@ -3,7 +3,8 @@
     "references": [
         "Game.System",
         "UniTask",
-        "Game.Domain"
+        "Game.Domain",
+        "Game.Editor"
     ],
     "includePlatforms": [
         "Editor"

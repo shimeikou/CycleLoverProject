@@ -1,0 +1,26 @@
+{
+  "MaxStamina": 100,
+  "OvernightRecovery": 20,
+  "InitialPlayer": {
+    "PlayerName": "主人公",
+    "Age": 28,
+    "Money": 1000,
+    "Stamina": 100,
+    "Physical": 5,
+    "Toughness": 5,
+    "Smart": 5,
+    "Empathy": 5,
+    "Appeal": 5,
+    "LastVisitedPlace": "Home",
+    "OwnedPartIds": [
+      "frame_musashi_touring_01",
+      "components_takumi_reliable_01",
+      "wheels_takumi_endurance_01"
+    ],
+    "EquippedBike": {
+      "FramePartId": "frame_musashi_touring_01",
+      "ComponentsPartId": "components_takumi_reliable_01",
+      "WheelPartId": "wheels_takumi_endurance_01"
+    }
+  }
+}

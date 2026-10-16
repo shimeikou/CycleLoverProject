@@ -1,6 +1,8 @@
 using System.Flow;
 using System.GameSession;
 using System.Service;
+using CyclingLove.Equipment;
+using CyclingLove.Racing;
 using Cysharp.Threading.Tasks;
 using GameSessionState = global::System.GameSession.GameSession;
 
@@ -9,7 +11,21 @@ namespace System.Manager
     public sealed class GameFlowManager : MonoSingleton<GameFlowManager>
     {
         private CampaignGameService _flow;
-        private CampaignGameService Flow => _flow ??= new CampaignGameService(CampaignContentLoader.LoadPrototype());
+        private BikeEquipmentService _equipment;
+        private BikePerformanceService _performance;
+        private RaceResolutionService _racePreview;
+        private RaceProgressService _races;
+        private BikeEquipmentCatalog _equipmentCatalog;
+        private RaceCatalog _raceCatalog;
+        private BikeEquipmentCatalog EquipmentCatalog => _equipmentCatalog ??= EquipmentContentLoader.LoadRuntime();
+        private RaceCatalog RaceCatalog => _raceCatalog ??= RaceContentLoader.LoadRuntime();
+        private CampaignGameService Flow => _flow ??= new CampaignGameService(
+            CampaignContentLoader.LoadRuntime(), EquipmentCatalog, AnnualCalendarContentLoader.LoadRuntime());
+        private BikeEquipmentService Equipment => _equipment ??= new BikeEquipmentService(EquipmentCatalog);
+        private BikePerformanceService Performance => _performance ??= new BikePerformanceService(EquipmentCatalog);
+        private RaceResolutionService RacePreview => _racePreview ??= new RaceResolutionService(RaceCatalog, EquipmentCatalog);
+        private RaceProgressService Races => _races ??= new RaceProgressService(
+            RaceCatalog, EquipmentCatalog);
         public System.Collections.Generic.IReadOnlyList<GameActionOption> GetActionOptions() => Flow.GetActionOptions(GameSessionState.PlayerData);
         public GameFlowPhase CurrentPhase => GameSessionState.PlayerData?.SavedPhase ?? GameFlowPhase.None;
         public GameSceneRequest CurrentRequest { get; private set; }
@@ -49,5 +65,29 @@ namespace System.Manager
             Flow.Submit(GameSessionState.PlayerData, result);
             return BuildNextRequest();
         }
+
+        public EquipmentOperationResult PurchasePart(string partId) =>
+            Equipment.Purchase(GameSessionState.PlayerData, partId);
+
+        public EquipmentOperationResult EquipPart(string partId) =>
+            Equipment.Equip(GameSessionState.PlayerData, partId);
+
+        public System.Collections.Generic.IReadOnlyList<BikePartDefinition> GetBikeParts() =>
+            Array.ConvertAll(EquipmentCatalog.Parts, part => part.Snapshot());
+
+        public BikePerformanceResult GetBikePerformance() =>
+            Performance.Calculate(GameSessionState.PlayerData);
+
+        public BikePerformanceComparison CompareBikePart(string partId) =>
+            Performance.Compare(GameSessionState.PlayerData, partId);
+
+        public System.Collections.Generic.IReadOnlyList<RaceDefinition> GetRaces() =>
+            Array.ConvertAll(RaceCatalog.Races, race => race.Snapshot());
+
+        public RaceResolution PreviewRace(string raceId) =>
+            RacePreview.Evaluate(GameSessionState.PlayerData, raceId);
+
+        public RaceApplicationResult RunRace(string raceId, string attemptId) =>
+            Races.ResolveAndApply(GameSessionState.PlayerData, raceId, attemptId);
     }
 }

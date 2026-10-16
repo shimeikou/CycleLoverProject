@@ -60,6 +60,7 @@ namespace System.Service
             var encrypted = await File.ReadAllTextAsync(path);
             var json = await Decrypt(encrypted);
             var data = JsonUtility.FromJson<GamePlayerData>(json);
+            PlayerSaveMigration.UpgradeToCurrent(data);
             PlayerSaveValidator.Validate(data);
             return data;
         }

@@ -1,0 +1,33 @@
+{
+  "Id": "annual_2026_2027",
+  "Version": 1,
+  "StartYear": 2026,
+  "StartMonth": 4,
+  "StartDay": 1,
+  "EndYear": 2027,
+  "EndMonth": 3,
+  "EndDay": 31,
+  "WeekendsAreHolidays": true,
+  "Seasons": [
+    { "Id": "spring", "DisplayName": "春", "StartYear": 2026, "StartMonth": 4, "StartDay": 1, "EndYear": 2026, "EndMonth": 6, "EndDay": 30 },
+    { "Id": "summer", "DisplayName": "夏", "StartYear": 2026, "StartMonth": 7, "StartDay": 1, "EndYear": 2026, "EndMonth": 9, "EndDay": 30 },
+    { "Id": "autumn", "DisplayName": "秋", "StartYear": 2026, "StartMonth": 10, "StartDay": 1, "EndYear": 2026, "EndMonth": 12, "EndDay": 31 },
+    { "Id": "winter", "DisplayName": "冬", "StartYear": 2027, "StartMonth": 1, "StartDay": 1, "EndYear": 2027, "EndMonth": 3, "EndDay": 31 }
+  ],
+  "DateOverrides": [
+    { "Year": 2026, "Month": 6, "Day": 30, "HolidayMode": "inherit", "SpecialSlotIds": ["season_spring_review"] },
+    { "Year": 2026, "Month": 9, "Day": 30, "HolidayMode": "inherit", "SpecialSlotIds": ["season_summer_review"] },
+    { "Year": 2026, "Month": 12, "Day": 31, "HolidayMode": "holiday", "SpecialSlotIds": ["season_autumn_review"] },
+    { "Year": 2027, "Month": 3, "Day": 31, "HolidayMode": "holiday", "SpecialSlotIds": ["season_winter_review", "annual_ending"] }
+  ],
+  "SeasonGoals": [
+    { "Id": "goal_spring", "SeasonId": "spring", "DeadlineYear": 2026, "DeadlineMonth": 6, "DeadlineDay": 30, "SuccessFlag": "goal_spring_succeeded", "FailureFlag": "goal_spring_incomplete", "Conditions": [{ "Type": "route_flag", "Id": "goal_spring_ready" }] },
+    { "Id": "goal_summer", "SeasonId": "summer", "DeadlineYear": 2026, "DeadlineMonth": 9, "DeadlineDay": 30, "SuccessFlag": "goal_summer_succeeded", "FailureFlag": "goal_summer_incomplete", "Conditions": [{ "Type": "route_flag", "Id": "goal_summer_ready" }] },
+    { "Id": "goal_autumn", "SeasonId": "autumn", "DeadlineYear": 2026, "DeadlineMonth": 12, "DeadlineDay": 31, "SuccessFlag": "goal_autumn_succeeded", "FailureFlag": "goal_autumn_incomplete", "Conditions": [{ "Type": "route_flag", "Id": "goal_autumn_ready" }] },
+    { "Id": "goal_winter", "SeasonId": "winter", "DeadlineYear": 2027, "DeadlineMonth": 3, "DeadlineDay": 31, "SuccessFlag": "goal_winter_succeeded", "FailureFlag": "goal_winter_incomplete", "Conditions": [{ "Type": "route_flag", "Id": "goal_winter_ready" }] }
+  ],
+  "Endings": [
+    { "Id": "annual_confession", "HeroineId": "", "ResultFlag": "result_annual_confession", "Priority": 100, "IsSuccess": true, "Conditions": [{ "Type": "route_flag", "Id": "annual_confession_ready" }] },
+    { "Id": "annual_incomplete", "HeroineId": "", "ResultFlag": "result_annual_incomplete", "Priority": 0, "IsSuccess": false, "Conditions": [] }
+  ]
+}

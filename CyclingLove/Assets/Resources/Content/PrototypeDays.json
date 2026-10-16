@@ -1,0 +1,73 @@
+{
+  "Days": [
+    {
+      "Id": "trial_day1",
+      "Title": "祖母の家で迎える朝",
+      "MorningPages": [
+        "窓の向こうから、鳥の声が聞こえる。\n祖母の家で迎えた朝は、都会で過ごした日々よりも静かだった。\n\n祖母「急がなくていいよ。まずは朝ごはんにしようか」",
+        "食事を終え、持ってきたパソコンを開く。\n顔なじみの取引先から届いた依頼を、一つずつ片づけていく。\n\n今日の仕事を終えた。午後は、自分のために使おう。"
+      ],
+      "MorningEffects": {
+        "Money": 500,
+        "Smart": 1
+      },
+      "AfternoonPages": [
+        "物置の奥で、ほこりをかぶったロードバイクを見つけた。\n祖母「おじいちゃんが、大切にしていた自転車だよ」\n\nすぐには乗れそうにない。まずは、自分にできることから始めよう。"
+      ],
+      "ActionIds": [
+        "act_training_roadwork_001",
+        "act_town_walk_001",
+        "act_rest_home_001"
+      ],
+      "AfternoonEffects": {},
+      "SummaryNote": ""
+    },
+    {
+      "Id": "trial_day2",
+      "Title": "暮らしのリズム",
+      "MorningPages": [
+        "朝の光が、机の上を照らしている。\n昨日見つけた祖父のロードバイクが、少し気になった。\n\nまずは仕事。午後にまた、あの自転車を見てみよう。",
+        "予定していた修正を終え、取引先に成果を送った。\n祖母が置いてくれたお茶は、まだ温かい。\n\nこういう暮らしも、悪くない。"
+      ],
+      "MorningEffects": {
+        "Money": 500,
+        "Smart": 1
+      },
+      "AfternoonPages": [
+        "祖父の自転車を拭いていると、細かな傷に気づいた。\nどんな景色を、一緒に見てきたのだろう。\n\n修理のことは専門の人に聞くとして、今日の午後を過ごそう。"
+      ],
+      "ActionIds": [
+        "act_training_roadwork_001",
+        "act_town_walk_001",
+        "act_rest_home_001"
+      ],
+      "AfternoonEffects": {},
+      "SummaryNote": ""
+    },
+    {
+      "Id": "trial_day3",
+      "Title": "少しずつ、この町へ",
+      "MorningPages": [
+        "この家の朝にも、少し慣れてきた。\n窓を開けると、遠くに山の景色が見える。\n\nいつか、あの向こうまで走れるだろうか。",
+        "午前の依頼を仕上げて、パソコンを閉じる。\n祖母から、自転車屋へ寄ってみるよう勧められた。\n\n今日は、町に新しい知り合いができるかもしれない。"
+      ],
+      "MorningEffects": {
+        "Money": 500,
+        "Smart": 1
+      },
+      "AfternoonPages": [
+        "祖母に教わった自転車屋に寄ると、娘さんが顔を上げた。\n\n娘「古い自転車？ まずは状態を見せてください。乗る前に点検です」\n\n真剣な声にうなずく。新しい一歩を踏み出せた気がした。"
+      ],
+      "ActionIds": [
+        "act_training_roadwork_001",
+        "act_town_walk_001",
+        "act_rest_home_001"
+      ],
+      "AfternoonEffects": {
+        "HeroineId": "hero_bikeshop",
+        "RouteFlag": "route_bikeshop_intro_started"
+      },
+      "SummaryNote": "自転車屋の娘と知り合った。"
+    }
+  ]
+}

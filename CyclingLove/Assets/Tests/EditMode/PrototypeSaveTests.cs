@@ -30,10 +30,17 @@ public sealed class PrototypeSaveTests
         int thread = Thread.CurrentThread.ManagedThreadId;
         var d = new ThreeDayGameService().NewGame();
         d.NarrativePage = 1;
+        var heroine = d.EnsureHeroineProgress("hero_bikeshop");
+        heroine.Affection = 12;
+        heroine.RouteStep = 3;
+        heroine.IsMet = true;
+        heroine.IsUnlocked = true;
+        d.MetHeroineIds.Add("hero_bikeshop");
         await SaveDataService.Save(d, slot);
         Assert.AreEqual(thread, Thread.CurrentThread.ManagedThreadId, "Save must return to Unity's thread");
         var loaded = await SaveDataService.Load(slot);
         Assert.AreEqual(JsonUtility.ToJson(d), JsonUtility.ToJson(loaded));
+        Assert.AreEqual(12, loaded.FindHeroineProgress("hero_bikeshop").Affection);
         d.Money = 1750;
         await SaveDataService.Save(d, slot);
         loaded = await SaveDataService.Load(slot);

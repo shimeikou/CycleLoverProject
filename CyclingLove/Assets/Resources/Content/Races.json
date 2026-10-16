@@ -1,0 +1,33 @@
+{
+  "Version": 1,
+  "Races": [
+    {
+      "Id": "race_town_flat_trial",
+      "Name": "町おこし平坦タイムトライアル",
+      "CourseType": "flat",
+      "DistanceKm": 20,
+      "TargetScore": 68,
+      "SuccessMoney": 5000,
+      "SuccessRouteFlag": "race_flat_trial_cleared",
+      "FailureRouteFlag": "race_flat_trial_retry",
+      "Weights": {
+        "Physical": 4, "Toughness": 1, "Smart": 1, "Empathy": 0, "Appeal": 0,
+        "Stiffness": 2, "Lightness": 1, "Comfort": 0, "Handling": 1, "Aerodynamics": 3, "Mastery": 1
+      }
+    },
+    {
+      "Id": "race_hillclimb_trial",
+      "Name": "山岳ヒルクライム",
+      "CourseType": "climb",
+      "DistanceKm": 12,
+      "TargetScore": 84,
+      "SuccessMoney": 7000,
+      "SuccessRouteFlag": "race_hillclimb_trial_cleared",
+      "FailureRouteFlag": "race_hillclimb_trial_retry",
+      "Weights": {
+        "Physical": 3, "Toughness": 3, "Smart": 1, "Empathy": 0, "Appeal": 0,
+        "Stiffness": 1, "Lightness": 3, "Comfort": 1, "Handling": 2, "Aerodynamics": 0, "Mastery": 2
+      }
+    }
+  ]
+}

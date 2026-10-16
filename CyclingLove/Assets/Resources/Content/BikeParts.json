@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "Parts": [
+    {
+      "Id": "frame_musashi_touring_01",
+      "Name": "武蔵 ツーリング",
+      "BrandId": "musashi_industries",
+      "Slot": "frame",
+      "Price": 0,
+      "Performance": { "Stiffness": 2, "Lightness": 1, "Comfort": 3, "Handling": 2, "Aerodynamics": 1 },
+      "Tags": ["starter", "reliable"]
+    },
+    {
+      "Id": "frame_zenith_climber_01",
+      "Name": "Zenith Climber",
+      "BrandId": "zenith_cycles",
+      "Slot": "frame",
+      "Price": 180000,
+      "Performance": { "Stiffness": 4, "Lightness": 5, "Comfort": 1, "Handling": 3, "Aerodynamics": 2 },
+      "Tags": ["climbing", "race"]
+    },
+    {
+      "Id": "frame_stag_classic_01",
+      "Name": "Stag Classic",
+      "BrandId": "stag_iron_works",
+      "Slot": "frame",
+      "Price": 145000,
+      "Performance": { "Stiffness": 2, "Lightness": 1, "Comfort": 5, "Handling": 3, "Aerodynamics": 1 },
+      "Tags": ["classic", "endurance"]
+    },
+    {
+      "Id": "components_takumi_reliable_01",
+      "Name": "匠工房 Standard",
+      "BrandId": "takumi_workshop",
+      "Slot": "components",
+      "Price": 0,
+      "Performance": { "Stiffness": 1, "Lightness": 1, "Comfort": 2, "Handling": 3, "Aerodynamics": 0 },
+      "Tags": ["starter", "reliable"]
+    },
+    {
+      "Id": "components_quantum_electronic_01",
+      "Name": "Quantum Electronic",
+      "BrandId": "quantum_performance",
+      "Slot": "components",
+      "Price": 120000,
+      "Performance": { "Stiffness": 3, "Lightness": 3, "Comfort": 1, "Handling": 5, "Aerodynamics": 2 },
+      "Tags": ["electronic", "race"]
+    },
+    {
+      "Id": "wheels_takumi_endurance_01",
+      "Name": "匠工房 Endurance",
+      "BrandId": "takumi_workshop",
+      "Slot": "wheels",
+      "Price": 0,
+      "Performance": { "Stiffness": 2, "Lightness": 1, "Comfort": 3, "Handling": 2, "Aerodynamics": 1 },
+      "Tags": ["starter", "reliable"]
+    },
+    {
+      "Id": "wheels_heliocentric_aero_01",
+      "Name": "Heliocentric Aero",
+      "BrandId": "heliocentric_rims",
+      "Slot": "wheels",
+      "Price": 110000,
+      "Performance": { "Stiffness": 3, "Lightness": 2, "Comfort": 1, "Handling": 2, "Aerodynamics": 5 },
+      "Tags": ["aero", "flat"]
+    },
+    {
+      "Id": "wheels_ryusho_value_01",
+      "Name": "龍翔 Value Carbon",
+      "BrandId": "ryusho",
+      "Slot": "wheels",
+      "Price": 65000,
+      "Performance": { "Stiffness": 3, "Lightness": 3, "Comfort": 2, "Handling": 2, "Aerodynamics": 3 },
+      "Tags": ["value", "carbon"]
+    }
+  ]
+}

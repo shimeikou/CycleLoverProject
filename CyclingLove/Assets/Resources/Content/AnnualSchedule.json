@@ -1,0 +1,65 @@
+{
+  "DefaultWorkdayTemplateId": "workday",
+  "DefaultHolidayTemplateId": "holiday",
+  "Templates": [
+    {
+      "Id": "workday",
+      "Day": {
+        "Id": "template_workday", "Title": "仕事と自由行動",
+        "MorningNodeId": "annual_workday_morning", "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": ["朝の仕事に取りかかった。日々の積み重ねが、暮らしと自転車を支えていく。", "仕事を終えた。午後は自分の目標に合わせて過ごそう。"],
+        "MorningEffects": { "Money": 500, "Smart": 1 },
+        "AfternoonNodeId": "annual_workday_afternoon", "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": ["午後の予定を決めよう。"],
+        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
+        "AfternoonEffects": {}, "SummaryNote": "今日の行動を次の目標へつなげた。"
+      }
+    },
+    {
+      "Id": "holiday",
+      "Day": {
+        "Id": "template_holiday", "Title": "休日の過ごし方",
+        "MorningNodeId": "annual_holiday_morning", "MorningBackgroundId": "grandmother_veranda_day",
+        "MorningPages": ["今日は休日だ。まとまった時間を、練習や町での交流に使える。"],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_holiday_afternoon", "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": ["一日の予定を決めよう。"],
+        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
+        "AfternoonEffects": {}, "SummaryNote": "休日を自分のために使った。"
+      }
+    },
+    {
+      "Id": "season_review",
+      "Day": {
+        "Id": "template_season_review", "Title": "季節の振り返り",
+        "MorningNodeId": "annual_season_review_morning", "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": ["季節の区切りを迎えた。ここまでの成長と、人との関わりを振り返る日だ。"],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_season_review_afternoon", "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": ["次の季節へ向けて、最後の一日をどう過ごすか決めよう。"],
+        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
+        "AfternoonEffects": {}, "SummaryNote": "季節目標の結果が確定する。"
+      }
+    },
+    {
+      "Id": "annual_ending",
+      "Day": {
+        "Id": "template_annual_ending", "Title": "一年の最終日",
+        "MorningNodeId": "annual_ending_morning", "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": ["この町で過ごす一年の最終日を迎えた。積み重ねた選択が、今日の結末につながる。"],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_ending_afternoon", "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": ["最後の時間をどう過ごすか決めよう。"],
+        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
+        "AfternoonEffects": {}, "SummaryNote": "季節目標と一年の結末が確定する。"
+      }
+    }
+  ],
+  "Rules": [
+    { "Id": "spring_review", "TemplateId": "season_review", "SpecialSlotId": "season_spring_review", "HolidayMode": "any", "Priority": 100 },
+    { "Id": "summer_review", "TemplateId": "season_review", "SpecialSlotId": "season_summer_review", "HolidayMode": "any", "Priority": 110 },
+    { "Id": "autumn_review", "TemplateId": "season_review", "SpecialSlotId": "season_autumn_review", "HolidayMode": "any", "Priority": 120 },
+    { "Id": "winter_review", "TemplateId": "season_review", "SpecialSlotId": "season_winter_review", "HolidayMode": "any", "Priority": 130 },
+    { "Id": "annual_ending", "TemplateId": "annual_ending", "SpecialSlotId": "annual_ending", "HolidayMode": "any", "Priority": 1000 }
+  ]
+}

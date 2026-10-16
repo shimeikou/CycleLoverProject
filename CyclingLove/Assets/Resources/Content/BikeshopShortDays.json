@@ -1,0 +1,94 @@
+{
+  "Days": [
+    {
+      "Id": "short_day1", "Title": "祖母の家で迎える朝",
+      "MorningNodeId": "day01_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "MorningPages": ["祖母の家で迎えた朝は、都会より静かだった。まずは机に向かい、仕事を始めよう。", "依頼を終えてパソコンを閉じた。午後は自分のために使える。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonNodeId": "day01_afternoon", "AfternoonBackgroundId": "grandmother_storage",
+      "AfternoonPages": ["物置の奥で、ほこりをかぶった祖父のロードバイクを見つけた。"],
+      "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"], "AfternoonEffects": {}, "SummaryNote": "祖父のロードバイクを見つけた。"
+    },
+    {
+      "Id": "short_day2", "Title": "暮らしのリズム",
+      "MorningNodeId": "day02_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "MorningPages": ["昨日見つけた自転車が気になる。まずは今日の仕事を片づけよう。", "成果を送り、温かいお茶で一息ついた。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonNodeId": "day02_afternoon", "AfternoonBackgroundId": "grandmother_storage",
+      "AfternoonPages": ["祖父の自転車を拭くと、細かな傷がいくつも見つかった。専門家に見せた方がよさそうだ。"],
+      "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"], "AfternoonEffects": {}, "SummaryNote": "自転車を直す方法を探し始めた。"
+    },
+    {
+      "Id": "short_day3", "Title": "自転車屋との出会い",
+      "MorningNodeId": "day03_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "AfternoonNodeId": "day03_afternoon", "AfternoonBackgroundId": "bikeshop_interior",
+      "AfternoonCharacterId": "hero_bikeshop", "AfternoonOutfitId": "shop", "AfternoonExpressionId": "strict",
+      "MorningPages": ["祖母から、町の自転車屋を教えてもらった。", "仕事を終えた。今日は新しい知り合いができるかもしれない。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonPages": ["店を訪ねると、娘さんが真剣な目でこちらを見た。\n娘「乗る前に点検です。古い自転車ほど、ちゃんと見ないと」"],
+      "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
+      "AfternoonEffects": { "HeroineId": "hero_bikeshop", "RouteFlag": "route_bikeshop_intro_started" }, "SummaryNote": "自転車屋の娘と知り合った。"
+    },
+    {
+      "Id": "short_day4", "Title": "古い自転車の診断",
+      "MorningNodeId": "day04_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "AfternoonNodeId": "day04_afternoon", "AfternoonBackgroundId": "town_street",
+      "MorningPages": ["祖父の自転車を店へ運ぶ約束の日だ。", "仕事を終え、慎重に自転車を押して町へ向かった。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonPages": ["午後の予定を決めよう。自転車屋では診断の続きを聞ける。"],
+      "ActionIds": ["act_bikeshop_visit", "act_training_roadwork_001", "act_rest_home_001"], "AfternoonEffects": {}, "SummaryNote": "自転車屋へ行くと短期ルートが進む。"
+    },
+    {
+      "Id": "short_day5", "Title": "休日の初回練習",
+      "MorningNodeId": "day05_morning", "MorningBackgroundId": "riverside_morning",
+      "MorningPages": ["今日は仕事を休み、彼女と河川敷へ向かう。", "点検を終えた祖父の自転車に、初めてまたがった。"],
+      "MorningEffects": {}, "AfternoonNodeId": "day05_afternoon", "AfternoonBackgroundId": "riverside_day",
+      "AfternoonPages": ["安全を確かめてから、最初の練習が始まった。"],
+      "ActionIds": ["evt_bikeshop_first_lesson"], "AfternoonEffects": {}, "SummaryNote": "彼女から基礎走行を教わった。"
+    },
+    {
+      "Id": "short_day6", "Title": "走る日常",
+      "MorningNodeId": "day06_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "MorningPages": ["昨日教わった姿勢を思い出す。", "仕事を終えた。午後は練習するか、店を訪ねるか。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonNodeId": "day06_afternoon", "AfternoonBackgroundId": "town_street",
+      "AfternoonPages": ["少しずつ、自転車のある暮らしが日常になってきた。"],
+      "ActionIds": ["act_bikeshop_visit", "act_training_roadwork_001", "act_rest_home_001"], "AfternoonEffects": {}, "SummaryNote": "練習と交流を重ねた。"
+    },
+    {
+      "Id": "short_day7", "Title": "店に残された思い",
+      "MorningNodeId": "day07_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "MorningPages": ["店の奥にあった一台の自転車が気になっている。", "仕事を終え、自転車屋へ向かった。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonNodeId": "day07_afternoon", "AfternoonBackgroundId": "bikeshop_interior",
+      "AfternoonPages": ["彼女は古いフレームの前で、珍しく言葉を探していた。"],
+      "ActionIds": ["evt_bikeshop_conflict"], "AfternoonEffects": {}, "SummaryNote": "彼女と父の自転車について知った。"
+    },
+    {
+      "Id": "short_day8", "Title": "坂道への準備",
+      "MorningNodeId": "day08_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "MorningPages": ["二日後のヒルクライムへ向けて、足りないものを考える。", "仕事を終えた。今日は最後のまとまった準備ができる。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonNodeId": "day08_afternoon", "AfternoonBackgroundId": "town_street",
+      "AfternoonPages": ["脚を鍛えるか、自転車を深く知るか。今の自分に必要な準備を選ぼう。"],
+      "ActionIds": ["act_hill_training", "act_maintenance_study", "act_rest_home_001"], "AfternoonEffects": {}, "SummaryNote": "挑戦に向けた準備を進めた。"
+    },
+    {
+      "Id": "short_day9", "Title": "挑戦の前夜",
+      "MorningNodeId": "day09_morning", "MorningBackgroundId": "grandmother_room_morning",
+      "MorningPages": ["明日の坂道を思うと、少しだけ胸が騒ぐ。", "仕事を早めに切り上げ、店で最終確認をすることにした。"],
+      "MorningEffects": { "Money": 500, "Smart": 1 },
+      "AfternoonNodeId": "day09_afternoon", "AfternoonBackgroundId": "bikeshop_exterior_evening",
+      "AfternoonPages": ["整備を終えた彼女が、静かに問いかけた。"],
+      "ActionIds": ["evt_bikeshop_eve"], "AfternoonEffects": {}, "SummaryNote": "走る意味を彼女に伝えた。"
+    },
+    {
+      "Id": "short_day10", "Title": "ヒルクライムの朝",
+      "MorningNodeId": "day10_morning", "MorningBackgroundId": "mountain_start_morning",
+      "MorningPages": ["休日の朝。空はよく晴れ、山の稜線がはっきり見える。", "彼女と合流し、二台でスタート地点へ向かった。"],
+      "MorningEffects": {}, "AfternoonNodeId": "day10_afternoon", "AfternoonBackgroundId": "mountain_road_day",
+      "AfternoonPages": ["これまでの選択と成長が、今日の走りにつながる。"],
+      "ActionIds": ["evt_bikeshop_hillclimb"], "AfternoonEffects": {}, "SummaryNote": "十日間の短期目標を走り終えた。"
+    }
+  ]
+}
