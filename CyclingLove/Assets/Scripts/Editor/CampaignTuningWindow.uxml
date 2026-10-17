@@ -1,0 +1,59 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+  <ui:Style src="CampaignTuningWindow.uss" />
+  <ui:VisualElement name="root" class="tuning-root">
+    <ui:VisualElement class="hero-panel">
+      <ui:Label text="ANNUAL CAMPAIGN LAB" class="eyebrow" />
+      <ui:Label text="年間進行 調整画面" class="title" />
+      <ui:Label text="条件値を仮入力し、イベントと結末の境界をセーブ非破壊で確認します。" class="subtitle" />
+    </ui:VisualElement>
+    <ui:ScrollView class="content-scroll">
+      <ui:VisualElement class="two-column">
+        <ui:VisualElement class="column input-column">
+          <ui:Foldout text="日付" value="true" class="section">
+            <ui:VisualElement class="field-row">
+              <ui:IntegerField name="yearField" label="年" class="compact-field" />
+              <ui:IntegerField name="monthField" label="月" class="compact-field" />
+              <ui:IntegerField name="dayField" label="日" class="compact-field" />
+            </ui:VisualElement>
+          </ui:Foldout>
+          <ui:Foldout text="基本値" value="true" class="section">
+            <ui:IntegerField name="moneyField" label="資金" />
+            <ui:IntegerField name="staminaField" label="体力" />
+            <ui:IntegerField name="physicalField" label="フィジカル" />
+            <ui:IntegerField name="toughnessField" label="タフネス" />
+            <ui:IntegerField name="smartField" label="スマート" />
+            <ui:IntegerField name="empathyField" label="エンパシー" />
+            <ui:IntegerField name="appealField" label="アピール" />
+          </ui:Foldout>
+          <ui:Foldout text="地域進行" value="true" class="section">
+            <ui:IntegerField name="regionalContributionField" label="地域貢献" />
+            <ui:IntegerField name="publicAwarenessField" label="知名度" />
+            <ui:IntegerField name="foxFavorField" label="狐の加護" />
+            <ui:TextField name="completedQuestsField" label="完了依頼ID" multiline="true" class="id-field" />
+          </ui:Foldout>
+          <ui:Foldout text="ルートとヒロイン" value="true" class="section">
+            <ui:TextField name="routeFlagsField" label="ルートフラグ" multiline="true" class="id-field" />
+            <ui:TextField name="clearedEventsField" label="既読イベント" multiline="true" class="id-field" />
+            <ui:TextField name="heroineIdField" label="ヒロインID" />
+            <ui:IntegerField name="affectionField" label="好感度" />
+            <ui:IntegerField name="routeStepField" label="ルート段階" />
+            <ui:Toggle name="metToggle" label="出会い済み" />
+            <ui:Toggle name="unlockedToggle" label="解放済み" />
+          </ui:Foldout>
+          <ui:Button name="evaluateButton" text="この条件で評価" class="evaluate-button" />
+        </ui:VisualElement>
+        <ui:VisualElement class="column result-column">
+          <ui:Label name="statusLabel" class="status-label" />
+          <ui:Label text="日付判定" class="result-heading" />
+          <ui:Label name="dayResult" class="result-card" />
+          <ui:Label text="成立イベント" class="result-heading" />
+          <ui:Label name="eventResult" class="result-card result-list" />
+          <ui:Label text="四季目標" class="result-heading" />
+          <ui:Label name="goalResult" class="result-card result-list" />
+          <ui:Label text="年末結末プレビュー" class="result-heading" />
+          <ui:Label name="endingResult" class="result-card" />
+        </ui:VisualElement>
+      </ui:VisualElement>
+    </ui:ScrollView>
+  </ui:VisualElement>
+</ui:UXML>

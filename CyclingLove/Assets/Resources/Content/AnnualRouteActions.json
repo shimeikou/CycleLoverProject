@@ -1,0 +1,42 @@
+{
+  "Actions": [
+    {
+      "Id": "evt_annual_route_select",
+      "Name": "この町で始める一年",
+      "NodeId": "annual_route_select",
+      "BackgroundId": "town_street",
+      "ChoicePrompt": "この町で、まず誰との時間を大切にしよう。",
+      "Pages": ["新しい暮らしを始める朝。自転車を通じて、この町の誰と向き合うかを決める。"],
+      "Effects": {},
+      "Choices": [
+        {
+          "Id": "annual_route_bikeshop", "Label": "自転車屋へ向かう", "Description": "自転車屋の娘ルート",
+          "NodeId": "annual_route_select_bikeshop", "Pages": ["祖父の自転車を押し、自転車屋へ向かうことにした。"],
+          "Effects": { "RouteFlag": "route_bikeshop_annual" }
+        },
+        {
+          "Id": "annual_route_cafe", "Label": "カフェへ立ち寄る", "Description": "カフェのマスタールート",
+          "NodeId": "annual_route_select_cafe", "Pages": ["町を知るため、サイクリストが集まるカフェへ立ち寄ることにした。"],
+          "Effects": { "RouteFlag": "route_cafe_annual" }
+        },
+        {
+          "Id": "annual_route_cousin", "Label": "従妹と町を走る", "Description": "従妹ルート",
+          "NodeId": "annual_route_select_cousin", "Pages": ["民宿を手伝う従妹に誘われ、町の景色を巡ることにした。"],
+          "Effects": { "RouteFlag": "route_cousin_annual" }
+        },
+        {
+          "Id": "annual_route_announcer", "Label": "女子アナの取材を手伝う", "Description": "1回完走後に解放",
+          "NodeId": "annual_route_select_announcer", "Pages": ["地方局の取材を手伝い、この町を伝える一年を始めることにした。"],
+          "Conditions": [{ "Type": "heroine_unlocked", "Id": "hero_announcer" }],
+          "Effects": { "RouteFlag": "route_announcer_annual" }
+        },
+        {
+          "Id": "annual_route_online_rival", "Label": "ネットの挑戦を受ける", "Description": "通常ルート成功後に解放",
+          "NodeId": "annual_route_select_online_rival", "Pages": ["走行記録アプリに届いた挑戦を受け、画面の向こうの強敵を追うことにした。"],
+          "Conditions": [{ "Type": "heroine_unlocked", "Id": "hero_online_rival" }],
+          "Effects": { "RouteFlag": "route_online_rival_annual" }
+        }
+      ]
+    }
+  ]
+}

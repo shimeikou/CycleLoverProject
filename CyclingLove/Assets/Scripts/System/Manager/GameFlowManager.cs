@@ -2,6 +2,7 @@ using System.Flow;
 using System.GameSession;
 using System.Service;
 using CyclingLove.Equipment;
+using CyclingLove.Progression;
 using CyclingLove.Racing;
 using Cysharp.Threading.Tasks;
 using GameSessionState = global::System.GameSession.GameSession;
@@ -20,7 +21,7 @@ namespace System.Manager
         private BikeEquipmentCatalog EquipmentCatalog => _equipmentCatalog ??= EquipmentContentLoader.LoadRuntime();
         private RaceCatalog RaceCatalog => _raceCatalog ??= RaceContentLoader.LoadRuntime();
         private CampaignGameService Flow => _flow ??= new CampaignGameService(
-            CampaignContentLoader.LoadRuntime(), EquipmentCatalog, AnnualCalendarContentLoader.LoadRuntime());
+            CampaignContentLoader.LoadAnnual(), EquipmentCatalog, AnnualCalendarContentLoader.LoadRuntime());
         private BikeEquipmentService Equipment => _equipment ??= new BikeEquipmentService(EquipmentCatalog);
         private BikePerformanceService Performance => _performance ??= new BikePerformanceService(EquipmentCatalog);
         private RaceResolutionService RacePreview => _racePreview ??= new RaceResolutionService(RaceCatalog, EquipmentCatalog);
@@ -33,7 +34,7 @@ namespace System.Manager
         public async UniTask StartNewGameFlow()
         {
             await GameSessionState.InitConfig();
-            GameSessionState.PlayerData = Flow.NewGame();
+            GameSessionState.PlayerData = Flow.NewGame(GameSessionState.SystemConfig.Profile);
             BuildNextRequest();
         }
 
@@ -50,8 +51,14 @@ namespace System.Manager
         {
             await GameSessionState.InitConfig();
             if (GameSessionState.PlayerData == null)
-                GameSessionState.PlayerData = Flow.NewGame();
+                GameSessionState.PlayerData = Flow.NewGame(GameSessionState.SystemConfig.Profile);
             BuildNextRequest();
+        }
+
+        public async UniTask PersistProfileProgress()
+        {
+            if (!ProfileProgressService.RegisterCompletedRun(GameSessionState.SystemConfig.Profile, GameSessionState.PlayerData)) return;
+            await SaveDataService.SaveSystem(GameSessionState.SystemConfig);
         }
 
         public GameSceneRequest PeekCurrentRequest() => CurrentRequest;
@@ -92,5 +99,15 @@ namespace System.Manager
 
         public bool HasAttemptedRaceToday(string raceId) =>
             RaceProgressService.HasAttemptedToday(GameSessionState.PlayerData, raceId);
+
+        public GameSkipPreview GetSkipPreview(int maxDays) =>
+            Flow.GetSkipPreview(GameSessionState.PlayerData, maxDays);
+
+        public bool SkipNormalDays(int maxDays)
+        {
+            var skipped = Flow.SkipNormalDays(GameSessionState.PlayerData, maxDays);
+            if (skipped) BuildNextRequest();
+            return skipped;
+        }
     }
 }

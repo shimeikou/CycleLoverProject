@@ -1,0 +1,92 @@
+{
+  "Actions": [
+    {
+      "Id": "evt_annual_cafe_meeting", "Name": "雨宿りのカフェ", "NodeId": "annual_cafe_meeting",
+      "BackgroundId": "cafe_interior", "CharacterId": "hero_cafe_master", "OutfitId": "work", "ExpressionId": "neutral",
+      "ChoicePrompt": "閉店間際の店で、何を話そう。",
+      "Pages": ["突然の雨を避けて入ったカフェで、マスターは濡れた自転車まで丁寧に拭いてくれた。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "Affection": 1, "RouteStep": 1 },
+      "Choices": [
+        { "Id": "cafe_meeting_listen", "Label": "町のおすすめを聞く", "Description": "エンパシーと好感度", "NodeId": "annual_cafe_meeting_listen", "ExpressionId": "smile", "Pages": ["彼女は地図に静かな道と休憩場所を書き込んでくれた。"], "Effects": { "Empathy": 1, "HeroineId": "hero_cafe_master", "Affection": 1 } },
+        { "Id": "cafe_meeting_coffee", "Label": "コーヒーについて聞く", "Description": "スマート", "NodeId": "annual_cafe_meeting_coffee", "Pages": ["豆と温度の話を聞くうちに、雨音が心地よく感じられた。"], "Effects": { "Smart": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cafe_spring_ride", "Name": "初めての朝ライド", "NodeId": "annual_cafe_spring_ride",
+      "BackgroundId": "riverside_day", "CharacterId": "hero_cafe_master", "OutfitId": "cycling", "ExpressionId": "neutral",
+      "ChoicePrompt": "久しぶりに走る彼女へ、どう声をかけよう。",
+      "Pages": ["店の定休日、彼女のアルミロードと並んで春の川沿いを走った。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "RouteStep": 2, "RouteFlag": "goal_spring_ready" },
+      "Choices": [
+        { "Id": "cafe_spring_pace", "Label": "彼女のペースに合わせる", "Description": "タフネスと好感度", "NodeId": "annual_cafe_spring_pace", "ExpressionId": "smile", "Pages": ["急がず走ると、彼女の表情から緊張が消えていった。"], "Effects": { "Toughness": 1, "HeroineId": "hero_cafe_master", "Affection": 1 } },
+        { "Id": "cafe_spring_route", "Label": "走りやすい道を提案する", "Description": "スマート", "NodeId": "annual_cafe_spring_route", "Pages": ["交通量と勾配を見て道を選び、無理なく店へ戻った。"], "Effects": { "Smart": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cafe_past", "Name": "閉店後の告白", "NodeId": "annual_cafe_past",
+      "BackgroundId": "cafe_interior_evening", "CharacterId": "hero_cafe_master", "OutfitId": "work", "ExpressionId": "troubled",
+      "ChoicePrompt": "過去の別れを語る彼女へ、どう応えよう。",
+      "Pages": ["閉店後、彼女は三十歳を前にした焦りと、以前の別れから新しい関係を怖がっていることを話した。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "RouteStep": 3 },
+      "Choices": [
+        { "Id": "cafe_past_accept", "Label": "答えを急がず受け止める", "Description": "エンパシーと好感度", "NodeId": "annual_cafe_past_accept", "ExpressionId": "neutral", "Pages": ["言葉を挟まず聞くと、彼女はようやく肩の力を抜いた。"], "Effects": { "Empathy": 2, "HeroineId": "hero_cafe_master", "Affection": 1 } },
+        { "Id": "cafe_past_encourage", "Label": "今から変えられると励ます", "Description": "アピール", "NodeId": "annual_cafe_past_encourage", "Pages": ["前向きな言葉に、彼女は困ったように笑った。"], "Effects": { "Appeal": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cafe_longride", "Name": "夏のロングライド", "NodeId": "annual_cafe_longride",
+      "BackgroundId": "lakeside_day", "CharacterId": "hero_cafe_master", "OutfitId": "cycling", "ExpressionId": "neutral",
+      "ChoicePrompt": "長い道の後半をどう走り切ろう。",
+      "Pages": ["店の常連に勧められた湖まで、二人で初めてのロングライドへ出た。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "RouteStep": 4, "BikeMastery": 3, "RouteFlag": "goal_summer_ready" },
+      "Choices": [
+        { "Id": "cafe_longride_break", "Label": "景色の良い場所で休む", "Description": "好感度", "NodeId": "annual_cafe_longride_break", "ExpressionId": "smile", "Pages": ["湖畔でコーヒーを分け合い、目的地より道中を楽しんだ。"], "Effects": { "HeroineId": "hero_cafe_master", "Affection": 1 } },
+        { "Id": "cafe_longride_finish", "Label": "一定のペースで進む", "Description": "タフネス", "NodeId": "annual_cafe_longride_finish", "Pages": ["疲れを見ながら速度を保ち、二人そろって湖へ着いた。"], "Effects": { "Toughness": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cafe_mother", "Name": "母から聞く過去", "NodeId": "annual_cafe_mother",
+      "BackgroundId": "cafe_interior", "CharacterId": "hero_cafe_master", "OutfitId": "casual", "ExpressionId": "troubled",
+      "ChoicePrompt": "彼女が守ってきた店と時間を、どう受け止めよう。",
+      "Pages": ["店を手伝う母から、別れの後も娘が一人で店を守り続けた日々を聞いた。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "RouteStep": 5 },
+      "Choices": [
+        { "Id": "cafe_mother_respect", "Label": "彼女自身の強さを伝える", "Description": "好感度5で選択可能", "NodeId": "annual_cafe_mother_respect", "ExpressionId": "smile", "Pages": ["過去ではなく今の彼女を見ていると伝えると、静かにうなずいた。"], "Conditions": [{ "Type": "affection", "Id": "hero_cafe_master", "Value": 5 }], "Effects": { "Empathy": 1, "HeroineId": "hero_cafe_master", "Affection": 1 } },
+        { "Id": "cafe_mother_help", "Label": "店の仕事を手伝う", "Description": "いつでも選べる", "NodeId": "annual_cafe_mother_help", "Pages": ["言葉の代わりに片付けを手伝い、忙しい夕方を支えた。"], "Effects": { "Smart": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cafe_newmenu", "Name": "サイクリストの居場所", "NodeId": "annual_cafe_newmenu",
+      "BackgroundId": "cafe_interior", "CharacterId": "hero_cafe_master", "OutfitId": "work", "ExpressionId": "neutral",
+      "ChoicePrompt": "新しい店の形を、二人でどう作ろう。",
+      "Pages": ["彼女はサイクリスト向けの朝メニューと休憩場所を作りたいと相談してきた。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "RouteStep": 6, "RouteFlag": "goal_autumn_ready" },
+      "Choices": [
+        { "Id": "cafe_newmenu_plan", "Label": "常連の声を集めて一緒に考える", "Description": "スマート7・エンパシー7", "NodeId": "annual_cafe_newmenu_plan", "ExpressionId": "smile", "Pages": ["数字と会話の両方を頼りに、無理なく続けられる案を作った。"], "Conditions": [{ "Type": "smart", "Value": 7 }, { "Type": "empathy", "Value": 7 }], "Effects": { "Smart": 1, "HeroineId": "hero_cafe_master", "Affection": 1 } },
+        { "Id": "cafe_newmenu_trial", "Label": "まず週末だけ試す", "Description": "いつでも選べる", "NodeId": "annual_cafe_newmenu_trial", "Pages": ["小さく始める案に、彼女は安心した表情を見せた。"], "Effects": { "Smart": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cafe_memory", "Name": "思い出の丘", "NodeId": "annual_cafe_memory",
+      "BackgroundId": "hill_road_evening", "CharacterId": "hero_cafe_master", "OutfitId": "cycling", "ExpressionId": "troubled",
+      "ChoicePrompt": "過去の思い出が残る丘で、次に進む彼女を支えよう。",
+      "Pages": ["彼女が以前の相手と最後に走った丘へ、二人で向かった。避けてきた景色を、自分の意志で見直すためだ。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "RouteStep": 7 },
+      "Choices": [
+        { "Id": "cafe_memory_present", "Label": "今日の景色を新しい思い出にする", "Description": "好感度", "NodeId": "annual_cafe_memory_present", "ExpressionId": "smile", "Pages": ["彼女は過去を消さず、今日を重ねるように夕景を見つめた。"], "Effects": { "HeroineId": "hero_cafe_master", "Affection": 1 } },
+        { "Id": "cafe_memory_wait", "Label": "黙って隣で待つ", "Description": "エンパシー", "NodeId": "annual_cafe_memory_wait", "Pages": ["言葉が出るまで隣にいると、彼女は自分から帰り道を選んだ。"], "Effects": { "Empathy": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cafe_final", "Name": "店の灯りの先へ", "NodeId": "annual_cafe_final",
+      "BackgroundId": "cafe_interior_evening", "CharacterId": "hero_cafe_master", "OutfitId": "work", "ExpressionId": "neutral",
+      "ChoicePrompt": "閉店後の静かな店で、これからの関係を伝えよう。",
+      "Pages": ["新しいメニューが定着し、店には以前より多くの笑顔が集まった。彼女は来年の話をしながら返事を待っている。"],
+      "Effects": { "HeroineId": "hero_cafe_master", "RouteStep": 8, "RouteFlag": "goal_winter_ready" },
+      "Choices": [
+        { "Id": "cafe_final_confess", "Label": "帰る場所を、これから一緒に作りたい", "Description": "好感度7で告白", "NodeId": "annual_cafe_final_confess", "ExpressionId": "smile", "Pages": ["彼女は涙を拭い、店の鍵を握ったまま笑った。マスター「明日も、その先も、ここで待っています」"], "Conditions": [{ "Type": "affection", "Id": "hero_cafe_master", "Value": 7 }], "Effects": { "HeroineId": "hero_cafe_master", "Affection": 1, "RouteFlag": "annual_confession_cafe_ready" } },
+        { "Id": "cafe_final_friend", "Label": "これからも大切な常連でいる", "Description": "いつでも選べる", "NodeId": "annual_cafe_final_friend", "ExpressionId": "smile", "Pages": ["彼女はいつものカップを差し出した。穏やかな関係は、次の一年へ続いていく。"], "Effects": { "HeroineId": "hero_cafe_master", "Affection": 1 } }
+      ]
+    }
+  ]
+}

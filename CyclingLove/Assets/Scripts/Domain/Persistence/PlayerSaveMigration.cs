@@ -14,7 +14,7 @@ namespace System.Service
                 EnsureCollections(data);
                 return;
             }
-            if (data.FlowVersion != 1 && data.FlowVersion != 2)
+            if (data.FlowVersion != 1 && data.FlowVersion != 2 && data.FlowVersion != 3 && data.FlowVersion != 4)
                 throw new InvalidOperationException("この形式のセーブデータには対応していません。");
 
             EnsureCollections(data);
@@ -28,6 +28,7 @@ namespace System.Service
                     if (progress.RouteStep == 0) progress.RouteStep = 1;
                 }
             }
+            if (string.IsNullOrWhiteSpace(data.RunId)) data.RunId = Guid.NewGuid().ToString("N");
             data.FlowVersion = PlayerSaveValidator.SchemaVersion;
         }
 
@@ -37,12 +38,14 @@ namespace System.Service
             data.ActiveRouteFlags ??= new List<string>();
             data.MetHeroineIds ??= new List<string>();
             data.HeroineProgresses ??= new List<HeroineProgress>();
+            data.CompletedQuestIds ??= new List<string>();
             data.OwnedPartIds ??= new List<string>();
             data.EquippedBike ??= new PlayerBikeEquipment();
             data.BikeMasteries ??= new List<BikeMasteryProgress>();
             data.RaceAttempts ??= new List<RaceAttemptRecord>();
             data.SeasonGoalResults ??= new List<SeasonGoalRecord>();
             data.AnnualEndingResult ??= new AnnualEndingRecord();
+            if (string.IsNullOrWhiteSpace(data.RunId)) data.RunId = Guid.NewGuid().ToString("N");
         }
     }
 }

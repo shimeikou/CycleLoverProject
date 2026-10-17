@@ -5,6 +5,7 @@ using System.GameSession;
 using System.Linq;
 using CyclingLove.Calendar;
 using CyclingLove.Equipment;
+using CyclingLove.Progression;
 
 namespace System.Service
 {
@@ -16,6 +17,8 @@ namespace System.Service
         private readonly BikeEquipmentCatalog equipment;
         private readonly AnnualCalendarService annualCalendar;
         private readonly AnnualProgressService annualProgress;
+        private readonly CyclingLove.Content.CampaignConditionalEvent[] conditionalEvents;
+        private readonly bool supportsSkipping;
         public CampaignGameService(
             CyclingLove.Content.CampaignDefinition definition,
             BikeEquipmentCatalog equipmentCatalog = null,
@@ -23,6 +26,8 @@ namespace System.Service
         {
             content = (definition ?? throw new ArgumentNullException(nameof(definition))).Snapshot();
             content.Validate();
+            conditionalEvents = (content.ConditionalEvents ?? Array.Empty<CyclingLove.Content.CampaignConditionalEvent>())
+                .OrderByDescending(value => value.Priority).ThenBy(value => value.Id, StringComparer.Ordinal).ToArray();
             equipment = equipmentCatalog?.Snapshot();
             equipment?.ValidateLoadout(content.Rules.InitialPlayer.OwnedPartIds, content.Rules.InitialPlayer.EquippedBike);
             if (annualCalendarDefinition != null)
@@ -32,10 +37,34 @@ namespace System.Service
                 var firstDate = new DateTime(content.StartYear, content.StartMonth, content.StartDay);
                 annualCalendar.ResolveDay(firstDate);
                 annualCalendar.ResolveDay(firstDate.AddDays(content.Days.Length - 1));
+                supportsSkipping = firstDate == annualCalendarDefinition.StartDate &&
+                    content.Days.Length == (annualCalendarDefinition.EndDate - annualCalendarDefinition.StartDate).Days + 1;
             }
         }
         private int DayIndex(GamePlayerData d) => (new DateTime(d.Year, d.Month, d.Day) - new DateTime(content.StartYear, content.StartMonth, content.StartDay)).Days;
-        private CyclingLove.Content.CampaignDay Day(GamePlayerData d) => content.Days[DayIndex(d)];
+        private CyclingLove.Content.CampaignDay BaseDay(GamePlayerData d) => content.Days[DayIndex(d)];
+        private CyclingLove.Content.CampaignDay Day(GamePlayerData d)
+        {
+            if (annualCalendar == null || conditionalEvents.Length == 0) return BaseDay(d);
+            var date = new DateTime(d.Year, d.Month, d.Day);
+            var dateKey = date.ToString("yyyy-MM-dd");
+            var calendarDay = annualCalendar.ResolveDay(date);
+            if (d.ResolvedDayKey == dateKey)
+            {
+                if (string.IsNullOrWhiteSpace(d.ResolvedDayEventId)) return BaseDay(d);
+                var persisted = conditionalEvents.FirstOrDefault(value => value.Id == d.ResolvedDayEventId);
+                if (persisted == null || !persisted.MatchesDay(calendarDay))
+                    throw new InvalidOperationException("保存された条件イベントを解決できません。");
+                return persisted.Day;
+            }
+            var selected = ResolveConditionalEvent(calendarDay, d);
+            d.ResolvedDayKey = dateKey;
+            d.ResolvedDayEventId = selected?.Id;
+            return selected?.Day ?? BaseDay(d);
+        }
+
+        private CyclingLove.Content.CampaignConditionalEvent ResolveConditionalEvent(AnnualDayResolution day, GamePlayerData data) =>
+            conditionalEvents.FirstOrDefault(value => value.Matches(day, data));
         private CyclingLove.Content.ActionDefinition Action(string id) => content.Actions.FirstOrDefault(a => a.Id == id);
         private CyclingLove.Content.CampaignChoiceDefinition Choice(GamePlayerData d, string id) =>
             (Action(d.SelectedActionId)?.Choices ?? Array.Empty<CyclingLove.Content.CampaignChoiceDefinition>()).FirstOrDefault(c => c.Id == id);
@@ -55,10 +84,11 @@ namespace System.Service
             }; }).ToArray();
         }
 
-        public GamePlayerData NewGame()
+        public GamePlayerData NewGame(ProfileProgress profile = null)
         {
-            var data = new GamePlayerData { FlowVersion = Version, CampaignId = content.Id, ContentVersion = content.Version, SavedPhase = GameFlowPhase.Novel, Year = content.StartYear, Month = content.StartMonth, Day = content.StartDay };
+            var data = new GamePlayerData { FlowVersion = Version, RunId = Guid.NewGuid().ToString("N"), CampaignId = content.Id, ContentVersion = content.Version, SavedPhase = GameFlowPhase.Novel, Year = content.StartYear, Month = content.StartMonth, Day = content.StartDay };
             content.Rules.InitialPlayer.Apply(data);
+            ProfileProgressService.ApplyUnlocks(profile, data);
             equipment?.ValidateLoadout(data.OwnedPartIds, data.EquippedBike);
             data.DayStartStats = Stats(data);
             return data;
@@ -116,6 +146,60 @@ namespace System.Service
 
         public bool CanChooseChoice(GamePlayerData data, string choice) =>
             data.SavedPhase == GameFlowPhase.NovelChoice && Choice(data, choice)?.CanChoose(data) == true;
+
+        public GameSkipPreview GetSkipPreview(GamePlayerData data, int maxDays)
+        {
+            if (maxDays < 1) throw new ArgumentOutOfRangeException(nameof(maxDays));
+            Validate(data);
+            if (!supportsSkipping)
+                return new GameSkipPreview { StopDateText = CurrentDateText(data), StopReason = "年間キャンペーン外" };
+            if (data.SavedPhase != GameFlowPhase.Novel || data.Timing != ActionTiming.Morning || data.NarrativePage != 0)
+                return new GameSkipPreview { StopDateText = CurrentDateText(data), StopReason = "進行中の場面" };
+
+            var start = new DateTime(data.Year, data.Month, data.Day);
+            var skippable = 0;
+            var reason = "指定日数";
+            for (; skippable < maxDays; skippable++)
+            {
+                var date = start.AddDays(skippable);
+                var index = (date - new DateTime(content.StartYear, content.StartMonth, content.StartDay)).Days;
+                if (index < 0 || index >= content.Days.Length) { reason = "キャンペーン終了"; break; }
+                var calendarDay = annualCalendar.ResolveDay(date);
+                if (calendarDay.IsHoliday) { reason = "休日"; break; }
+                if (calendarDay.SpecialSlotIds.Length > 0) { reason = "特別日"; break; }
+                var selected = date == start && data.ResolvedDayKey == date.ToString("yyyy-MM-dd")
+                    ? conditionalEvents.FirstOrDefault(value => value.Id == data.ResolvedDayEventId)
+                    : ResolveConditionalEvent(calendarDay, data);
+                if (selected != null) { reason = "条件イベント"; break; }
+            }
+            var stopDate = start.AddDays(skippable);
+            return new GameSkipPreview
+            {
+                SkippableDays = skippable,
+                StopDateText = $"{stopDate.Month}月{stopDate.Day}日",
+                StopReason = reason
+            };
+        }
+
+        public bool SkipNormalDays(GamePlayerData data, int maxDays)
+        {
+            var preview = GetSkipPreview(data, maxDays);
+            if (preview.SkippableDays == 0) return false;
+            var nextDate = new DateTime(data.Year, data.Month, data.Day).AddDays(preview.SkippableDays);
+            data.Year = nextDate.Year;
+            data.Month = nextDate.Month;
+            data.Day = nextDate.Day;
+            data.Stamina = content.Rules.MaxStamina;
+            data.SelectedActionId = null;
+            data.SelectedChoiceId = null;
+            data.ResolvedDayKey = null;
+            data.ResolvedDayEventId = null;
+            data.DayStartStats = Stats(data);
+            data.Revision++;
+            return true;
+        }
+
+        private static string CurrentDateText(GamePlayerData data) => $"{data.Month}月{data.Day}日";
 
         public GameSceneRequest Request(GamePlayerData data)
         {
@@ -239,6 +323,8 @@ namespace System.Service
                     data.Timing = ActionTiming.Morning;
                     data.SelectedActionId = null;
                     data.SelectedChoiceId = null;
+                    data.ResolvedDayKey = null;
+                    data.ResolvedDayEventId = null;
                     data.Stamina = (int)Math.Min(content.Rules.MaxStamina, (long)data.Stamina + content.Rules.OvernightRecovery);
                     data.DayStartStats = Stats(data);
                     data.SavedPhase = DayIndex(data) >= content.Days.Length ? GameFlowPhase.Finished : GameFlowPhase.Novel;

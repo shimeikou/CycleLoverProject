@@ -5,61 +5,2223 @@
     {
       "Id": "workday",
       "Day": {
-        "Id": "template_workday", "Title": "仕事と自由行動",
-        "MorningNodeId": "annual_workday_morning", "MorningBackgroundId": "grandmother_room_morning",
-        "MorningPages": ["朝の仕事に取りかかった。日々の積み重ねが、暮らしと自転車を支えていく。", "仕事を終えた。午後は自分の目標に合わせて過ごそう。"],
-        "MorningEffects": { "Money": 500, "Smart": 1 },
-        "AfternoonNodeId": "annual_workday_afternoon", "AfternoonBackgroundId": "town_street",
-        "AfternoonPages": ["午後の予定を決めよう。"],
-        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
-        "AfternoonEffects": {}, "SummaryNote": "今日の行動を次の目標へつなげた。"
+        "Id": "template_workday",
+        "Title": "仕事と自由行動",
+        "MorningNodeId": "annual_workday_morning",
+        "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": [
+          "朝の仕事に取りかかった。日々の積み重ねが、暮らしと自転車を支えていく。",
+          "仕事を終えた。午後は自分の目標に合わせて過ごそう。"
+        ],
+        "MorningEffects": {
+          "Money": 500,
+          "Smart": 1
+        },
+        "AfternoonNodeId": "annual_workday_afternoon",
+        "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": [
+          "午後の予定を決めよう。"
+        ],
+        "ActionIds": [
+          "act_training_roadwork_001",
+          "act_town_walk_001",
+          "act_rest_home_001"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "今日の行動を次の目標へつなげた。"
       }
     },
     {
       "Id": "holiday",
       "Day": {
-        "Id": "template_holiday", "Title": "休日の過ごし方",
-        "MorningNodeId": "annual_holiday_morning", "MorningBackgroundId": "grandmother_veranda_day",
-        "MorningPages": ["今日は休日だ。まとまった時間を、練習や町での交流に使える。"],
+        "Id": "template_holiday",
+        "Title": "休日の過ごし方",
+        "MorningNodeId": "annual_holiday_morning",
+        "MorningBackgroundId": "grandmother_veranda_day",
+        "MorningPages": [
+          "今日は休日だ。まとまった時間を、練習や町での交流に使える。"
+        ],
         "MorningEffects": {},
-        "AfternoonNodeId": "annual_holiday_afternoon", "AfternoonBackgroundId": "town_street",
-        "AfternoonPages": ["一日の予定を決めよう。"],
-        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
-        "AfternoonEffects": {}, "SummaryNote": "休日を自分のために使った。"
+        "AfternoonNodeId": "annual_holiday_afternoon",
+        "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": [
+          "一日の予定を決めよう。"
+        ],
+        "ActionIds": [
+          "act_training_roadwork_001",
+          "act_town_walk_001",
+          "act_rest_home_001"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "休日を自分のために使った。"
       }
     },
     {
       "Id": "season_review",
       "Day": {
-        "Id": "template_season_review", "Title": "季節の振り返り",
-        "MorningNodeId": "annual_season_review_morning", "MorningBackgroundId": "grandmother_room_morning",
-        "MorningPages": ["季節の区切りを迎えた。ここまでの成長と、人との関わりを振り返る日だ。"],
+        "Id": "template_season_review",
+        "Title": "季節の振り返り",
+        "MorningNodeId": "annual_season_review_morning",
+        "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": [
+          "季節の区切りを迎えた。ここまでの成長と、人との関わりを振り返る日だ。"
+        ],
         "MorningEffects": {},
-        "AfternoonNodeId": "annual_season_review_afternoon", "AfternoonBackgroundId": "town_street",
-        "AfternoonPages": ["次の季節へ向けて、最後の一日をどう過ごすか決めよう。"],
-        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
-        "AfternoonEffects": {}, "SummaryNote": "季節目標の結果が確定する。"
+        "AfternoonNodeId": "annual_season_review_afternoon",
+        "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": [
+          "次の季節へ向けて、最後の一日をどう過ごすか決めよう。"
+        ],
+        "ActionIds": [
+          "act_training_roadwork_001",
+          "act_town_walk_001",
+          "act_rest_home_001"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "季節目標の結果が確定する。"
       }
     },
     {
       "Id": "annual_ending",
       "Day": {
-        "Id": "template_annual_ending", "Title": "一年の最終日",
-        "MorningNodeId": "annual_ending_morning", "MorningBackgroundId": "grandmother_room_morning",
-        "MorningPages": ["この町で過ごす一年の最終日を迎えた。積み重ねた選択が、今日の結末につながる。"],
+        "Id": "template_annual_ending",
+        "Title": "一年の最終日",
+        "MorningNodeId": "annual_ending_morning",
+        "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": [
+          "この町で過ごす一年の最終日を迎えた。積み重ねた選択が、今日の結末につながる。"
+        ],
         "MorningEffects": {},
-        "AfternoonNodeId": "annual_ending_afternoon", "AfternoonBackgroundId": "town_street",
-        "AfternoonPages": ["最後の時間をどう過ごすか決めよう。"],
-        "ActionIds": ["act_training_roadwork_001", "act_town_walk_001", "act_rest_home_001"],
-        "AfternoonEffects": {}, "SummaryNote": "季節目標と一年の結末が確定する。"
+        "AfternoonNodeId": "annual_ending_afternoon",
+        "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": [
+          "最後の時間をどう過ごすか決めよう。"
+        ],
+        "ActionIds": [
+          "act_training_roadwork_001",
+          "act_town_walk_001",
+          "act_rest_home_001"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "季節目標と一年の結末が確定する。"
+      }
+    },
+    {
+      "Id": "bikeshop_spring_intro",
+      "Day": {
+        "Id": "template_bikeshop_spring_intro",
+        "Title": "祖父の自転車と彼女",
+        "MorningNodeId": "annual_bikeshop_spring_intro_morning",
+        "MorningBackgroundId": "grandmother_veranda_day",
+        "MorningPages": [
+          "祖父が残した自転車を、町の自転車屋へ持っていくことにした。古い車体は、もう一度走り出せるだろうか。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_spring_intro_afternoon",
+        "AfternoonBackgroundId": "bikeshop_exterior_day",
+        "AfternoonPages": [
+          "店の扉を開けると、同年代の娘が作業台から顔を上げた。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_reunion"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "自転車屋の娘と出会い、祖父の自転車を直し始めた。"
+      }
+    },
+    {
+      "Id": "bikeshop_spring_goal",
+      "Day": {
+        "Id": "template_bikeshop_spring_goal",
+        "Title": "春の試走",
+        "MorningNodeId": "annual_bikeshop_spring_goal_morning",
+        "MorningBackgroundId": "bikeshop_exterior_day",
+        "MorningPages": [
+          "修理を終えた自転車を受け取り、彼女と初めて町の外へ走りに出る。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_spring_goal_afternoon",
+        "AfternoonBackgroundId": "riverside_day",
+        "AfternoonPages": [
+          "春の目標を確かめる試走が始まった。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_spring_ride"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "春の目標を達成した。"
+      }
+    },
+    {
+      "Id": "bikeshop_summer_offer",
+      "Day": {
+        "Id": "template_bikeshop_summer_offer",
+        "Title": "速さと父の自転車",
+        "MorningNodeId": "annual_bikeshop_summer_offer_morning",
+        "MorningBackgroundId": "town_street",
+        "MorningPages": [
+          "夏の市民レースを前に、自転車屋へ新しい提案が届いた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_summer_offer_afternoon",
+        "AfternoonBackgroundId": "bikeshop_interior",
+        "AfternoonPages": [
+          "速い自転車を選ぶことが、彼女には単純な話ではないようだ。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_summer_offer"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女が抱える迷いを知った。"
+      }
+    },
+    {
+      "Id": "bikeshop_summer_goal",
+      "Day": {
+        "Id": "template_bikeshop_summer_goal",
+        "Title": "夏の市民レース",
+        "MorningNodeId": "annual_bikeshop_summer_goal_morning",
+        "MorningBackgroundId": "mountain_road_day",
+        "MorningPages": [
+          "夏の目標にしていた市民レースの日。二人でスタート地点へ向かった。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_summer_goal_afternoon",
+        "AfternoonBackgroundId": "mountain_road_day",
+        "AfternoonPages": [
+          "順位だけでは決まらない、二人の走りを始めよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_summer_race"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "夏の目標を達成した。"
+      }
+    },
+    {
+      "Id": "bikeshop_autumn_memory",
+      "Day": {
+        "Id": "template_bikeshop_autumn_memory",
+        "Title": "父が残したフレーム",
+        "MorningNodeId": "annual_bikeshop_autumn_memory_morning",
+        "MorningBackgroundId": "bikeshop_exterior_evening",
+        "MorningPages": [
+          "閉店後の自転車屋に呼ばれた。店の奥には、まだ走っていない一台が眠っている。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_autumn_memory_afternoon",
+        "AfternoonBackgroundId": "bikeshop_interior",
+        "AfternoonPages": [
+          "彼女は父が残したフレームを、初めてこちらへ見せた。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_autumn_memory"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "父の自転車に込められた彼女の思いを知った。"
+      }
+    },
+    {
+      "Id": "bikeshop_autumn_goal",
+      "Day": {
+        "Id": "template_bikeshop_autumn_goal",
+        "Title": "二台で選ぶ道",
+        "MorningNodeId": "annual_bikeshop_autumn_goal_morning",
+        "MorningBackgroundId": "hill_road_day",
+        "MorningPages": [
+          "秋の終わり、二台の自転車を持って試走へ出た。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_autumn_goal_afternoon",
+        "AfternoonBackgroundId": "hill_road_day",
+        "AfternoonPages": [
+          "速さと楽しさのどちらも、自分で選び直せる。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_autumn_choice"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "秋の目標を達成した。"
+      }
+    },
+    {
+      "Id": "bikeshop_winter_climb",
+      "Day": {
+        "Id": "template_bikeshop_winter_climb",
+        "Title": "冬のロングクライム",
+        "MorningNodeId": "annual_bikeshop_winter_climb_morning",
+        "MorningBackgroundId": "mountain_road_day",
+        "MorningPages": [
+          "彼女が選んだ自転車で、一年でもっとも長い坂へ向かう。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_winter_climb_afternoon",
+        "AfternoonBackgroundId": "mountain_road_day",
+        "AfternoonPages": [
+          "春から積み重ねたものを、二人の走りで確かめよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_winter_climb"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女は自分の意志で、父の自転車を走らせた。"
+      }
+    },
+    {
+      "Id": "bikeshop_winter_final",
+      "Day": {
+        "Id": "template_bikeshop_winter_final",
+        "Title": "次の春の約束",
+        "MorningNodeId": "annual_bikeshop_winter_final_morning",
+        "MorningBackgroundId": "town_street",
+        "MorningPages": [
+          "一年の終わりが近づいた。店先で待つ彼女に、伝えたい言葉がある。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_bikeshop_winter_final_afternoon",
+        "AfternoonBackgroundId": "bikeshop_exterior_evening",
+        "AfternoonPages": [
+          "次の春へ向けて、二人の関係を選ぶ時が来た。"
+        ],
+        "ActionIds": [
+          "evt_annual_bikeshop_final"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "冬の目標を達成し、二人の一年に答えを出した。"
+      }
+    },
+    {
+      "Id": "route_select",
+      "Day": {
+        "Id": "template_route_select",
+        "Title": "この町で始める一年",
+        "MorningNodeId": "annual_route_select_morning",
+        "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": [
+          "この町での新しい一年が始まる。まずは、自転車と一緒に外へ出よう。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_route_select_afternoon",
+        "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": [
+          "どこへ向かうかで、この一年の出会いは変わる。"
+        ],
+        "ActionIds": [
+          "evt_annual_route_select"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "この一年で向き合う相手を選んだ。"
+      }
+    },
+    {
+      "Id": "cafe_spring_intro",
+      "Day": {
+        "Id": "template_cafe_spring_intro",
+        "Title": "雨宿りのカフェ",
+        "MorningNodeId": "annual_cafe_spring_intro_morning",
+        "MorningBackgroundId": "town_street",
+        "MorningPages": [
+          "町を走っていると、春の雨が降り始めた。近くのカフェで雨宿りをする。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_spring_intro_afternoon",
+        "AfternoonBackgroundId": "cafe_interior",
+        "AfternoonPages": [
+          "静かな店内で、マスターが温かい飲み物を用意してくれた。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_meeting"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "カフェのマスターと知り合った。"
+      }
+    },
+    {
+      "Id": "cafe_spring_goal",
+      "Day": {
+        "Id": "template_cafe_spring_goal",
+        "Title": "初めての朝ライド",
+        "MorningNodeId": "annual_cafe_spring_goal_morning",
+        "MorningBackgroundId": "cafe_exterior_day",
+        "MorningPages": [
+          "定休日の朝、彼女と短いライドへ出る約束をした。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_spring_goal_afternoon",
+        "AfternoonBackgroundId": "riverside_day",
+        "AfternoonPages": [
+          "久しぶりに走る彼女のペースを見ながら進もう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_spring_ride"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "春の目標を達成した。"
+      }
+    },
+    {
+      "Id": "cafe_summer_past",
+      "Day": {
+        "Id": "template_cafe_summer_past",
+        "Title": "閉店後の告白",
+        "MorningNodeId": "annual_cafe_summer_past_morning",
+        "MorningBackgroundId": "cafe_exterior_evening",
+        "MorningPages": [
+          "閉店後の店に呼ばれた。彼女には話しておきたいことがあるという。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_summer_past_afternoon",
+        "AfternoonBackgroundId": "cafe_interior_evening",
+        "AfternoonPages": [
+          "誰もいない店で、彼女は過去の別れについて話し始めた。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_past"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女が新しい関係を怖がる理由を知った。"
+      }
+    },
+    {
+      "Id": "cafe_summer_goal",
+      "Day": {
+        "Id": "template_cafe_summer_goal",
+        "Title": "夏のロングライド",
+        "MorningNodeId": "annual_cafe_summer_goal_morning",
+        "MorningBackgroundId": "riverside_day",
+        "MorningPages": [
+          "湖までの長い道へ、二人で挑戦する日が来た。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_summer_goal_afternoon",
+        "AfternoonBackgroundId": "lakeside_day",
+        "AfternoonPages": [
+          "距離だけを追わず、二人に合う走り方を選ぼう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_longride"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "夏の目標を達成した。"
+      }
+    },
+    {
+      "Id": "cafe_autumn_mother",
+      "Day": {
+        "Id": "template_cafe_autumn_mother",
+        "Title": "母から聞く過去",
+        "MorningNodeId": "annual_cafe_autumn_mother_morning",
+        "MorningBackgroundId": "cafe_interior",
+        "MorningPages": [
+          "忙しい店を手伝う中で、彼女の母と話す時間ができた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_autumn_mother_afternoon",
+        "AfternoonBackgroundId": "cafe_interior",
+        "AfternoonPages": [
+          "母は、娘が一人で店を守ってきた日々を教えてくれた。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_mother"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女が守ってきたものを知った。"
+      }
+    },
+    {
+      "Id": "cafe_autumn_goal",
+      "Day": {
+        "Id": "template_cafe_autumn_goal",
+        "Title": "サイクリストの居場所",
+        "MorningNodeId": "annual_cafe_autumn_goal_morning",
+        "MorningBackgroundId": "cafe_exterior_day",
+        "MorningPages": [
+          "彼女から、店の新しい取り組みを相談された。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_autumn_goal_afternoon",
+        "AfternoonBackgroundId": "cafe_interior",
+        "AfternoonPages": [
+          "無理なく続けられる、サイクリストの居場所を一緒に考えよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_newmenu"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "秋の目標を達成した。"
+      }
+    },
+    {
+      "Id": "cafe_winter_memory",
+      "Day": {
+        "Id": "template_cafe_winter_memory",
+        "Title": "思い出の丘",
+        "MorningNodeId": "annual_cafe_winter_memory_morning",
+        "MorningBackgroundId": "hill_road_day",
+        "MorningPages": [
+          "彼女が避けてきた思い出の丘へ、二人で向かうことになった。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_winter_memory_afternoon",
+        "AfternoonBackgroundId": "hill_road_evening",
+        "AfternoonPages": [
+          "過去を消すのではなく、新しい景色を重ねるための時間が始まる。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_memory"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女は過去の思い出と向き合った。"
+      }
+    },
+    {
+      "Id": "cafe_winter_final",
+      "Day": {
+        "Id": "template_cafe_winter_final",
+        "Title": "店の灯りの先へ",
+        "MorningNodeId": "annual_cafe_winter_final_morning",
+        "MorningBackgroundId": "cafe_exterior_evening",
+        "MorningPages": [
+          "一年の終わりが近づく夜、閉店後の店に灯りが残っている。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cafe_winter_final_afternoon",
+        "AfternoonBackgroundId": "cafe_interior_evening",
+        "AfternoonPages": [
+          "穏やかな未来へ進むため、二人の関係に答えを出そう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cafe_final"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "冬の目標を達成し、二人の一年に答えを出した。"
+      }
+    },
+    {
+      "Id": "cousin_spring_intro",
+      "Day": {
+        "Id": "template_cousin_spring_intro",
+        "Title": "町を案内する相棒",
+        "MorningNodeId": "annual_cousin_spring_intro_morning",
+        "MorningBackgroundId": "inn_exterior_day",
+        "MorningPages": [
+          "民宿を手伝う従妹が、町を案内すると待っていた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_spring_intro_afternoon",
+        "AfternoonBackgroundId": "town_street",
+        "AfternoonPages": [
+          "ロードバイクとカメラを持って、二人で町へ出よう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_meeting"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "従妹と町を走る一年が始まった。"
+      }
+    },
+    {
+      "Id": "cousin_spring_goal",
+      "Day": {
+        "Id": "template_cousin_spring_goal",
+        "Title": "春の写真ライド",
+        "MorningNodeId": "annual_cousin_spring_goal_morning",
+        "MorningBackgroundId": "flower_road_day",
+        "MorningPages": [
+          "民宿の紹介写真を撮るため、春の道を巡る。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_spring_goal_afternoon",
+        "AfternoonBackgroundId": "flower_road_day",
+        "AfternoonPages": [
+          "町の魅力と、彼女らしさが残る一枚を探そう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_spring_photo"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "春の目標を達成した。"
+      }
+    },
+    {
+      "Id": "cousin_summer_viral",
+      "Day": {
+        "Id": "template_cousin_summer_viral",
+        "Title": "数字が伸びた夜",
+        "MorningNodeId": "annual_cousin_summer_viral_morning",
+        "MorningBackgroundId": "inn_room_evening",
+        "MorningPages": [
+          "投稿が大きく拡散された後、彼女は画面から離れられなくなっていた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_summer_viral_afternoon",
+        "AfternoonBackgroundId": "inn_room_evening",
+        "AfternoonPages": [
+          "数字の奥にある彼女自身の気持ちを確かめよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_viral"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "SNSの評価に追われる彼女の疲れを知った。"
+      }
+    },
+    {
+      "Id": "cousin_summer_goal",
+      "Day": {
+        "Id": "template_cousin_summer_goal",
+        "Title": "夏のグルメライド",
+        "MorningNodeId": "annual_cousin_summer_goal_morning",
+        "MorningBackgroundId": "market_street_day",
+        "MorningPages": [
+          "町の食を紹介するライドへ出たが、予定どおりには進まない。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_summer_goal_afternoon",
+        "AfternoonBackgroundId": "market_street_day",
+        "AfternoonPages": [
+          "投稿の予定より、今日の時間を大切にしよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_foodride"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "夏の目標を達成した。"
+      }
+    },
+    {
+      "Id": "cousin_autumn_burnout",
+      "Day": {
+        "Id": "template_cousin_autumn_burnout",
+        "Title": "笑えない配信",
+        "MorningNodeId": "annual_cousin_autumn_burnout_morning",
+        "MorningBackgroundId": "inn_room_evening",
+        "MorningPages": [
+          "配信前の彼女は、いつもの笑顔を作れずにいた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_autumn_burnout_afternoon",
+        "AfternoonBackgroundId": "inn_room_evening",
+        "AfternoonPages": [
+          "期待される姿を演じ続けてきた彼女を休ませよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_burnout"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女は発信を休み、自分の疲れを認めた。"
+      }
+    },
+    {
+      "Id": "cousin_autumn_goal",
+      "Day": {
+        "Id": "template_cousin_autumn_goal",
+        "Title": "町のための発信",
+        "MorningNodeId": "annual_cousin_autumn_goal_morning",
+        "MorningBackgroundId": "town_square_day",
+        "MorningPages": [
+          "数字ではなく町の人へ届く、小さな企画を始める。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_autumn_goal_afternoon",
+        "AfternoonBackgroundId": "town_square_day",
+        "AfternoonPages": [
+          "参加する人と一緒に町の魅力を作ろう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_town"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "秋の目標を達成した。"
+      }
+    },
+    {
+      "Id": "cousin_winter_offline",
+      "Day": {
+        "Id": "template_cousin_winter_offline",
+        "Title": "カメラを置いた一日",
+        "MorningNodeId": "annual_cousin_winter_offline_morning",
+        "MorningBackgroundId": "coast_road_day",
+        "MorningPages": [
+          "端末もカメラも持たず、冬の海沿いへ出かける。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_winter_offline_afternoon",
+        "AfternoonBackgroundId": "coast_road_day",
+        "AfternoonPages": [
+          "誰にも見せない景色を、二人だけで楽しもう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_offline"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女は評価から離れ、自分のために走った。"
+      }
+    },
+    {
+      "Id": "cousin_winter_final",
+      "Day": {
+        "Id": "template_cousin_winter_final",
+        "Title": "本当の自分で隣へ",
+        "MorningNodeId": "annual_cousin_winter_final_morning",
+        "MorningBackgroundId": "inn_exterior_evening",
+        "MorningPages": [
+          "一年の終わり、彼女は無理に笑わない自分で来年を迎えようとしている。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_cousin_winter_final_afternoon",
+        "AfternoonBackgroundId": "inn_exterior_evening",
+        "AfternoonPages": [
+          "目の前の彼女へ、これからの関係を伝えよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_cousin_final"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "冬の目標を達成し、二人の一年に答えを出した。"
+      }
+    },
+    {
+      "Id": "announcer_spring_intro",
+      "Day": {
+        "Id": "template_announcer_spring_intro",
+        "Title": "取材対象との出会い",
+        "MorningNodeId": "annual_announcer_spring_intro_morning",
+        "MorningBackgroundId": "town_square_day",
+        "MorningPages": [
+          "地方局の取材班が、移住者と自転車の話を聞きに来た。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_spring_intro_afternoon",
+        "AfternoonBackgroundId": "town_square_day",
+        "AfternoonPages": [
+          "この町を退屈そうに見る若手アナウンサーと話そう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_meeting"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "若手女子アナとの取材が始まった。"
+      }
+    },
+    {
+      "Id": "announcer_spring_goal",
+      "Day": {
+        "Id": "template_announcer_spring_goal",
+        "Title": "春の観光PR",
+        "MorningNodeId": "annual_announcer_spring_goal_morning",
+        "MorningBackgroundId": "flower_road_day",
+        "MorningPages": [
+          "桜の道を巡る観光特集に協力する。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_spring_goal_afternoon",
+        "AfternoonBackgroundId": "flower_road_day",
+        "AfternoonPages": [
+          "決まり文句ではない町の魅力を探そう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_spring_pr"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "春の目標を達成した。"
+      }
+    },
+    {
+      "Id": "announcer_summer_regret",
+      "Day": {
+        "Id": "template_announcer_summer_regret",
+        "Title": "都会への未練",
+        "MorningNodeId": "annual_announcer_summer_regret_morning",
+        "MorningBackgroundId": "cafe_interior_evening",
+        "MorningPages": [
+          "放送後の彼女は、都会の同期の活躍を見つめていた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_summer_regret_afternoon",
+        "AfternoonBackgroundId": "cafe_interior_evening",
+        "AfternoonPages": [
+          "異動を失敗だと思う彼女の本音を聞こう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_regret"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女が抱える挫折感を知った。"
+      }
+    },
+    {
+      "Id": "announcer_summer_goal",
+      "Day": {
+        "Id": "template_announcer_summer_goal",
+        "Title": "夏の地域ライド取材",
+        "MorningNodeId": "annual_announcer_summer_goal_morning",
+        "MorningBackgroundId": "coast_road_day",
+        "MorningPages": [
+          "海沿いの地域ライド取材へ向かう。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_summer_goal_afternoon",
+        "AfternoonBackgroundId": "coast_road_day",
+        "AfternoonPages": [
+          "予定外の雨の中で、伝えるべき話を探そう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_summer_interview"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "夏の目標を達成した。"
+      }
+    },
+    {
+      "Id": "announcer_autumn_camera",
+      "Day": {
+        "Id": "template_announcer_autumn_camera",
+        "Title": "カメラの外の言葉",
+        "MorningNodeId": "annual_announcer_autumn_camera_morning",
+        "MorningBackgroundId": "station_evening",
+        "MorningPages": [
+          "局から届いた修正案に、彼女は納得できずにいた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_autumn_camera_afternoon",
+        "AfternoonBackgroundId": "station_evening",
+        "AfternoonPages": [
+          "町の言葉を残したい彼女を支えよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_camera"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女は自分の企画意図と向き合った。"
+      }
+    },
+    {
+      "Id": "announcer_autumn_goal",
+      "Day": {
+        "Id": "template_announcer_autumn_goal",
+        "Title": "町からの生放送",
+        "MorningNodeId": "annual_announcer_autumn_goal_morning",
+        "MorningBackgroundId": "town_square_day",
+        "MorningPages": [
+          "秋祭りの生放送を彼女が中心となって担当する。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_autumn_goal_afternoon",
+        "AfternoonBackgroundId": "town_square_day",
+        "AfternoonPages": [
+          "彼女自身の言葉で町の今を伝えよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_autumn_broadcast"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "秋の目標を達成した。"
+      }
+    },
+    {
+      "Id": "announcer_winter_choice",
+      "Day": {
+        "Id": "template_announcer_winter_choice",
+        "Title": "残る理由",
+        "MorningNodeId": "annual_announcer_winter_choice_morning",
+        "MorningBackgroundId": "hill_overlook_winter",
+        "MorningPages": [
+          "彼女は都会へ戻る打診を受けたと話した。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_winter_choice_afternoon",
+        "AfternoonBackgroundId": "hill_overlook_winter",
+        "AfternoonPages": [
+          "肩書きではなく、彼女自身の選択を確かめよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_choice"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女はこの町で続けたい仕事を見つけた。"
+      }
+    },
+    {
+      "Id": "announcer_winter_final",
+      "Day": {
+        "Id": "template_announcer_winter_final",
+        "Title": "この町で伝えたい未来",
+        "MorningNodeId": "annual_announcer_winter_final_morning",
+        "MorningBackgroundId": "station_evening",
+        "MorningPages": [
+          "彼女は地域を巡る番組を来年も続けると決めた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_announcer_winter_final_afternoon",
+        "AfternoonBackgroundId": "station_evening",
+        "AfternoonPages": [
+          "自分の声で未来を伝える彼女へ気持ちを伝えよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_announcer_final"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "冬の目標を達成し、二人の一年に答えを出した。"
+      }
+    },
+    {
+      "Id": "rival_spring_intro",
+      "Day": {
+        "Id": "template_rival_spring_intro",
+        "Title": "画面の向こうの挑戦者",
+        "MorningNodeId": "annual_rival_spring_intro_morning",
+        "MorningBackgroundId": "grandmother_room_evening",
+        "MorningPages": [
+          "走行記録アプリに見知らぬ強豪から挑戦状が届いた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_spring_intro_afternoon",
+        "AfternoonBackgroundId": "grandmother_room_evening",
+        "AfternoonPages": [
+          "毎週同じ区間で競う提案へ返事をしよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_challenge"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "ネットのライバルとの競争が始まった。"
+      }
+    },
+    {
+      "Id": "rival_spring_goal",
+      "Day": {
+        "Id": "template_rival_spring_goal",
+        "Title": "春のタイム更新",
+        "MorningNodeId": "annual_rival_spring_goal_morning",
+        "MorningBackgroundId": "riverside_day",
+        "MorningPages": [
+          "目標区間の記録を更新する日が来た。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_spring_goal_afternoon",
+        "AfternoonBackgroundId": "riverside_day",
+        "AfternoonPages": [
+          "一秒先を走る相手へ、次の一歩を返そう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_spring_time"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "春の目標を達成した。"
+      }
+    },
+    {
+      "Id": "rival_summer_truth",
+      "Day": {
+        "Id": "template_rival_summer_truth",
+        "Title": "最速アバターの素顔",
+        "MorningNodeId": "annual_rival_summer_truth_morning",
+        "MorningBackgroundId": "online_room_night",
+        "MorningPages": [
+          "仲介者を通じ、画面の向こうの相手と話すことになった。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_summer_truth_afternoon",
+        "AfternoonBackgroundId": "online_room_night",
+        "AfternoonPages": [
+          "外を走る話を避ける彼女の今を知ろう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_truth"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "事故後の彼女が抱えるものを知った。"
+      }
+    },
+    {
+      "Id": "rival_summer_goal",
+      "Day": {
+        "Id": "template_rival_summer_goal",
+        "Title": "夏の共同トレーニング",
+        "MorningNodeId": "annual_rival_summer_goal_morning",
+        "MorningBackgroundId": "online_room_night",
+        "MorningPages": [
+          "同じ仮想コースを同期して走る長い練習が始まる。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_summer_goal_afternoon",
+        "AfternoonBackgroundId": "online_room_night",
+        "AfternoonPages": [
+          "競うだけでなく、二人で完走する方法を選ぼう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_summer_training"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "夏の目標を達成した。"
+      }
+    },
+    {
+      "Id": "rival_autumn_fear",
+      "Day": {
+        "Id": "template_rival_autumn_fear",
+        "Title": "道路への恐怖",
+        "MorningNodeId": "annual_rival_autumn_fear_morning",
+        "MorningBackgroundId": "quiet_road_evening",
+        "MorningPages": [
+          "人の少ない道で会った彼女は、自転車を押したまま動けずにいた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_autumn_fear_afternoon",
+        "AfternoonBackgroundId": "quiet_road_evening",
+        "AfternoonPages": [
+          "速さではなく、戻るための一歩を支えよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_fear"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女は道路への恐怖を言葉にした。"
+      }
+    },
+    {
+      "Id": "rival_autumn_goal",
+      "Day": {
+        "Id": "template_rival_autumn_goal",
+        "Title": "最初の公道ライド",
+        "MorningNodeId": "annual_rival_autumn_goal_morning",
+        "MorningBackgroundId": "quiet_road_day",
+        "MorningPages": [
+          "交通の少ない早朝、彼女は再びペダルへ足をかけた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_autumn_goal_afternoon",
+        "AfternoonBackgroundId": "quiet_road_day",
+        "AfternoonPages": [
+          "自分で戻ってくるための短い道を一緒に走ろう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_autumn_ride"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "秋の目標を達成した。"
+      }
+    },
+    {
+      "Id": "rival_winter_race",
+      "Day": {
+        "Id": "template_rival_winter_race",
+        "Title": "現実のスタートライン",
+        "MorningNodeId": "annual_rival_winter_race_morning",
+        "MorningBackgroundId": "race_start_winter",
+        "MorningPages": [
+          "小さな記録会で、二人は同じスタートラインに立った。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_winter_race_afternoon",
+        "AfternoonBackgroundId": "race_start_winter",
+        "AfternoonPages": [
+          "画面の中ではない競争を、二人で完走しよう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_real_race"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "彼女は現実の記録会を走り切った。"
+      }
+    },
+    {
+      "Id": "rival_winter_final",
+      "Day": {
+        "Id": "template_rival_winter_final",
+        "Title": "画面を越えた再戦",
+        "MorningNodeId": "annual_rival_winter_final_morning",
+        "MorningBackgroundId": "hill_overlook_winter",
+        "MorningPages": [
+          "彼女は怖さを抱えたままでも、外を走り続けると決めた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "annual_rival_winter_final_afternoon",
+        "AfternoonBackgroundId": "hill_overlook_winter",
+        "AfternoonPages": [
+          "競争相手から隣を走る相手へ、二人の答えを出そう。"
+        ],
+        "ActionIds": [
+          "evt_annual_rival_final"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "冬の目標を達成し、二人の一年に答えを出した。"
+      }
+    },
+    {
+      "Id": "regional_grandmother_advice",
+      "Day": {
+        "Id": "template_regional_grandmother_advice",
+        "Title": "祖母の町案内",
+        "MorningNodeId": "regional_grandmother_advice_morning",
+        "MorningBackgroundId": "grandmother_room_morning",
+        "MorningPages": [
+          "祖母が、この町で人とつながるためのヒントを話してくれた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_grandmother_advice_afternoon",
+        "AfternoonBackgroundId": "grandmother_room_morning",
+        "AfternoonPages": [
+          "地図にない町の話を聞こう。"
+        ],
+        "ActionIds": [
+          "evt_regional_grandmother_advice"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "町を知るための手がかりを得た。"
+      }
+    },
+    {
+      "Id": "regional_bikeshop_workshop",
+      "Day": {
+        "Id": "template_regional_bikeshop_workshop",
+        "Title": "修理教室の手伝い",
+        "MorningNodeId": "regional_bikeshop_workshop_morning",
+        "MorningBackgroundId": "bikeshop_interior_day",
+        "MorningPages": [
+          "自転車屋で地域向けの修理教室が開かれる。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_bikeshop_workshop_afternoon",
+        "AfternoonBackgroundId": "bikeshop_interior_day",
+        "AfternoonPages": [
+          "彼女と一緒に教室を手伝おう。"
+        ],
+        "ActionIds": [
+          "evt_regional_bikeshop_workshop"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "店の技術を地域へ伝えた。"
+      }
+    },
+    {
+      "Id": "regional_cafe_menu",
+      "Day": {
+        "Id": "template_regional_cafe_menu",
+        "Title": "地域ライドの軽食",
+        "MorningNodeId": "regional_cafe_menu_morning",
+        "MorningBackgroundId": "cafe_interior_day",
+        "MorningPages": [
+          "カフェで地域食材を使った新メニューの相談が始まった。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_cafe_menu_afternoon",
+        "AfternoonBackgroundId": "cafe_interior_day",
+        "AfternoonPages": [
+          "サイクリストが立ち寄る理由を一緒に作ろう。"
+        ],
+        "ActionIds": [
+          "evt_regional_cafe_menu"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "カフェと地域ライドをつないだ。"
+      }
+    },
+    {
+      "Id": "regional_cousin_campaign",
+      "Day": {
+        "Id": "template_regional_cousin_campaign",
+        "Title": "町おこしSNS企画",
+        "MorningNodeId": "regional_cousin_campaign_morning",
+        "MorningBackgroundId": "town_square_day",
+        "MorningPages": [
+          "町おこし担当から、地域発信企画への協力を頼まれた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_cousin_campaign_afternoon",
+        "AfternoonBackgroundId": "town_square_day",
+        "AfternoonPages": [
+          "従妹と町の魅力を取材して発信しよう。"
+        ],
+        "ActionIds": [
+          "evt_regional_cousin_campaign"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "町の魅力を自分たちの言葉で発信した。"
+      }
+    },
+    {
+      "Id": "regional_announcer_feature",
+      "Day": {
+        "Id": "template_regional_announcer_feature",
+        "Title": "地域特集の追加取材",
+        "MorningNodeId": "regional_announcer_feature_morning",
+        "MorningBackgroundId": "town_square_day",
+        "MorningPages": [
+          "ベテランカメラマンから追加取材の提案が届いた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_announcer_feature_afternoon",
+        "AfternoonBackgroundId": "town_square_day",
+        "AfternoonPages": [
+          "女子アナと地域の声を拾いに行こう。"
+        ],
+        "ActionIds": [
+          "evt_regional_announcer_feature"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "予定外の声を地域特集へ加えた。"
+      }
+    },
+    {
+      "Id": "regional_rival_stream",
+      "Day": {
+        "Id": "template_regional_rival_stream",
+        "Title": "VTuberの合同配信",
+        "MorningNodeId": "regional_rival_stream_morning",
+        "MorningBackgroundId": "grandmother_room_evening",
+        "MorningPages": [
+          "ロードバイク系VTuberから合同配信の連絡が来た。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_rival_stream_afternoon",
+        "AfternoonBackgroundId": "grandmother_room_evening",
+        "AfternoonPages": [
+          "ライバルと走った道と再起の話を伝えよう。"
+        ],
+        "ActionIds": [
+          "evt_regional_rival_stream"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "オンラインの視聴者へ町と再起の物語を届けた。"
+      }
+    },
+    {
+      "Id": "regional_fox_request",
+      "Day": {
+        "Id": "template_regional_fox_request",
+        "Title": "神社の狐の依頼",
+        "MorningNodeId": "regional_fox_request_morning",
+        "MorningBackgroundId": "shrine_evening",
+        "MorningPages": [
+          "町で得た縁に導かれ、夕暮れの神社へ向かった。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_fox_request_afternoon",
+        "AfternoonBackgroundId": "shrine_evening",
+        "AfternoonPages": [
+          "不思議な狐の頼みを聞こう。"
+        ],
+        "ActionIds": [
+          "evt_regional_fox_request"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "狐から町の縁を結ぶ依頼を受けた。"
+      }
+    },
+    {
+      "Id": "regional_fox_completion",
+      "Day": {
+        "Id": "template_regional_fox_completion",
+        "Title": "縁を結ぶ祭り",
+        "MorningNodeId": "regional_fox_completion_morning",
+        "MorningBackgroundId": "shrine_evening",
+        "MorningPages": [
+          "一年で築いた縁を神社へ持ち寄る日が来た。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "regional_fox_completion_afternoon",
+        "AfternoonBackgroundId": "shrine_evening",
+        "AfternoonPages": [
+          "町の人たちと小さな祭りを完成させよう。"
+        ],
+        "ActionIds": [
+          "evt_regional_fox_completion"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "狐の依頼を達成し、町の縁を結んだ。"
       }
     }
   ],
   "Rules": [
-    { "Id": "spring_review", "TemplateId": "season_review", "SpecialSlotId": "season_spring_review", "HolidayMode": "any", "Priority": 100 },
-    { "Id": "summer_review", "TemplateId": "season_review", "SpecialSlotId": "season_summer_review", "HolidayMode": "any", "Priority": 110 },
-    { "Id": "autumn_review", "TemplateId": "season_review", "SpecialSlotId": "season_autumn_review", "HolidayMode": "any", "Priority": 120 },
-    { "Id": "winter_review", "TemplateId": "season_review", "SpecialSlotId": "season_winter_review", "HolidayMode": "any", "Priority": 130 },
-    { "Id": "annual_ending", "TemplateId": "annual_ending", "SpecialSlotId": "annual_ending", "HolidayMode": "any", "Priority": 1000 }
+    {
+      "Id": "spring_review",
+      "TemplateId": "season_review",
+      "SpecialSlotId": "season_spring_review",
+      "HolidayMode": "any",
+      "Priority": 100
+    },
+    {
+      "Id": "summer_review",
+      "TemplateId": "season_review",
+      "SpecialSlotId": "season_summer_review",
+      "HolidayMode": "any",
+      "Priority": 110
+    },
+    {
+      "Id": "autumn_review",
+      "TemplateId": "season_review",
+      "SpecialSlotId": "season_autumn_review",
+      "HolidayMode": "any",
+      "Priority": 120
+    },
+    {
+      "Id": "winter_review",
+      "TemplateId": "season_review",
+      "SpecialSlotId": "season_winter_review",
+      "HolidayMode": "any",
+      "Priority": 130
+    },
+    {
+      "Id": "annual_ending",
+      "TemplateId": "annual_ending",
+      "SpecialSlotId": "annual_ending",
+      "HolidayMode": "any",
+      "Priority": 1000
+    }
+  ],
+  "ConditionalEvents": [
+    {
+      "Id": "annual_route_select",
+      "TemplateId": "route_select",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 1000,
+      "StartYear": 2026,
+      "StartMonth": 4,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 4,
+      "EndDay": 7,
+      "Conditions": []
+    },
+    {
+      "Id": "annual_bikeshop_spring_intro",
+      "TemplateId": "bikeshop_spring_intro",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 300,
+      "StartYear": 2026,
+      "StartMonth": 4,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 4,
+      "EndDay": 15,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_bikeshop_annual"
+        }
+      ]
+    },
+    {
+      "Id": "annual_bikeshop_spring_goal",
+      "TemplateId": "bikeshop_spring_goal",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 310,
+      "StartYear": 2026,
+      "StartMonth": 6,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 6,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_bikeshop",
+          "Value": 1
+        }
+      ]
+    },
+    {
+      "Id": "annual_bikeshop_summer_offer",
+      "TemplateId": "bikeshop_summer_offer",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 320,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_bikeshop",
+          "Value": 2
+        }
+      ]
+    },
+    {
+      "Id": "annual_bikeshop_summer_goal",
+      "TemplateId": "bikeshop_summer_goal",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 330,
+      "StartYear": 2026,
+      "StartMonth": 9,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 9,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_bikeshop",
+          "Value": 3
+        }
+      ]
+    },
+    {
+      "Id": "annual_bikeshop_autumn_memory",
+      "TemplateId": "bikeshop_autumn_memory",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 340,
+      "StartYear": 2026,
+      "StartMonth": 10,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 10,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_bikeshop",
+          "Value": 4
+        }
+      ]
+    },
+    {
+      "Id": "annual_bikeshop_autumn_goal",
+      "TemplateId": "bikeshop_autumn_goal",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 350,
+      "StartYear": 2026,
+      "StartMonth": 12,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 12,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_bikeshop",
+          "Value": 5
+        }
+      ]
+    },
+    {
+      "Id": "annual_bikeshop_winter_climb",
+      "TemplateId": "bikeshop_winter_climb",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 360,
+      "StartYear": 2027,
+      "StartMonth": 1,
+      "StartDay": 15,
+      "EndYear": 2027,
+      "EndMonth": 1,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_bikeshop",
+          "Value": 6
+        }
+      ]
+    },
+    {
+      "Id": "annual_bikeshop_winter_final",
+      "TemplateId": "bikeshop_winter_final",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 370,
+      "StartYear": 2027,
+      "StartMonth": 3,
+      "StartDay": 1,
+      "EndYear": 2027,
+      "EndMonth": 3,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_bikeshop",
+          "Value": 7
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_spring_intro",
+      "TemplateId": "cafe_spring_intro",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 400,
+      "StartYear": 2026,
+      "StartMonth": 4,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 4,
+      "EndDay": 15,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_cafe_annual"
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_spring_goal",
+      "TemplateId": "cafe_spring_goal",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 410,
+      "StartYear": 2026,
+      "StartMonth": 6,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 6,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cafe_master",
+          "Value": 1
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_summer_past",
+      "TemplateId": "cafe_summer_past",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 420,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cafe_master",
+          "Value": 2
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_summer_goal",
+      "TemplateId": "cafe_summer_goal",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 430,
+      "StartYear": 2026,
+      "StartMonth": 9,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 9,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cafe_master",
+          "Value": 3
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_autumn_mother",
+      "TemplateId": "cafe_autumn_mother",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 440,
+      "StartYear": 2026,
+      "StartMonth": 10,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 10,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cafe_master",
+          "Value": 4
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_autumn_goal",
+      "TemplateId": "cafe_autumn_goal",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 450,
+      "StartYear": 2026,
+      "StartMonth": 12,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 12,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cafe_master",
+          "Value": 5
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_winter_memory",
+      "TemplateId": "cafe_winter_memory",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 460,
+      "StartYear": 2027,
+      "StartMonth": 1,
+      "StartDay": 15,
+      "EndYear": 2027,
+      "EndMonth": 1,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cafe_master",
+          "Value": 6
+        }
+      ]
+    },
+    {
+      "Id": "annual_cafe_winter_final",
+      "TemplateId": "cafe_winter_final",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 470,
+      "StartYear": 2027,
+      "StartMonth": 3,
+      "StartDay": 1,
+      "EndYear": 2027,
+      "EndMonth": 3,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cafe_master",
+          "Value": 7
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_spring_intro",
+      "TemplateId": "cousin_spring_intro",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 500,
+      "StartYear": 2026,
+      "StartMonth": 4,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 4,
+      "EndDay": 15,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_cousin_annual"
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_spring_goal",
+      "TemplateId": "cousin_spring_goal",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 510,
+      "StartYear": 2026,
+      "StartMonth": 6,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 6,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cousin",
+          "Value": 1
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_summer_viral",
+      "TemplateId": "cousin_summer_viral",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 520,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cousin",
+          "Value": 2
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_summer_goal",
+      "TemplateId": "cousin_summer_goal",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 530,
+      "StartYear": 2026,
+      "StartMonth": 9,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 9,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cousin",
+          "Value": 3
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_autumn_burnout",
+      "TemplateId": "cousin_autumn_burnout",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 540,
+      "StartYear": 2026,
+      "StartMonth": 10,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 10,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cousin",
+          "Value": 4
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_autumn_goal",
+      "TemplateId": "cousin_autumn_goal",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 550,
+      "StartYear": 2026,
+      "StartMonth": 12,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 12,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cousin",
+          "Value": 5
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_winter_offline",
+      "TemplateId": "cousin_winter_offline",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 560,
+      "StartYear": 2027,
+      "StartMonth": 1,
+      "StartDay": 15,
+      "EndYear": 2027,
+      "EndMonth": 1,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cousin",
+          "Value": 6
+        }
+      ]
+    },
+    {
+      "Id": "annual_cousin_winter_final",
+      "TemplateId": "cousin_winter_final",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 570,
+      "StartYear": 2027,
+      "StartMonth": 3,
+      "StartDay": 1,
+      "EndYear": 2027,
+      "EndMonth": 3,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_cousin",
+          "Value": 7
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_spring_intro",
+      "TemplateId": "announcer_spring_intro",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 600,
+      "StartYear": 2026,
+      "StartMonth": 4,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 4,
+      "EndDay": 15,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_announcer_annual"
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_spring_goal",
+      "TemplateId": "announcer_spring_goal",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 610,
+      "StartYear": 2026,
+      "StartMonth": 6,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 6,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_announcer",
+          "Value": 1
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_summer_regret",
+      "TemplateId": "announcer_summer_regret",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 620,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_announcer",
+          "Value": 2
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_summer_goal",
+      "TemplateId": "announcer_summer_goal",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 630,
+      "StartYear": 2026,
+      "StartMonth": 9,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 9,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_announcer",
+          "Value": 3
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_autumn_camera",
+      "TemplateId": "announcer_autumn_camera",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 640,
+      "StartYear": 2026,
+      "StartMonth": 10,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 10,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_announcer",
+          "Value": 4
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_autumn_goal",
+      "TemplateId": "announcer_autumn_goal",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 650,
+      "StartYear": 2026,
+      "StartMonth": 12,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 12,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_announcer",
+          "Value": 5
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_winter_choice",
+      "TemplateId": "announcer_winter_choice",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 660,
+      "StartYear": 2027,
+      "StartMonth": 1,
+      "StartDay": 15,
+      "EndYear": 2027,
+      "EndMonth": 1,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_announcer",
+          "Value": 6
+        }
+      ]
+    },
+    {
+      "Id": "annual_announcer_winter_final",
+      "TemplateId": "announcer_winter_final",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 670,
+      "StartYear": 2027,
+      "StartMonth": 3,
+      "StartDay": 1,
+      "EndYear": 2027,
+      "EndMonth": 3,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_announcer",
+          "Value": 7
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_spring_intro",
+      "TemplateId": "rival_spring_intro",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 700,
+      "StartYear": 2026,
+      "StartMonth": 4,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 4,
+      "EndDay": 15,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_online_rival_annual"
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_spring_goal",
+      "TemplateId": "rival_spring_goal",
+      "SeasonId": "spring",
+      "HolidayMode": "any",
+      "Priority": 710,
+      "StartYear": 2026,
+      "StartMonth": 6,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 6,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_online_rival",
+          "Value": 1
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_summer_truth",
+      "TemplateId": "rival_summer_truth",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 720,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_online_rival",
+          "Value": 2
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_summer_goal",
+      "TemplateId": "rival_summer_goal",
+      "SeasonId": "summer",
+      "HolidayMode": "any",
+      "Priority": 730,
+      "StartYear": 2026,
+      "StartMonth": 9,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 9,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_online_rival",
+          "Value": 3
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_autumn_fear",
+      "TemplateId": "rival_autumn_fear",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 740,
+      "StartYear": 2026,
+      "StartMonth": 10,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 10,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_online_rival",
+          "Value": 4
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_autumn_goal",
+      "TemplateId": "rival_autumn_goal",
+      "SeasonId": "autumn",
+      "HolidayMode": "any",
+      "Priority": 750,
+      "StartYear": 2026,
+      "StartMonth": 12,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 12,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_online_rival",
+          "Value": 5
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_winter_race",
+      "TemplateId": "rival_winter_race",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 760,
+      "StartYear": 2027,
+      "StartMonth": 1,
+      "StartDay": 15,
+      "EndYear": 2027,
+      "EndMonth": 1,
+      "EndDay": 31,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_online_rival",
+          "Value": 6
+        }
+      ]
+    },
+    {
+      "Id": "annual_rival_winter_final",
+      "TemplateId": "rival_winter_final",
+      "SeasonId": "winter",
+      "HolidayMode": "any",
+      "Priority": 770,
+      "StartYear": 2027,
+      "StartMonth": 3,
+      "StartDay": 1,
+      "EndYear": 2027,
+      "EndMonth": 3,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_step",
+          "Id": "hero_online_rival",
+          "Value": 7
+        }
+      ]
+    },
+    {
+      "Id": "regional_grandmother_advice",
+      "TemplateId": "regional_grandmother_advice",
+      "HolidayMode": "any",
+      "Priority": 200,
+      "StartYear": 2026,
+      "StartMonth": 4,
+      "StartDay": 10,
+      "EndYear": 2026,
+      "EndMonth": 4,
+      "EndDay": 30
+    },
+    {
+      "Id": "regional_bikeshop_workshop",
+      "TemplateId": "regional_bikeshop_workshop",
+      "HolidayMode": "any",
+      "Priority": 295,
+      "StartYear": 2026,
+      "StartMonth": 5,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 5,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_bikeshop_annual"
+        }
+      ]
+    },
+    {
+      "Id": "regional_cafe_menu",
+      "TemplateId": "regional_cafe_menu",
+      "HolidayMode": "any",
+      "Priority": 395,
+      "StartYear": 2026,
+      "StartMonth": 5,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 5,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_cafe_annual"
+        }
+      ]
+    },
+    {
+      "Id": "regional_cousin_campaign",
+      "TemplateId": "regional_cousin_campaign",
+      "HolidayMode": "any",
+      "Priority": 495,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 9,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_cousin_annual"
+        }
+      ]
+    },
+    {
+      "Id": "regional_announcer_feature",
+      "TemplateId": "regional_announcer_feature",
+      "HolidayMode": "any",
+      "Priority": 595,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 9,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_announcer_annual"
+        }
+      ]
+    },
+    {
+      "Id": "regional_rival_stream",
+      "TemplateId": "regional_rival_stream",
+      "HolidayMode": "any",
+      "Priority": 695,
+      "StartYear": 2026,
+      "StartMonth": 7,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 7,
+      "EndDay": 9,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "route_online_rival_annual"
+        }
+      ]
+    },
+    {
+      "Id": "regional_fox_request",
+      "TemplateId": "regional_fox_request",
+      "HolidayMode": "any",
+      "Priority": 200,
+      "StartYear": 2026,
+      "StartMonth": 10,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 10,
+      "EndDay": 9,
+      "Conditions": [
+        {
+          "Type": "completed_quest_count",
+          "Value": 2
+        }
+      ]
+    },
+    {
+      "Id": "regional_fox_completion",
+      "TemplateId": "regional_fox_completion",
+      "HolidayMode": "any",
+      "Priority": 200,
+      "StartYear": 2027,
+      "StartMonth": 2,
+      "StartDay": 1,
+      "EndYear": 2027,
+      "EndMonth": 2,
+      "EndDay": 20,
+      "Conditions": [
+        {
+          "Type": "route_flag",
+          "Id": "quest_fox_shrine_started"
+        },
+        {
+          "Type": "regional_contribution",
+          "Value": 3
+        }
+      ]
+    }
   ]
 }

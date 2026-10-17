@@ -26,7 +26,8 @@ namespace Scene.MainGrand
             Shop,
             Equipment,
             Races,
-            RaceResult
+            RaceResult,
+            Skip
         }
 
         private async void Start()
@@ -37,7 +38,7 @@ namespace Scene.MainGrand
                 view.Init(HandleSelection,
                     () => Advance(GameFlowCompletionType.NovelClosed).Forget(),
                     () => { }, () => Advance(GameFlowCompletionType.SummaryClosed).Forget());
-                view.BindSessionControls(() => Save().Forget(), () => ReturnToTitle().Forget(), ShowBikeHub);
+                view.BindSessionControls(() => Save().Forget(), () => ReturnToTitle().Forget(), ShowBikeHub, ShowSkip);
                 StandardUIManager.Instance?.HideLoading();
                 Render();
             }
@@ -49,6 +50,8 @@ namespace Scene.MainGrand
             var request = GameFlowManager.Instance.BuildNextRequest();
             _shownRevision = request.Revision;
             view.Render(request, GameSession.PlayerData, GameFlowManager.Instance.GetActionOptions(), "");
+            var skip = GameFlowManager.Instance.GetSkipPreview(7);
+            view.SetSkipControl(skip.SkippableDays > 0, "日程");
         }
 
         private void HandleSelection(string id)
@@ -70,6 +73,16 @@ namespace Scene.MainGrand
             if (id == "menu:shop") { ShowShop(); return; }
             if (id == "menu:equipment") { ShowEquipment(); return; }
             if (id == "menu:races") { ShowRaces(); return; }
+            if (id == "skip:confirm")
+            {
+                if (GameFlowManager.Instance.SkipNormalDays(7))
+                {
+                    _utilityScreen = UtilityScreen.None;
+                    view.SetMessage("通常日を進めました。重要な日の前で停止しています。");
+                    Render();
+                }
+                return;
+            }
             if (id.StartsWith("buy:", StringComparison.Ordinal))
             {
                 var result = GameFlowManager.Instance.PurchasePart(id.Substring(4));
@@ -167,6 +180,25 @@ namespace Scene.MainGrand
             ShowUtility("レース", "挑戦すると結果が記録されます。同じレースへの挑戦は1日1回です。失敗してもゲームは終了しません。", options);
         }
 
+        private void ShowSkip()
+        {
+            if (_busy) return;
+            var preview = GameFlowManager.Instance.GetSkipPreview(7);
+            if (preview.SkippableDays <= 0)
+            {
+                view.SetMessage("ここでは日程を進められません。" + preview.StopReason + "を確認してください。");
+                return;
+            }
+            _utilityScreen = UtilityScreen.Skip;
+            ShowUtility("通常日を進める",
+                $"{preview.SkippableDays}日分の通常日を省略し、{preview.StopDateText}で停止します。\n停止理由：{preview.StopReason}\n仕事・行動・好感度などの日次報酬は加算されません。",
+                new[]
+                {
+                    Option("skip:confirm", $"{preview.SkippableDays}日進める", "体力は回復します"),
+                    Option("menu:close", "キャンセル", "現在の日へ戻る")
+                });
+        }
+
         private void RunRace(string raceId)
         {
             var result = GameFlowManager.Instance.RunRace(raceId);
@@ -258,6 +290,7 @@ namespace Scene.MainGrand
                 {
                     CompletionType = completion, SelectedActionId = action, SelectedChoiceId = choice, ExpectedRevision = _shownRevision
                 });
+                await GameFlowManager.Instance.PersistProfileProgress();
                 Render();
                 // One click cannot cascade through newly displayed panels in the same frame.
                 await UniTask.Delay(150, ignoreTimeScale: true, cancellationToken: this.GetCancellationTokenOnDestroy());

@@ -29,12 +29,15 @@ namespace System.GameSession
 
         // The three-day prototype stores its exact interaction checkpoint.
         public int FlowVersion;
+        public string RunId;
         public string CampaignId;
         public int ContentVersion;
         public System.Flow.GameFlowPhase SavedPhase = System.Flow.GameFlowPhase.Novel;
         public int NarrativePage;
         public string SelectedActionId;
         public string SelectedChoiceId;
+        public string ResolvedDayEventId;
+        public string ResolvedDayKey;
         public int Revision;
         public int Stamina = 100;
         public int[] DayStartStats;
@@ -44,6 +47,12 @@ namespace System.GameSession
         public List<string> ActiveRouteFlags = new();
         public List<string> MetHeroineIds = new();
         public List<HeroineProgress> HeroineProgresses = new();
+
+        // ========= 地域活動・依頼 =========
+        public int RegionalContribution;
+        public int PublicAwareness;
+        public int FoxFavor;
+        public List<string> CompletedQuestIds = new();
 
         // ========= 所持機材・現在装備 =========
         public List<string> OwnedPartIds = new();

@@ -17,6 +17,7 @@ namespace CyclingLove.Content
         public string ChoiceDescription;
         public ActionDefinition[] Actions;
         public CampaignDay[] Days;
+        public CampaignConditionalEvent[] ConditionalEvents;
 
         public CampaignDefinition Snapshot()
         {
@@ -25,6 +26,8 @@ namespace CyclingLove.Content
             copy.Rules = Rules.Snapshot();
             copy.Actions = Actions.Select(a => a.Snapshot()).ToArray();
             copy.Days = Days.Select(d => d.Snapshot()).ToArray();
+            copy.ConditionalEvents = (ConditionalEvents ?? Array.Empty<CampaignConditionalEvent>())
+                .Select(value => value.Snapshot()).ToArray();
             return copy;
         }
         public void Validate()
@@ -35,6 +38,11 @@ namespace CyclingLove.Content
             _ = new DateTime(StartYear, StartMonth, StartDay).AddDays(Days.Length);
             RequireUnique(Actions.Select(a => a?.Id), "action");
             RequireUnique(Days.Select(d => d?.Id), "day");
+            var conditionalEvents = ConditionalEvents ?? Array.Empty<CampaignConditionalEvent>();
+            if (conditionalEvents.Any(value => value == null))
+                throw new InvalidOperationException("Campaign contains an empty conditional event");
+            RequireUnique(conditionalEvents.Select(value => value.Id), "conditional event");
+            foreach (var conditionalEvent in conditionalEvents) conditionalEvent.ValidateResolved();
             foreach (var a in Actions)
             {
                 if (string.IsNullOrWhiteSpace(a.Name) || a.StaminaCost < 0 || a.MoneyCost < 0 || a.Effects == null)
@@ -94,11 +102,11 @@ namespace CyclingLove.Content
         public CampaignDay Snapshot()
         {
             var copy = (CampaignDay)MemberwiseClone();
-            copy.MorningPages = (string[])MorningPages.Clone();
-            copy.AfternoonPages = (string[])AfternoonPages.Clone();
-            copy.ActionIds = (string[])ActionIds.Clone();
-            copy.MorningEffects = MorningEffects.Snapshot();
-            copy.AfternoonEffects = AfternoonEffects.Snapshot();
+            copy.MorningPages = MorningPages == null ? null : (string[])MorningPages.Clone();
+            copy.AfternoonPages = AfternoonPages == null ? null : (string[])AfternoonPages.Clone();
+            copy.ActionIds = ActionIds == null ? null : (string[])ActionIds.Clone();
+            copy.MorningEffects = MorningEffects?.Snapshot();
+            copy.AfternoonEffects = AfternoonEffects?.Snapshot();
             return copy;
         }
     }
@@ -163,8 +171,8 @@ namespace CyclingLove.Content
 
         public void Validate()
         {
-            var numeric = new[] { "money", "physical", "toughness", "smart", "empathy", "appeal", "stamina" };
-            var identified = new[] { "affection", "route_step", "heroine_met", "route_flag", "event_cleared", "race_attempted", "race_succeeded" };
+            var numeric = new[] { "money", "physical", "toughness", "smart", "empathy", "appeal", "stamina", "regional_contribution", "public_awareness", "fox_favor", "completed_quest_count" };
+            var identified = new[] { "affection", "route_step", "heroine_met", "heroine_unlocked", "route_flag", "event_cleared", "race_attempted", "race_succeeded", "quest_completed" };
             if (!numeric.Contains(Type) && !identified.Contains(Type))
                 throw new InvalidOperationException("Unknown condition type: " + Type);
             if (identified.Contains(Type) && string.IsNullOrWhiteSpace(Id))
@@ -183,13 +191,19 @@ namespace CyclingLove.Content
                 "empathy" => data.Empathy >= Value,
                 "appeal" => data.Appeal >= Value,
                 "stamina" => data.Stamina >= Value,
+                "regional_contribution" => data.RegionalContribution >= Value,
+                "public_awareness" => data.PublicAwareness >= Value,
+                "fox_favor" => data.FoxFavor >= Value,
+                "completed_quest_count" => (data.CompletedQuestIds?.Count ?? 0) >= Value,
                 "affection" => (data.FindHeroineProgress(Id)?.Affection ?? 0) >= Value,
                 "route_step" => (data.FindHeroineProgress(Id)?.RouteStep ?? 0) >= Value,
                 "heroine_met" => data.FindHeroineProgress(Id)?.IsMet == true,
+                "heroine_unlocked" => data.FindHeroineProgress(Id)?.IsUnlocked == true,
                 "route_flag" => data.ActiveRouteFlags.Contains(Id),
                 "event_cleared" => data.ClearedEventKeys.Contains(Id),
                 "race_attempted" => data.RaceAttempts.Any(record => record.RaceId == Id),
                 "race_succeeded" => data.RaceAttempts.Any(record => record.RaceId == Id && record.Succeeded),
+                "quest_completed" => data.CompletedQuestIds?.Contains(Id) == true,
                 _ => false
             };
         }
@@ -198,15 +212,18 @@ namespace CyclingLove.Content
     public sealed class CampaignEffects
     {
         public int Money, Physical, Toughness, Smart, Empathy, Appeal, Stamina, Affection, RouteStep, BikeMastery;
-        public string HeroineId, RouteFlag;
+        public int RegionalContribution, PublicAwareness, FoxFavor;
+        public string HeroineId, RouteFlag, QuestId;
         public CampaignEffects Snapshot() => (CampaignEffects)MemberwiseClone();
         public void Validate()
         {
             // Resource costs belong to action costs; this first schema only accepts positive rewards.
-            if (new[] { Money, Physical, Toughness, Smart, Empathy, Appeal, Stamina, Affection, RouteStep, BikeMastery }.Any(v => v < 0))
+            if (new[] { Money, Physical, Toughness, Smart, Empathy, Appeal, Stamina, Affection, RouteStep, BikeMastery, RegionalContribution, PublicAwareness, FoxFavor }.Any(v => v < 0))
                 throw new InvalidOperationException("Negative reward: use action costs instead");
             if ((Affection != 0 || RouteStep != 0) && string.IsNullOrWhiteSpace(HeroineId))
                 throw new InvalidOperationException("Heroine reward requires HeroineId");
+            if (!string.IsNullOrEmpty(QuestId) && string.IsNullOrWhiteSpace(QuestId))
+                throw new InvalidOperationException("QuestId cannot contain only whitespace");
         }
         public string Describe()
         {
@@ -217,13 +234,21 @@ namespace CyclingLove.Content
             if (Affection != 0) parts.Add($"好感度 +{Affection}");
             if (RouteStep != 0) parts.Add($"ルート段階 {RouteStep}");
             if (BikeMastery != 0) parts.Add($"愛車熟練度 +{BikeMastery}");
+            if (RegionalContribution != 0) parts.Add($"地域貢献 +{RegionalContribution}");
+            if (PublicAwareness != 0) parts.Add($"知名度 +{PublicAwareness}");
+            if (FoxFavor != 0) parts.Add($"狐の加護 +{FoxFavor}");
             return string.Join(" / ", parts);
         }
         public void Apply(GamePlayerData d, int maxStamina)
         {
+            d.CompletedQuestIds ??= new List<string>();
+            if (!string.IsNullOrWhiteSpace(QuestId) && d.CompletedQuestIds.Contains(QuestId)) return;
             d.Money += Money; d.Physical += Physical; d.Toughness += Toughness;
             d.Smart += Smart; d.Empathy += Empathy; d.Appeal += Appeal;
             d.Stamina = (int)Math.Min(maxStamina, (long)d.Stamina + Stamina);
+            d.RegionalContribution += RegionalContribution;
+            d.PublicAwareness += PublicAwareness;
+            d.FoxFavor += FoxFavor;
             d.AddCurrentBikeMastery(BikeMastery);
             if (!string.IsNullOrEmpty(HeroineId))
             {
@@ -235,6 +260,7 @@ namespace CyclingLove.Content
                 progress.RouteStep = Math.Max(progress.RouteStep, Math.Max(1, RouteStep));
             }
             if (!string.IsNullOrEmpty(RouteFlag) && !d.ActiveRouteFlags.Contains(RouteFlag)) d.ActiveRouteFlags.Add(RouteFlag);
+            if (!string.IsNullOrWhiteSpace(QuestId)) d.CompletedQuestIds.Add(QuestId);
         }
     }
 }

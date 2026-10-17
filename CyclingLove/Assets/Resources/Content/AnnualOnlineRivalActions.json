@@ -1,0 +1,92 @@
+{
+  "Actions": [
+    {
+      "Id": "evt_annual_rival_challenge", "Name": "画面の向こうの挑戦者", "NodeId": "annual_rival_challenge",
+      "BackgroundId": "grandmother_room_evening", "CharacterId": "hero_online_rival", "OutfitId": "avatar", "ExpressionId": "neutral",
+      "ChoicePrompt": "記録アプリに届いた挑戦へ、どう返そう。",
+      "Pages": ["走行記録を更新した夜、見知らぬ強豪から短い挑戦状が届いた。毎週同じ区間で競おうという。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 1 },
+      "Choices": [
+        { "Id": "rival_challenge_accept", "Label": "正面から受ける", "Description": "フィジカルと好感度", "NodeId": "rival_challenge_accept", "Pages": ["すぐに承諾すると、次の目標タイムだけが返ってきた。"], "Effects": { "Physical": 1, "HeroineId": "hero_online_rival", "Affection": 1 } },
+        { "Id": "rival_challenge_analyze", "Label": "相手の走行記録を分析する", "Description": "スマート", "NodeId": "rival_challenge_analyze", "Pages": ["走り方には、屋外と室内で不自然な差があることに気づいた。"], "Effects": { "Smart": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_rival_spring_time", "Name": "春のタイム更新", "NodeId": "annual_rival_spring_time",
+      "BackgroundId": "riverside_day", "CharacterId": "hero_online_rival", "OutfitId": "avatar", "ExpressionId": "smile",
+      "ChoicePrompt": "僅差で負けた記録に、どう向き合おう。",
+      "Pages": ["目標区間を全力で走ったが、相手はさらに一秒だけ速い記録を返してきた。競争は互いの限界を押し上げている。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 2, "BikeMastery": 4, "RouteFlag": "goal_spring_ready" },
+      "Choices": [
+        { "Id": "rival_spring_respect", "Label": "速さを称えて再挑戦を約束する", "Description": "好感度", "NodeId": "rival_spring_respect", "Pages": ["素直な称賛に、相手から初めて文章らしい返信が届いた。"], "Effects": { "HeroineId": "hero_online_rival", "Affection": 1 } },
+        { "Id": "rival_spring_train", "Label": "次の練習計画を立てる", "Description": "タフネス", "NodeId": "rival_spring_train", "Pages": ["差を分解し、焦らず積み上げる計画を作った。"], "Effects": { "Toughness": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_rival_truth", "Name": "最速アバターの素顔", "NodeId": "annual_rival_truth",
+      "BackgroundId": "online_room_night", "CharacterId": "hero_online_rival", "OutfitId": "casual", "ExpressionId": "troubled",
+      "ChoicePrompt": "映像通話に現れた彼女へ、何を聞こう。",
+      "Pages": ["仲介者との通話に現れたのは、画面の印象より静かな女性だった。彼女は外を走る話だけを避けている。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 3 },
+      "Choices": [
+        { "Id": "rival_truth_now", "Label": "今の走り方を尊重する", "Description": "エンパシーと好感度", "NodeId": "rival_truth_now", "Pages": ["理由を問い詰めない態度に、彼女は事故以来ずっと室内だけで走っていると話した。"], "Effects": { "Empathy": 2, "HeroineId": "hero_online_rival", "Affection": 1 } },
+        { "Id": "rival_truth_setup", "Label": "機材構成について話す", "Description": "スマート", "NodeId": "rival_truth_setup", "Pages": ["最速構成の話になると、彼女はようやく熱を帯びて語り始めた。"], "Effects": { "Smart": 2 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_rival_summer_training", "Name": "夏の共同トレーニング", "NodeId": "annual_rival_summer_training",
+      "BackgroundId": "online_room_night", "CharacterId": "hero_online_rival", "OutfitId": "training", "ExpressionId": "neutral",
+      "ChoicePrompt": "画面越しの長い練習を、どう完走しよう。",
+      "Pages": ["同じコースを同期して走るオンライン練習が始まった。彼女の追い込みは鋭いが、休む判断が極端に遅い。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 4, "BikeMastery": 5, "RouteFlag": "goal_summer_ready" },
+      "Choices": [
+        { "Id": "rival_summer_pace", "Label": "互いの限界を伝えてペースを合わせる", "Description": "好感度", "NodeId": "rival_summer_pace", "Pages": ["競うだけでなく声を掛け合い、二人とも最後まで走り切った。"], "Effects": { "HeroineId": "hero_online_rival", "Affection": 1 } },
+        { "Id": "rival_summer_push", "Label": "最後まで食らいつく", "Description": "フィジカル", "NodeId": "rival_summer_push", "Pages": ["脚が止まりかけても離れず、自己記録を更新した。"], "Effects": { "Physical": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_rival_fear", "Name": "道路への恐怖", "NodeId": "annual_rival_fear",
+      "BackgroundId": "quiet_road_evening", "CharacterId": "hero_online_rival", "OutfitId": "cycling", "ExpressionId": "troubled",
+      "ChoicePrompt": "自転車を押したまま動けない彼女を、どう支えよう。",
+      "Pages": ["人の少ない道で会う約束の日、彼女はスタート地点まで来た。しかし車の音を聞いた瞬間、体が固まった。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 5 },
+      "Choices": [
+        { "Id": "rival_fear_walk", "Label": "今日は押して歩くだけにする", "Description": "好感度5で選択可能", "NodeId": "rival_fear_walk", "Pages": ["走らなくていいと伝えると、彼女は自分の足でゆっくり道を進んだ。"], "Conditions": [{ "Type": "affection", "Id": "hero_online_rival", "Value": 5 }], "Effects": { "Empathy": 1, "HeroineId": "hero_online_rival", "Affection": 1 } },
+        { "Id": "rival_fear_return", "Label": "安全な場所へ戻る", "Description": "いつでも選べる", "NodeId": "rival_fear_return", "Pages": ["無理をせず戻り、次にできる小さな一歩を相談した。"], "Effects": { "Toughness": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_rival_autumn_ride", "Name": "最初の公道ライド", "NodeId": "annual_rival_autumn_ride",
+      "BackgroundId": "quiet_road_day", "CharacterId": "hero_online_rival", "OutfitId": "cycling", "ExpressionId": "neutral",
+      "ChoicePrompt": "短い公道区間を、どんな走りで支えよう。",
+      "Pages": ["交通の少ない早朝、彼女は再びペダルへ足をかけた。速さではなく、自分で戻ってくることが今日の目標だ。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 6, "RouteFlag": "goal_autumn_ready" },
+      "Choices": [
+        { "Id": "rival_autumn_side", "Label": "横に並び呼吸を合わせる", "Description": "フィジカル7・タフネス7", "NodeId": "rival_autumn_side", "ExpressionId": "smile", "Pages": ["一定の距離と声を保ち、彼女は区間を自分の力で走り切った。"], "Conditions": [{ "Type": "physical", "Value": 7 }, { "Type": "toughness", "Value": 7 }], "Effects": { "Toughness": 1, "HeroineId": "hero_online_rival", "Affection": 1 } },
+        { "Id": "rival_autumn_lead", "Label": "前をゆっくり引く", "Description": "いつでも選べる", "NodeId": "rival_autumn_lead", "Pages": ["振り返らず一定の速度を保つと、最後まで彼女の気配が続いた。"], "Effects": { "Physical": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_rival_real_race", "Name": "現実のスタートライン", "NodeId": "annual_rival_real_race",
+      "BackgroundId": "race_start_winter", "CharacterId": "hero_online_rival", "OutfitId": "cycling", "ExpressionId": "neutral",
+      "ChoicePrompt": "小さな記録会の前、彼女へ何を伝えよう。",
+      "Pages": ["冬の記録会に二人でエントリーした。彼女は震えているが、画面の中ではなく同じスタートラインに立っている。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 7 },
+      "Choices": [
+        { "Id": "rival_race_finish", "Label": "勝敗より一緒に帰ってこよう", "Description": "好感度", "NodeId": "rival_race_finish", "Pages": ["彼女は初めて順位表から目を離し、完走後に待つ場所を確認した。"], "Effects": { "HeroineId": "hero_online_rival", "Affection": 1 } },
+        { "Id": "rival_race_compete", "Label": "今日だけは本気で勝負しよう", "Description": "フィジカル", "NodeId": "rival_race_compete", "Pages": ["彼女は緊張の中で笑い、いつもの挑戦者の目を取り戻した。"], "Effects": { "Physical": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_rival_final", "Name": "画面を越えた再戦", "NodeId": "annual_rival_final",
+      "BackgroundId": "hill_overlook_winter", "CharacterId": "hero_online_rival", "OutfitId": "cycling", "ExpressionId": "smile",
+      "ChoicePrompt": "再び外で走ると決めた彼女へ、気持ちを伝えよう。",
+      "Pages": ["記録会を終えた丘で、彼女は怖さが消えなくても外を走りたいと言った。競争相手ではなく、隣を走る相手も必要だと。"],
+      "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteStep": 8, "RouteFlag": "goal_winter_ready" },
+      "Choices": [
+        { "Id": "rival_final_confess", "Label": "次の道も隣で競い続けたい", "Description": "好感度7で告白", "NodeId": "rival_final_confess", "Pages": ["彼女は新しい挑戦状を送った。今度の目的地は、二人で決める道だった。"], "Conditions": [{ "Type": "affection", "Id": "hero_online_rival", "Value": 7 }], "Effects": { "HeroineId": "hero_online_rival", "Affection": 1, "RouteFlag": "annual_confession_online_rival_ready" } },
+        { "Id": "rival_final_rematch", "Label": "まずは次の再戦を約束する", "Description": "いつでも選べる", "NodeId": "rival_final_rematch", "Pages": ["次の区間と日時を決め、二人は別々の道を走り出した。"], "Effects": { "HeroineId": "hero_online_rival", "Affection": 1 } }
+      ]
+    }
+  ]
+}

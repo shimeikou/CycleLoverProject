@@ -22,15 +22,17 @@ namespace Scene.MainGrand
         private UnityEngine.UI.Image _characterImage;
         private Vector2 _novelBodyOriginalSize;
         private Button _bikeMenuButton;
+        private UnityEngine.UI.Button _skipButton;
         [SerializeField] private Button saveButton;
         [SerializeField] private Button titleButton;
         [SerializeField] private TextMeshProUGUI messageText;
 
-        public void BindSessionControls(UnityAction save, UnityAction title, UnityAction bikeMenu)
+        public void BindSessionControls(UnityAction save, UnityAction title, UnityAction bikeMenu, UnityAction skip)
         {
             RebindButton(saveButton, save);
             RebindButton(titleButton, title);
             EnsureBikeMenuButton(bikeMenu);
+            EnsureSkipButton(skip);
             SetMessage("タイトルに戻る前に、保存してください。");
         }
 
@@ -48,11 +50,35 @@ namespace Scene.MainGrand
             RebindButton(_bikeMenuButton, callback);
         }
 
+        private void EnsureSkipButton(UnityAction callback)
+        {
+            if (_skipButton == null && saveButton != null)
+            {
+                _skipButton = Instantiate(saveButton, saveButton.transform.parent);
+                _skipButton.name = "SkipDaysButton";
+                var rect = (RectTransform)_skipButton.transform;
+                rect.anchoredPosition = ((RectTransform)saveButton.transform).anchoredPosition + new Vector2(-288, 0);
+                var label = _skipButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (label != null) label.text = "日程";
+            }
+            RebindButton(_skipButton, callback);
+            if (_skipButton != null) _skipButton.gameObject.SetActive(false);
+        }
+
+        public void SetSkipControl(bool visible, string label)
+        {
+            if (_skipButton == null) return;
+            _skipButton.gameObject.SetActive(visible);
+            var text = _skipButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null) text.text = label;
+            _skipButton.interactable = visible && !_busy;
+        }
+
         public void SetMessage(string message) { if (messageText != null) messageText.text = message; }
         public void SetBusy(bool busy)
         {
             _busy = busy;
-            foreach (var b in new[] { saveButton, titleButton, _bikeMenuButton, novelContinueButton, miniGameContinueButton, summaryContinueButton })
+            foreach (var b in new[] { saveButton, titleButton, _bikeMenuButton, _skipButton, novelContinueButton, miniGameContinueButton, summaryContinueButton })
                 if (b != null) b.interactable = !busy;
             UpdateActionAvailability();
         }

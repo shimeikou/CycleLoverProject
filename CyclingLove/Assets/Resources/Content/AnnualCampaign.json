@@ -10,6 +10,15 @@
   "ChoiceDescription": "育成、交流、休息から午後の過ごし方を選びます。休日と特別日は内容が変わります。",
   "RulesResource": "Content/PrototypeRules",
   "ActionsResource": "Content/BikeshopShortActions",
+  "AdditionalActionsResources": [
+    "Content/AnnualRouteActions",
+    "Content/AnnualBikeshopActions",
+    "Content/AnnualCafeActions",
+    "Content/AnnualCousinActions",
+    "Content/AnnualAnnouncerActions",
+    "Content/AnnualOnlineRivalActions",
+    "Content/AnnualRegionalActions"
+  ],
   "ScheduleResource": "Content/AnnualSchedule",
   "CalendarResource": "Content/AnnualCalendar"
 }

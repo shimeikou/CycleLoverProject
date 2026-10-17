@@ -1,0 +1,60 @@
+{
+  "Actions": [
+    {
+      "Id": "evt_regional_grandmother_advice", "Name": "祖母の町案内", "NodeId": "regional_grandmother_advice",
+      "BackgroundId": "grandmother_room_morning", "CharacterId": "sub_grandmother", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["祖母は地図に印を付けながら、観光案内に載らない店と人の話を教えてくれた。", "「速く走るだけじゃ、この町は見えんよ」その言葉を覚えておこう。"],
+      "Effects": { "QuestId": "quest_grandmother_map", "RegionalContribution": 1, "Smart": 1 }
+    },
+    {
+      "Id": "evt_regional_bikeshop_workshop", "Name": "修理教室の手伝い", "NodeId": "regional_bikeshop_workshop",
+      "BackgroundId": "bikeshop_interior_day", "CharacterId": "hero_bikeshop", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["自転車屋の親父が開く子供向け修理教室を手伝った。", "彼女と役割を分けると、古い店の技術が次の世代へつながった。"],
+      "Effects": { "QuestId": "quest_bikeshop_workshop", "RegionalContribution": 2, "HeroineId": "hero_bikeshop", "Affection": 1 }
+    },
+    {
+      "Id": "evt_regional_cafe_menu", "Name": "サイクリスト向けメニュー", "NodeId": "regional_cafe_menu",
+      "BackgroundId": "cafe_interior_day", "CharacterId": "hero_cafe_master", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["マスターの母と一緒に、走った後でも食べやすい地元食材の軽食を考えた。", "試食会に人が集まり、カフェがライドの休憩地点になっていく。"],
+      "Effects": { "QuestId": "quest_cafe_local_menu", "RegionalContribution": 2, "HeroineId": "hero_cafe_master", "Affection": 1, "Stamina": 10 }
+    },
+    {
+      "Id": "evt_regional_cousin_campaign", "Name": "町おこしSNS企画", "NodeId": "regional_cousin_campaign",
+      "BackgroundId": "town_square_day", "CharacterId": "hero_cousin", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["町おこし担当と従妹と一緒に、おすすめルートをSNSで紹介する企画を立てた。", "数字を追うだけでなく、店の人の言葉と実際の景色を丁寧に伝えた。"],
+      "Effects": { "QuestId": "quest_cousin_sns_campaign", "RegionalContribution": 2, "PublicAwareness": 2, "HeroineId": "hero_cousin", "Affection": 1 }
+    },
+    {
+      "Id": "evt_regional_announcer_feature", "Name": "地域特集の追加取材", "NodeId": "regional_announcer_feature",
+      "BackgroundId": "town_square_day", "CharacterId": "hero_announcer", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["ベテランカメラマンの助言で、予定外の地域特集を追加取材することになった。", "彼女は台本よりも目の前の人の声を優先し、自分の言葉でリポートした。"],
+      "Effects": { "QuestId": "quest_announcer_local_feature", "RegionalContribution": 2, "PublicAwareness": 2, "HeroineId": "hero_announcer", "Affection": 1 }
+    },
+    {
+      "Id": "evt_regional_rival_stream", "Name": "VTuberの合同配信", "NodeId": "regional_rival_stream",
+      "BackgroundId": "grandmother_room_evening", "CharacterId": "sub_cycling_vtuber", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["ロードバイク系VTuberの配信で、ネットのライバルと走ったルートを紹介した。", "勝敗だけを語らず、怖さを越えて再び走り出した過程も伝えた。"],
+      "Effects": { "QuestId": "quest_rival_stream", "RegionalContribution": 2, "PublicAwareness": 2, "HeroineId": "hero_online_rival", "Affection": 1 }
+    },
+    {
+      "Id": "evt_regional_fox_request", "Name": "神社の狐の依頼", "NodeId": "regional_fox_request",
+      "BackgroundId": "shrine_evening", "CharacterId": "sub_shrine_fox", "ExpressionId": "neutral",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["夕暮れの神社で、人の言葉を話す狐と出会った。", "狐は、町で得た縁を神社へ持ち帰るよう依頼した。"],
+      "Effects": { "RouteFlag": "quest_fox_shrine_started", "FoxFavor": 1 }
+    },
+    {
+      "Id": "evt_regional_fox_completion", "Name": "縁を結ぶ祭り", "NodeId": "regional_fox_completion",
+      "BackgroundId": "shrine_evening", "CharacterId": "sub_shrine_fox", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["この一年で出会った人たちと、神社まで走る小さな祭りを開いた。", "狐は満足そうに尾を揺らし、次の季節への加護を授けた。"],
+      "Effects": { "QuestId": "quest_fox_shrine_festival", "RouteFlag": "quest_fox_shrine_completed", "RegionalContribution": 3, "FoxFavor": 2, "Empathy": 1 }
+    }
+  ]
+}

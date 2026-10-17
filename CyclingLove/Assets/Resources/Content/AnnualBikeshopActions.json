@@ -1,0 +1,270 @@
+{
+  "Actions": [
+    {
+      "Id": "evt_annual_bikeshop_reunion",
+      "Name": "祖父の自転車と再会",
+      "NodeId": "annual_bikeshop_reunion",
+      "BackgroundId": "bikeshop_interior",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "shop",
+      "ExpressionId": "neutral",
+      "ChoicePrompt": "古い自転車を直すなら、何を大切にしたいだろう。",
+      "Pages": ["祖父の自転車を押して店へ入ると、彼女は傷んだフレームを懐かしそうに見つめた。父親が組んだ一台だという。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "Affection": 1, "RouteStep": 1 },
+      "Choices": [
+        {
+          "Id": "annual_reunion_memory",
+          "Label": "祖父との思い出を残したい",
+          "Description": "エンパシーと好感度を伸ばす",
+          "NodeId": "annual_bikeshop_reunion_memory",
+          "ExpressionId": "smile",
+          "Pages": ["娘「それなら、傷も全部消さない方がいいですね」彼女は修理の手順を一緒に考えてくれた。"],
+          "Effects": { "Empathy": 1, "HeroineId": "hero_bikeshop", "Affection": 1 }
+        },
+        {
+          "Id": "annual_reunion_restore",
+          "Label": "まず安全に走れる状態へ戻したい",
+          "Description": "スマートを伸ばす",
+          "NodeId": "annual_bikeshop_reunion_restore",
+          "ExpressionId": "neutral",
+          "Pages": ["娘「正解です。思い出を守るにも、走れる状態にするのが先です」点検項目を教わった。"],
+          "Effects": { "Smart": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_annual_bikeshop_spring_ride",
+      "Name": "春の試走",
+      "NodeId": "annual_bikeshop_spring_ride",
+      "BackgroundId": "riverside_day",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "cycling",
+      "ExpressionId": "strict",
+      "ChoicePrompt": "春の目標を、どんな走り方で確かめよう。",
+      "Pages": ["修理を終えた自転車で、彼女と河川敷へ出た。ペダルを踏むたび、古い一台が少しずつ自分のものになっていく。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 2, "BikeMastery": 3, "RouteFlag": "goal_spring_ready" },
+      "Choices": [
+        {
+          "Id": "annual_spring_together",
+          "Label": "会話できるペースで一緒に走る",
+          "Description": "タフネスと好感度を伸ばす",
+          "NodeId": "annual_bikeshop_spring_together",
+          "ExpressionId": "smile",
+          "Pages": ["速度を合わせると、彼女は町の好きな道を次々に教えてくれた。"],
+          "Effects": { "Toughness": 1, "HeroineId": "hero_bikeshop", "Affection": 1 }
+        },
+        {
+          "Id": "annual_spring_form",
+          "Label": "フォームを見てもらう",
+          "Description": "フィジカルとスマートを伸ばす",
+          "NodeId": "annual_bikeshop_spring_form",
+          "ExpressionId": "strict",
+          "Pages": ["娘「力を入れすぎです」何度も姿勢を直され、楽に進む感覚を覚えた。"],
+          "Effects": { "Physical": 1, "Smart": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_annual_bikeshop_summer_offer",
+      "Name": "スポンサーの提案",
+      "NodeId": "annual_bikeshop_summer_offer",
+      "BackgroundId": "bikeshop_interior",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "shop",
+      "ExpressionId": "troubled",
+      "ChoicePrompt": "速いカーボンバイクの提案を前に、彼女の本音をどう確かめるか。",
+      "Pages": ["店に、レース向けのカーボンバイクを貸し出す話が届いた。好条件のはずなのに、彼女の表情は晴れない。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 3 },
+      "Choices": [
+        {
+          "Id": "annual_offer_listen",
+          "Label": "結論を急がず、本音を聞く",
+          "Description": "エンパシーと好感度を伸ばす",
+          "NodeId": "annual_bikeshop_offer_listen",
+          "ExpressionId": "neutral",
+          "Pages": ["彼女は、父のクロモリを捨てるようで怖いのだと打ち明けた。選ぶことと忘れることは違う、と伝えた。"],
+          "Effects": { "Empathy": 2, "HeroineId": "hero_bikeshop", "Affection": 1 }
+        },
+        {
+          "Id": "annual_offer_compare",
+          "Label": "二台の性能を一緒に比べる",
+          "Description": "スマートとアピールを伸ばす",
+          "NodeId": "annual_bikeshop_offer_compare",
+          "ExpressionId": "strict",
+          "Pages": ["感情だけで決めず、用途と性能を書き出した。彼女は少しずつ自分の希望を言葉にした。"],
+          "Effects": { "Smart": 2, "Appeal": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_annual_bikeshop_summer_race",
+      "Name": "夏の市民レース",
+      "NodeId": "annual_bikeshop_summer_race",
+      "BackgroundId": "mountain_road_day",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "cycling",
+      "ExpressionId": "strict",
+      "ChoicePrompt": "結果だけでなく、二人で納得できる走り方を選ぼう。",
+      "Pages": ["市民レースのスタート地点に、二台の自転車が並んだ。緊張した彼女が、こちらを見て小さくうなずく。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 4, "BikeMastery": 4, "RouteFlag": "goal_summer_ready" },
+      "Choices": [
+        {
+          "Id": "annual_summer_race_push",
+          "Label": "登りで前へ出て彼女を導く",
+          "Description": "フィジカル7・タフネス7で選択可能",
+          "NodeId": "annual_bikeshop_summer_race_push",
+          "ExpressionId": "smile",
+          "Pages": ["苦しい区間で前に出ると、彼女の呼吸が背後からついてくる。二人で最後の坂を越えた。"],
+          "Conditions": [
+            { "Type": "physical", "Value": 7 },
+            { "Type": "toughness", "Value": 7 }
+          ],
+          "Effects": { "Physical": 1, "HeroineId": "hero_bikeshop", "Affection": 1 }
+        },
+        {
+          "Id": "annual_summer_race_finish",
+          "Label": "無理をせず二人で完走する",
+          "Description": "いつでも選べる",
+          "NodeId": "annual_bikeshop_summer_race_finish",
+          "ExpressionId": "smile",
+          "Pages": ["順位よりも互いのペースを優先した。ゴール後、彼女は悔しさより先に笑っていた。"],
+          "Effects": { "Toughness": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_annual_bikeshop_autumn_memory",
+      "Name": "父が残したフレーム",
+      "NodeId": "annual_bikeshop_autumn_memory",
+      "BackgroundId": "bikeshop_interior",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "shop",
+      "ExpressionId": "troubled",
+      "ChoicePrompt": "父の自転車に縛られている、と彼女は言った。",
+      "Pages": ["閉店後の店で、彼女は父が最後に作ったフレームを取り出した。乗りたい気持ちと、変わる怖さが同居している。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 5 },
+      "Choices": [
+        {
+          "Id": "annual_memory_future",
+          "Label": "父の技術を、自分の走りへつなげよう",
+          "Description": "好感度5で選択可能",
+          "NodeId": "annual_bikeshop_memory_future",
+          "ExpressionId": "smile",
+          "Pages": ["娘「残すだけじゃなくて、走らせてもいいのかな」迷いの奥に、前へ進む意志が見えた。"],
+          "Conditions": [{ "Type": "affection", "Id": "hero_bikeshop", "Value": 5 }],
+          "Effects": { "Empathy": 1, "HeroineId": "hero_bikeshop", "Affection": 1 }
+        },
+        {
+          "Id": "annual_memory_maintain",
+          "Label": "まず一緒に整備を始める",
+          "Description": "いつでも選べる",
+          "NodeId": "annual_bikeshop_memory_maintain",
+          "ExpressionId": "neutral",
+          "Pages": ["答えを急がず、二人で古い部品を外した。手を動かすうちに、彼女の言葉も少しずつ戻った。"],
+          "Effects": { "Smart": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_annual_bikeshop_autumn_choice",
+      "Name": "二台で選ぶ道",
+      "NodeId": "annual_bikeshop_autumn_choice",
+      "BackgroundId": "hill_road_day",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "cycling",
+      "ExpressionId": "neutral",
+      "ChoicePrompt": "勝つための速さと、好きな自転車で走る楽しさをどう両立するか。",
+      "Pages": ["クロモリとカーボンを乗り比べた。どちらかを否定するのではなく、走る目的ごとに選べることへ彼女は気づき始める。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 6, "RouteFlag": "goal_autumn_ready" },
+      "Choices": [
+        {
+          "Id": "annual_autumn_both",
+          "Label": "二台とも彼女の自転車だと伝える",
+          "Description": "スマート7・エンパシー7で選択可能",
+          "NodeId": "annual_bikeshop_autumn_both",
+          "ExpressionId": "smile",
+          "Pages": ["娘「選ぶのは自転車じゃなくて、今日の走り方なんですね」彼女は初めて迷いなく笑った。"],
+          "Conditions": [
+            { "Type": "smart", "Value": 7 },
+            { "Type": "empathy", "Value": 7 }
+          ],
+          "Effects": { "HeroineId": "hero_bikeshop", "Affection": 1, "Appeal": 1 }
+        },
+        {
+          "Id": "annual_autumn_practice",
+          "Label": "答えは走りながら探そう",
+          "Description": "いつでも選べる",
+          "NodeId": "annual_bikeshop_autumn_practice",
+          "ExpressionId": "neutral",
+          "Pages": ["決めきれないままでも、走ることはできる。二人で次の練習予定を立てた。"],
+          "Effects": { "Toughness": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_annual_bikeshop_winter_climb",
+      "Name": "冬のロングクライム",
+      "NodeId": "annual_bikeshop_winter_climb",
+      "BackgroundId": "mountain_road_day",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "cycling",
+      "ExpressionId": "strict",
+      "ChoicePrompt": "一年の答えを確かめるため、最後の長い坂へ挑む。",
+      "Pages": ["冷たい空気の中、彼女は父のクロモリを選んだ。勝つためではなく、自分の意志でこの一台を走らせるためだ。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 7, "BikeMastery": 5 },
+      "Choices": [
+        {
+          "Id": "annual_winter_side_by_side",
+          "Label": "最後まで隣で走る",
+          "Description": "好感度を伸ばす",
+          "NodeId": "annual_bikeshop_winter_side_by_side",
+          "ExpressionId": "smile",
+          "Pages": ["速度を合わせ、長い坂を二人で上り切った。頂上で彼女は、春よりずっと自然にこちらの隣へ立った。"],
+          "Effects": { "Toughness": 1, "HeroineId": "hero_bikeshop", "Affection": 1 }
+        },
+        {
+          "Id": "annual_winter_compete",
+          "Label": "頂上まで勝負する",
+          "Description": "フィジカルとアピールを伸ばす",
+          "NodeId": "annual_bikeshop_winter_compete",
+          "ExpressionId": "strict",
+          "Pages": ["互いに譲らず、最後までペダルを踏んだ。息を切らした彼女は、悔しそうに、それでも楽しそうに笑った。"],
+          "Effects": { "Physical": 1, "Appeal": 1 }
+        }
+      ]
+    },
+    {
+      "Id": "evt_annual_bikeshop_final",
+      "Name": "次の春の約束",
+      "NodeId": "annual_bikeshop_final",
+      "BackgroundId": "bikeshop_exterior_evening",
+      "CharacterId": "hero_bikeshop",
+      "OutfitId": "casual",
+      "ExpressionId": "neutral",
+      "ChoicePrompt": "次の春も隣を走りたい。その気持ちを、どんな言葉で伝えるか。",
+      "Pages": ["店先で、一年間に走った道を振り返った。彼女は来年の予定を話しながら、こちらの返事を待っている。"],
+      "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 8, "RouteFlag": "goal_winter_ready" },
+      "Choices": [
+        {
+          "Id": "annual_final_confess",
+          "Label": "これからも、一番近くで一緒に走りたい",
+          "Description": "好感度7で告白する",
+          "NodeId": "annual_bikeshop_final_confess",
+          "ExpressionId": "smile",
+          "Pages": ["言葉を聞いた彼女は少しだけ目を伏せ、それから手を差し出した。娘「次の春も、その次も。一緒に走りましょう」"],
+          "Conditions": [{ "Type": "affection", "Id": "hero_bikeshop", "Value": 7 }],
+          "Effects": { "HeroineId": "hero_bikeshop", "Affection": 1, "RouteFlag": "annual_confession_bikeshop_ready" }
+        },
+        {
+          "Id": "annual_final_friends",
+          "Label": "来年も練習仲間でいよう",
+          "Description": "いつでも選べる",
+          "NodeId": "annual_bikeshop_final_friends",
+          "ExpressionId": "smile",
+          "Pages": ["彼女は笑って、次のコース案を広げた。二人の関係には、まだ先へ進む時間が残っている。"],
+          "Effects": { "HeroineId": "hero_bikeshop", "Affection": 1 }
+        }
+      ]
+    }
+  ]
+}

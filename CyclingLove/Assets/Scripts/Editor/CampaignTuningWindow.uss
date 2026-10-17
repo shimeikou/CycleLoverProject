@@ -1,0 +1,142 @@
+:root {
+  --ink: #16201d;
+  --muted: #5b6862;
+  --paper: #f4f0e6;
+  --panel: #fffdf7;
+  --line: #d8d0bf;
+  --accent: #c84f31;
+  --forest: #24483d;
+}
+
+.tuning-root {
+  flex-grow: 1;
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+.hero-panel {
+  padding: 18px 22px 16px 22px;
+  background-color: var(--forest);
+  border-bottom-width: 4px;
+  border-bottom-color: var(--accent);
+}
+
+.eyebrow {
+  color: #f0b64a;
+  font-size: 10px;
+  -unity-font-style: bold;
+  letter-spacing: 2px;
+}
+
+.title {
+  color: #fffdf7;
+  font-size: 24px;
+  -unity-font-style: bold;
+  margin-top: 3px;
+}
+
+.subtitle {
+  color: #cbd8d1;
+  margin-top: 5px;
+  white-space: normal;
+}
+
+.content-scroll {
+  flex-grow: 1;
+}
+
+.two-column {
+  flex-direction: row;
+  padding: 16px;
+}
+
+.column {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.input-column {
+  margin-right: 8px;
+}
+
+.result-column {
+  margin-left: 8px;
+}
+
+.section {
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: var(--panel);
+  border-width: 1px;
+  border-color: var(--line);
+  border-radius: 4px;
+}
+
+.field-row {
+  flex-direction: row;
+}
+
+.compact-field {
+  flex-grow: 1;
+  flex-basis: 0;
+  margin-right: 5px;
+}
+
+.compact-field .unity-base-field__label {
+  min-width: 0;
+  width: 22px;
+}
+
+.compact-field .unity-base-field__input {
+  flex-grow: 1;
+}
+
+.id-field .unity-text-field__input {
+  min-height: 42px;
+  white-space: normal;
+}
+
+.evaluate-button {
+  height: 36px;
+  margin-top: 4px;
+  background-color: var(--accent);
+  color: #ffffff;
+  -unity-font-style: bold;
+  border-width: 0;
+  border-radius: 4px;
+}
+
+.evaluate-button:hover {
+  background-color: #df6645;
+}
+
+.status-label {
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background-color: #e4ebdd;
+  color: #294a38;
+  border-left-width: 4px;
+  border-left-color: #628b59;
+  white-space: normal;
+}
+
+.result-heading {
+  margin-top: 7px;
+  margin-bottom: 4px;
+  color: var(--forest);
+  font-size: 13px;
+  -unity-font-style: bold;
+}
+
+.result-card {
+  padding: 11px 12px;
+  background-color: var(--panel);
+  border-width: 1px;
+  border-color: var(--line);
+  border-radius: 4px;
+  white-space: normal;
+}
+
+.result-list {
+  min-height: 74px;
+}

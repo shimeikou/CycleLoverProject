@@ -1,5 +1,6 @@
 using CyclingLove.Content;
 using CyclingLove.Calendar;
+using System.Linq;
 using UnityEngine;
 
 namespace System.Service
@@ -24,10 +25,24 @@ namespace System.Service
             var hasSchedule = !string.IsNullOrWhiteSpace(manifest.ScheduleResource) && !string.IsNullOrWhiteSpace(manifest.CalendarResource);
             if (hasDays == hasSchedule)
                 throw new InvalidOperationException("Campaign manifest requires either DaysResource or ScheduleResource with CalendarResource");
-            var days = hasDays
-                ? Read<DayCatalog>(manifest.DaysResource, readText).Days
-                : Read<CampaignScheduleDefinition>(manifest.ScheduleResource, readText)
-                    .Materialize(Read<AnnualCalendarDefinition>(manifest.CalendarResource, readText));
+            CampaignScheduleDefinition schedule = null;
+            AnnualCalendarDefinition calendar = null;
+            CampaignDay[] days;
+            if (hasDays)
+            {
+                days = Read<DayCatalog>(manifest.DaysResource, readText).Days;
+            }
+            else
+            {
+                schedule = Read<CampaignScheduleDefinition>(manifest.ScheduleResource, readText);
+                calendar = Read<AnnualCalendarDefinition>(manifest.CalendarResource, readText);
+                var manifestStart = new DateTime(manifest.StartYear, manifest.StartMonth, manifest.StartDay);
+                if (manifestStart != calendar.StartDate)
+                    throw new InvalidOperationException("Campaign start date must match its annual calendar");
+                days = schedule.Materialize(calendar);
+            }
+            var actionResources = new[] { manifest.ActionsResource }
+                .Concat(manifest.AdditionalActionsResources ?? Array.Empty<string>());
             var definition = new CampaignDefinition
             {
                 Id = manifest.Id, Version = manifest.Version,
@@ -35,8 +50,11 @@ namespace System.Service
                 ScenarioId = string.IsNullOrWhiteSpace(manifest.ScenarioId) ? manifest.Id : manifest.ScenarioId,
                 EndingTitle = manifest.EndingTitle, EndingBody = manifest.EndingBody, ChoiceDescription = manifest.ChoiceDescription,
                 Rules = Read<CampaignRules>(manifest.RulesResource, readText),
-                Actions = Read<ActionCatalog>(manifest.ActionsResource, readText).Actions,
-                Days = days
+                Actions = actionResources
+                    .SelectMany(key => Read<ActionCatalog>(key, readText).Actions ?? Array.Empty<ActionDefinition>())
+                    .ToArray(),
+                Days = days,
+                ConditionalEvents = schedule?.MaterializeConditionalEvents(calendar) ?? Array.Empty<CampaignConditionalEvent>()
             };
             definition.Validate();
             return definition;
@@ -60,6 +78,7 @@ namespace System.Service
             public string Id, ScenarioId, EndingTitle, EndingBody, ChoiceDescription;
             public int Version, StartYear, StartMonth, StartDay;
             public string RulesResource, ActionsResource, DaysResource, ScheduleResource, CalendarResource;
+            public string[] AdditionalActionsResources;
         }
         [Serializable] private sealed class ActionCatalog { public ActionDefinition[] Actions; }
         [Serializable] private sealed class DayCatalog { public CampaignDay[] Days; }

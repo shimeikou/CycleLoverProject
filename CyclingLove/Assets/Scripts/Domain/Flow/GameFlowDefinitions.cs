@@ -45,6 +45,13 @@ namespace System.Flow
         public bool CanExecute;
     }
 
+    public sealed class GameSkipPreview
+    {
+        public int SkippableDays;
+        public string StopDateText;
+        public string StopReason;
+    }
+
     public sealed class GameSceneRequest
     {
         public GameFlowPhase Phase;

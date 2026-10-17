@@ -27,7 +27,46 @@
     { "Id": "goal_winter", "SeasonId": "winter", "DeadlineYear": 2027, "DeadlineMonth": 3, "DeadlineDay": 31, "SuccessFlag": "goal_winter_succeeded", "FailureFlag": "goal_winter_incomplete", "Conditions": [{ "Type": "route_flag", "Id": "goal_winter_ready" }] }
   ],
   "Endings": [
-    { "Id": "annual_confession", "HeroineId": "", "ResultFlag": "result_annual_confession", "Priority": 100, "IsSuccess": true, "Conditions": [{ "Type": "route_flag", "Id": "annual_confession_ready" }] },
+    { "Id": "annual_confession_online_rival", "HeroineId": "hero_online_rival", "ResultFlag": "result_annual_confession_online_rival", "Priority": 150, "IsSuccess": true, "Conditions": [
+      { "Type": "route_flag", "Id": "annual_confession_online_rival_ready" },
+      { "Type": "route_flag", "Id": "goal_spring_succeeded" },
+      { "Type": "route_flag", "Id": "goal_summer_succeeded" },
+      { "Type": "route_flag", "Id": "goal_autumn_succeeded" },
+      { "Type": "route_flag", "Id": "goal_winter_succeeded" },
+      { "Type": "route_step", "Id": "hero_online_rival", "Value": 8 }
+    ] },
+    { "Id": "annual_confession_announcer", "HeroineId": "hero_announcer", "ResultFlag": "result_annual_confession_announcer", "Priority": 140, "IsSuccess": true, "Conditions": [
+      { "Type": "route_flag", "Id": "annual_confession_announcer_ready" },
+      { "Type": "route_flag", "Id": "goal_spring_succeeded" },
+      { "Type": "route_flag", "Id": "goal_summer_succeeded" },
+      { "Type": "route_flag", "Id": "goal_autumn_succeeded" },
+      { "Type": "route_flag", "Id": "goal_winter_succeeded" },
+      { "Type": "route_step", "Id": "hero_announcer", "Value": 8 }
+    ] },
+    { "Id": "annual_confession_cousin", "HeroineId": "hero_cousin", "ResultFlag": "result_annual_confession_cousin", "Priority": 120, "IsSuccess": true, "Conditions": [
+      { "Type": "route_flag", "Id": "annual_confession_cousin_ready" },
+      { "Type": "route_flag", "Id": "goal_spring_succeeded" },
+      { "Type": "route_flag", "Id": "goal_summer_succeeded" },
+      { "Type": "route_flag", "Id": "goal_autumn_succeeded" },
+      { "Type": "route_flag", "Id": "goal_winter_succeeded" },
+      { "Type": "route_step", "Id": "hero_cousin", "Value": 8 }
+    ] },
+    { "Id": "annual_confession_cafe", "HeroineId": "hero_cafe_master", "ResultFlag": "result_annual_confession_cafe", "Priority": 110, "IsSuccess": true, "Conditions": [
+      { "Type": "route_flag", "Id": "annual_confession_cafe_ready" },
+      { "Type": "route_flag", "Id": "goal_spring_succeeded" },
+      { "Type": "route_flag", "Id": "goal_summer_succeeded" },
+      { "Type": "route_flag", "Id": "goal_autumn_succeeded" },
+      { "Type": "route_flag", "Id": "goal_winter_succeeded" },
+      { "Type": "route_step", "Id": "hero_cafe_master", "Value": 8 }
+    ] },
+    { "Id": "annual_confession_bikeshop", "HeroineId": "hero_bikeshop", "ResultFlag": "result_annual_confession_bikeshop", "Priority": 100, "IsSuccess": true, "Conditions": [
+      { "Type": "route_flag", "Id": "annual_confession_bikeshop_ready" },
+      { "Type": "route_flag", "Id": "goal_spring_succeeded" },
+      { "Type": "route_flag", "Id": "goal_summer_succeeded" },
+      { "Type": "route_flag", "Id": "goal_autumn_succeeded" },
+      { "Type": "route_flag", "Id": "goal_winter_succeeded" },
+      { "Type": "route_step", "Id": "hero_bikeshop", "Value": 8 }
+    ] },
     { "Id": "annual_incomplete", "HeroineId": "", "ResultFlag": "result_annual_incomplete", "Priority": 0, "IsSuccess": false, "Conditions": [] }
   ]
 }

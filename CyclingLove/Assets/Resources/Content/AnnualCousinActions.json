@@ -1,0 +1,92 @@
+{
+  "Actions": [
+    {
+      "Id": "evt_annual_cousin_meeting", "Name": "町を案内する相棒", "NodeId": "annual_cousin_meeting",
+      "BackgroundId": "inn_exterior_day", "CharacterId": "hero_cousin", "OutfitId": "casual", "ExpressionId": "smile",
+      "ChoicePrompt": "久しぶりに会った従妹と、どこから走ろう。",
+      "Pages": ["民宿の前で、従妹はロードバイクとカメラを用意して待っていた。町の面白い場所を全部見せるという。"],
+      "Effects": { "HeroineId": "hero_cousin", "Affection": 1, "RouteStep": 1 },
+      "Choices": [
+        { "Id": "cousin_meeting_scenery", "Label": "景色の良い道を任せる", "Description": "エンパシーと好感度", "NodeId": "annual_cousin_meeting_scenery", "Pages": ["彼女だけが知る細い道の先に、町を見渡せる丘があった。"], "Effects": { "Empathy": 1, "HeroineId": "hero_cousin", "Affection": 1 } },
+        { "Id": "cousin_meeting_food", "Label": "地元の食べ物を巡る", "Description": "アピール", "NodeId": "annual_cousin_meeting_food", "Pages": ["店の人との会話まで楽しみながら、町の味を教えてもらった。"], "Effects": { "Appeal": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cousin_spring_photo", "Name": "春の写真ライド", "NodeId": "annual_cousin_spring_photo",
+      "BackgroundId": "flower_road_day", "CharacterId": "hero_cousin", "OutfitId": "cycling", "ExpressionId": "smile",
+      "ChoicePrompt": "写真に残すなら、何を大切にしよう。",
+      "Pages": ["花の咲く道を巡り、民宿の紹介に使う写真を二人で撮ることになった。"],
+      "Effects": { "HeroineId": "hero_cousin", "RouteStep": 2, "RouteFlag": "goal_spring_ready" },
+      "Choices": [
+        { "Id": "cousin_spring_natural", "Label": "彼女が楽しむ姿を自然に撮る", "Description": "好感度", "NodeId": "annual_cousin_spring_natural", "Pages": ["作った笑顔ではない一枚を見て、彼女は照れながらも喜んだ。"], "Effects": { "HeroineId": "hero_cousin", "Affection": 1 } },
+        { "Id": "cousin_spring_spot", "Label": "映える構図を考える", "Description": "スマートとアピール", "NodeId": "annual_cousin_spring_spot", "Pages": ["光と背景を選び、町の魅力が伝わる写真を撮った。"], "Effects": { "Smart": 1, "Appeal": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cousin_viral", "Name": "数字が伸びた夜", "NodeId": "annual_cousin_viral",
+      "BackgroundId": "inn_room_evening", "CharacterId": "hero_cousin", "OutfitId": "casual", "ExpressionId": "troubled",
+      "ChoicePrompt": "投稿の数字を何度も確認する彼女へ、どう声をかけよう。",
+      "Pages": ["春の投稿が大きく拡散された。それ以来、彼女は反応が落ちることを恐れ、画面から目を離せなくなっている。"],
+      "Effects": { "HeroineId": "hero_cousin", "RouteStep": 3 },
+      "Choices": [
+        { "Id": "cousin_viral_feeling", "Label": "数字より本人の感想を聞く", "Description": "エンパシーと好感度", "NodeId": "annual_cousin_viral_feeling", "Pages": ["楽しかったかと聞くと、彼女は答えに迷い、ようやく疲れていると認めた。"], "Effects": { "Empathy": 2, "HeroineId": "hero_cousin", "Affection": 1 } },
+        { "Id": "cousin_viral_analyze", "Label": "反応を一緒に分析する", "Description": "スマート", "NodeId": "annual_cousin_viral_analyze", "Pages": ["数字を整理すると、不安に追われて投稿を増やしていたことが見えてきた。"], "Effects": { "Smart": 2 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cousin_foodride", "Name": "夏のグルメライド", "NodeId": "annual_cousin_foodride",
+      "BackgroundId": "market_street_day", "CharacterId": "hero_cousin", "OutfitId": "cycling", "ExpressionId": "neutral",
+      "ChoicePrompt": "取材の予定が崩れた今、何を優先しよう。",
+      "Pages": ["紹介予定の店が急に休みになった。彼女は投稿計画が崩れたことに焦りを隠せない。"],
+      "Effects": { "HeroineId": "hero_cousin", "RouteStep": 4, "BikeMastery": 3, "RouteFlag": "goal_summer_ready" },
+      "Choices": [
+        { "Id": "cousin_foodride_detour", "Label": "予定を捨てて二人で寄り道する", "Description": "好感度", "NodeId": "annual_cousin_foodride_detour", "ExpressionId": "smile", "Pages": ["偶然見つけた小さな店で、投稿を忘れて食事を楽しんだ。"], "Effects": { "HeroineId": "hero_cousin", "Affection": 1 } },
+        { "Id": "cousin_foodride_backup", "Label": "別の店を調べる", "Description": "スマート", "NodeId": "annual_cousin_foodride_backup", "Pages": ["候補を調べ直し、無理のない範囲で取材を続けた。"], "Effects": { "Smart": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cousin_burnout", "Name": "笑えない配信", "NodeId": "annual_cousin_burnout",
+      "BackgroundId": "inn_room_evening", "CharacterId": "hero_cousin", "OutfitId": "casual", "ExpressionId": "troubled",
+      "ChoicePrompt": "明るく振る舞えなくなった彼女を、どう支えよう。",
+      "Pages": ["配信を始めようとした彼女は、笑顔を作れずカメラを止めた。期待される自分を演じ続けることに疲れていた。"],
+      "Effects": { "HeroineId": "hero_cousin", "RouteStep": 5 },
+      "Choices": [
+        { "Id": "cousin_burnout_rest", "Label": "今日は何も発信せず休もう", "Description": "好感度5で選択可能", "NodeId": "annual_cousin_burnout_rest", "Pages": ["端末の電源を切ると、彼女は久しぶりに静かな夜を過ごした。"], "Conditions": [{ "Type": "affection", "Id": "hero_cousin", "Value": 5 }], "Effects": { "Empathy": 1, "HeroineId": "hero_cousin", "Affection": 1 } },
+        { "Id": "cousin_burnout_short", "Label": "休むことだけ短く伝える", "Description": "いつでも選べる", "NodeId": "annual_cousin_burnout_short", "Pages": ["正直な短い言葉だけを投稿し、更新を休むことにした。"], "Effects": { "Smart": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cousin_town", "Name": "町のための発信", "NodeId": "annual_cousin_town",
+      "BackgroundId": "town_square_day", "CharacterId": "hero_cousin", "OutfitId": "casual", "ExpressionId": "neutral",
+      "ChoicePrompt": "数字ではなく町の人へ届く企画を、どう作ろう。",
+      "Pages": ["休養後、彼女は町の人と小さなサイクリング企画を作りたいと話した。"],
+      "Effects": { "HeroineId": "hero_cousin", "RouteStep": 6, "RouteFlag": "goal_autumn_ready" },
+      "Choices": [
+        { "Id": "cousin_town_together", "Label": "参加者と一緒に内容を決める", "Description": "エンパシー7・アピール7", "NodeId": "annual_cousin_town_together", "ExpressionId": "smile", "Pages": ["一方的に見せるのではなく、参加者自身が町を語る企画になった。"], "Conditions": [{ "Type": "empathy", "Value": 7 }, { "Type": "appeal", "Value": 7 }], "Effects": { "Appeal": 1, "HeroineId": "hero_cousin", "Affection": 1 } },
+        { "Id": "cousin_town_small", "Label": "少人数で試してみる", "Description": "いつでも選べる", "NodeId": "annual_cousin_town_small", "Pages": ["民宿の客を中心に、小さな試走会から始めることにした。"], "Effects": { "Toughness": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cousin_offline", "Name": "カメラを置いた一日", "NodeId": "annual_cousin_offline",
+      "BackgroundId": "coast_road_day", "CharacterId": "hero_cousin", "OutfitId": "cycling", "ExpressionId": "neutral",
+      "ChoicePrompt": "記録を残さない一日を、どう過ごそう。",
+      "Pages": ["冬の海沿いへ、端末もカメラも持たずに出かけた。誰にも見せない景色を二人だけで楽しむ。"],
+      "Effects": { "HeroineId": "hero_cousin", "RouteStep": 7 },
+      "Choices": [
+        { "Id": "cousin_offline_memory", "Label": "言葉で今日を覚えておこう", "Description": "好感度", "NodeId": "annual_cousin_offline_memory", "ExpressionId": "smile", "Pages": ["写真の代わりに好きだった景色を話し合い、彼女は素直に笑った。"], "Effects": { "HeroineId": "hero_cousin", "Affection": 1 } },
+        { "Id": "cousin_offline_ride", "Label": "何も決めず先まで走る", "Description": "タフネス", "NodeId": "annual_cousin_offline_ride", "Pages": ["目的地を決めず、疲れたところで引き返した。"], "Effects": { "Toughness": 1 } }
+      ]
+    },
+    {
+      "Id": "evt_annual_cousin_final", "Name": "本当の自分で隣へ", "NodeId": "annual_cousin_final",
+      "BackgroundId": "inn_exterior_evening", "CharacterId": "hero_cousin", "OutfitId": "casual", "ExpressionId": "neutral",
+      "ChoicePrompt": "評価される自分ではなく、目の前の彼女へ気持ちを伝えよう。",
+      "Pages": ["民宿の前で、彼女は来年も町を発信したいと話した。ただし今度は、無理に笑わない自分のままで。"],
+      "Effects": { "HeroineId": "hero_cousin", "RouteStep": 8, "RouteFlag": "goal_winter_ready" },
+      "Choices": [
+        { "Id": "cousin_final_confess", "Label": "どんな顔の君も、これから隣で見ていたい", "Description": "好感度7で告白", "NodeId": "annual_cousin_final_confess", "ExpressionId": "smile", "Pages": ["彼女はカメラを置き、こちらだけを見て笑った。従妹「じゃあ、来年の景色も二人で見よう」"], "Conditions": [{ "Type": "affection", "Id": "hero_cousin", "Value": 7 }], "Effects": { "HeroineId": "hero_cousin", "Affection": 1, "RouteFlag": "annual_confession_cousin_ready" } },
+        { "Id": "cousin_final_partner", "Label": "これからも町を走る相棒でいよう", "Description": "いつでも選べる", "NodeId": "annual_cousin_final_partner", "ExpressionId": "smile", "Pages": ["次の取材先を話しながら、二人で民宿へ戻った。"], "Effects": { "HeroineId": "hero_cousin", "Affection": 1 } }
+      ]
+    }
+  ]
+}

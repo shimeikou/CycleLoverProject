@@ -12,6 +12,7 @@ namespace CyclingLove.Content
         public string DefaultHolidayTemplateId;
         public CampaignDayTemplate[] Templates;
         public CampaignDayRule[] Rules;
+        public CampaignConditionalEvent[] ConditionalEvents;
 
         public CampaignDay[] Materialize(AnnualCalendarDefinition calendarDefinition)
         {
@@ -29,9 +30,28 @@ namespace CyclingLove.Content
                 var templateId = rule?.TemplateId ?? (day.IsHoliday ? DefaultHolidayTemplateId : DefaultWorkdayTemplateId);
                 var materialized = templates[templateId].Snapshot();
                 materialized.Id = "annual_" + date.ToString("yyyy_MM_dd");
+                materialized.MorningNodeId = DateNodeId(materialized.MorningNodeId, materialized.Id, "morning");
+                materialized.AfternoonNodeId = DateNodeId(materialized.AfternoonNodeId, materialized.Id, "afternoon");
                 result.Add(materialized);
             }
             return result.ToArray();
+        }
+
+        public CampaignConditionalEvent[] MaterializeConditionalEvents(AnnualCalendarDefinition calendarDefinition)
+        {
+            if (calendarDefinition == null) throw new ArgumentNullException(nameof(calendarDefinition));
+            calendarDefinition.Validate();
+            Validate(calendarDefinition);
+            var templates = Templates.ToDictionary(value => value.Id, value => value.Day);
+            return (ConditionalEvents ?? Array.Empty<CampaignConditionalEvent>()).Select(value =>
+            {
+                var copy = value.Snapshot();
+                copy.Day = templates[copy.TemplateId].Snapshot();
+                copy.Day.Id = copy.Id;
+                copy.Day.MorningNodeId = EventNodeId(copy.Day.MorningNodeId, copy.Id, "morning");
+                copy.Day.AfternoonNodeId = EventNodeId(copy.Day.AfternoonNodeId, copy.Id, "afternoon");
+                return copy;
+            }).ToArray();
         }
 
         public void Validate(AnnualCalendarDefinition calendar)
@@ -49,7 +69,19 @@ namespace CyclingLove.Content
             if (rules.Select(value => value.Priority).Distinct().Count() != rules.Length)
                 throw new InvalidOperationException("Annual campaign day rule priorities must be unique");
             foreach (var rule in rules) rule.Validate(calendar, templateIds);
+            var conditionalEvents = ConditionalEvents ?? Array.Empty<CampaignConditionalEvent>();
+            if (conditionalEvents.Any(value => value == null))
+                throw new InvalidOperationException("Annual campaign schedule contains an empty conditional event");
+            RequireUnique(conditionalEvents.Select(value => value.Id), "conditional event");
+            foreach (var conditionalEvent in conditionalEvents)
+                conditionalEvent.Validate(calendar, templateIds);
         }
+
+        private static string DateNodeId(string nodeId, string dayId, string timing) =>
+            string.IsNullOrWhiteSpace(nodeId) ? $"{dayId}_{timing}" : $"{nodeId}_{dayId}";
+
+        private static string EventNodeId(string nodeId, string eventId, string timing) =>
+            string.IsNullOrWhiteSpace(nodeId) ? $"{eventId}_{timing}" : $"{nodeId}_{eventId}";
 
         private static void RequireUnique(IEnumerable<string> values, string kind)
         {
@@ -57,6 +89,82 @@ namespace CyclingLove.Content
             if (ids.Any(string.IsNullOrWhiteSpace) || ids.Distinct().Count() != ids.Length)
                 throw new InvalidOperationException("Invalid or duplicate " + kind + " ID");
         }
+    }
+
+    [Serializable]
+    public sealed class CampaignConditionalEvent
+    {
+        public string Id, TemplateId, SeasonId, SpecialSlotId, HolidayMode;
+        public int Priority;
+        public int StartYear, StartMonth, StartDay;
+        public int EndYear, EndMonth, EndDay;
+        public bool Repeatable;
+        public CampaignCondition[] Conditions;
+        public CampaignDay Day;
+
+        public CampaignConditionalEvent Snapshot()
+        {
+            var copy = (CampaignConditionalEvent)MemberwiseClone();
+            copy.Conditions = (Conditions ?? Array.Empty<CampaignCondition>())
+                .Select(value => value.Snapshot()).ToArray();
+            copy.Day = Day?.Snapshot();
+            return copy;
+        }
+
+        public bool Matches(AnnualDayResolution day, System.GameSession.GamePlayerData data)
+        {
+            if (!MatchesDay(day)) return false;
+            if (!Repeatable && data.ClearedEventKeys.Any(key => key.StartsWith(Id + "_", StringComparison.Ordinal))) return false;
+            return (Conditions ?? Array.Empty<CampaignCondition>()).All(value => value.IsMet(data));
+        }
+
+        public bool MatchesDay(AnnualDayResolution day)
+        {
+            if (HasPeriod && (day.Date < StartDate || day.Date > EndDate)) return false;
+            if (!string.IsNullOrWhiteSpace(SeasonId) && day.SeasonId != SeasonId) return false;
+            if (!string.IsNullOrWhiteSpace(SpecialSlotId) && !day.SpecialSlotIds.Contains(SpecialSlotId)) return false;
+            if (HolidayMode == "holiday" && !day.IsHoliday) return false;
+            if (HolidayMode == "workday" && day.IsHoliday) return false;
+            return true;
+        }
+
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(Id) || string.IsNullOrWhiteSpace(TemplateId) || Priority < 0)
+                throw new InvalidOperationException("Invalid conditional event: " + Id);
+            if (HolidayMode != "any" && HolidayMode != "holiday" && HolidayMode != "workday")
+                throw new InvalidOperationException("Invalid conditional event holiday mode: " + Id);
+            if (HasPartialPeriod || HasPeriod && StartDate > EndDate)
+                throw new InvalidOperationException("Invalid conditional event period: " + Id);
+            foreach (var condition in Conditions ?? Array.Empty<CampaignCondition>()) condition.Validate();
+        }
+
+        public void ValidateResolved()
+        {
+            Validate();
+            if (Day == null) throw new InvalidOperationException("Conditional event has no resolved day: " + Id);
+        }
+
+        public void Validate(AnnualCalendarDefinition calendar, IReadOnlyCollection<string> templateIds)
+        {
+            Validate();
+            if (!templateIds.Contains(TemplateId))
+                throw new InvalidOperationException("Conditional event references a missing template: " + Id);
+            if (HasPeriod && (StartDate < calendar.StartDate || EndDate > calendar.EndDate))
+                throw new InvalidOperationException("Conditional event is outside the calendar: " + Id);
+            if (!string.IsNullOrWhiteSpace(SeasonId) && !calendar.Seasons.Any(value => value.Id == SeasonId))
+                throw new InvalidOperationException("Conditional event references a missing season: " + Id);
+            if (!string.IsNullOrWhiteSpace(SpecialSlotId) &&
+                !(calendar.DateOverrides ?? Array.Empty<CalendarDateOverride>()).Any(value =>
+                    (value.SpecialSlotIds ?? Array.Empty<string>()).Contains(SpecialSlotId)))
+                throw new InvalidOperationException("Conditional event references a missing special slot: " + Id);
+        }
+
+        private DateTime StartDate => new(StartYear, StartMonth, StartDay);
+        private DateTime EndDate => new(EndYear, EndMonth, EndDay);
+        private bool HasPeriod => StartYear != 0 && StartMonth != 0 && StartDay != 0 && EndYear != 0 && EndMonth != 0 && EndDay != 0;
+        private bool HasPartialPeriod =>
+            (StartYear != 0 || StartMonth != 0 || StartDay != 0 || EndYear != 0 || EndMonth != 0 || EndDay != 0) && !HasPeriod;
     }
 
     [Serializable]
