@@ -114,7 +114,7 @@ namespace CyclingLove.Content
         public bool Matches(AnnualDayResolution day, System.GameSession.GamePlayerData data)
         {
             if (!MatchesDay(day)) return false;
-            if (!Repeatable && data.ClearedEventKeys.Any(key => key.StartsWith(Id + "_", StringComparison.Ordinal))) return false;
+            if (!Repeatable && data.ClearedEventKeys.Contains($"{Id}_{System.Data.Schedule.ActionTiming.Morning}")) return false;
             return (Conditions ?? Array.Empty<CampaignCondition>()).All(value => value.IsMet(data));
         }
 

@@ -63,7 +63,7 @@ namespace CyclingLove.Content
                     }
                 }
             }
-            foreach (var d in Days)
+            foreach (var d in Days.Concat(conditionalEvents.Select(value => value.Day)))
             {
                 if (string.IsNullOrWhiteSpace(d.Title) || d.ActionIds == null || d.ActionIds.Length == 0 || d.MorningEffects == null || d.AfternoonEffects == null)
                     throw new InvalidOperationException("Invalid day: " + d.Id);
