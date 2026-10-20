@@ -39,7 +39,7 @@
       "ActionIds": ["act_bikeshop_visit", "act_training_roadwork_001", "act_rest_home_001"], "AfternoonEffects": {}, "SummaryNote": "自転車屋へ行くと短期ルートが進む。"
     },
     {
-      "Id": "short_day5", "Title": "休日の初回練習",
+      "Id": "short_day5", "Title": "休日の初回練習", "IsHoliday": true,
       "MorningNodeId": "day05_morning", "MorningBackgroundId": "riverside_morning",
       "MorningPages": ["今日は仕事を休み、彼女と河川敷へ向かう。", "点検を終えた祖父の自転車に、初めてまたがった。"],
       "MorningEffects": {}, "AfternoonNodeId": "day05_afternoon", "AfternoonBackgroundId": "riverside_day",
@@ -83,7 +83,7 @@
       "ActionIds": ["evt_bikeshop_eve"], "AfternoonEffects": {}, "SummaryNote": "走る意味を彼女に伝えた。"
     },
     {
-      "Id": "short_day10", "Title": "ヒルクライムの朝",
+      "Id": "short_day10", "Title": "ヒルクライムの朝", "IsHoliday": true,
       "MorningNodeId": "day10_morning", "MorningBackgroundId": "mountain_start_morning",
       "MorningPages": ["休日の朝。空はよく晴れ、山の稜線がはっきり見える。", "彼女と合流し、二台でスタート地点へ向かった。"],
       "MorningEffects": {}, "AfternoonNodeId": "day10_afternoon", "AfternoonBackgroundId": "mountain_road_day",

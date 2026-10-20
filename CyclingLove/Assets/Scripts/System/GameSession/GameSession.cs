@@ -29,7 +29,9 @@ namespace System.GameSession
             SystemConfig = await SaveDataService.LoadSystem();
             SystemConfig ??= new GameSystemConfig();
             SystemConfig.Profile ??= new ProfileProgress();
+            SystemConfig.Audio ??= new AudioSettingsData();
             ProfileProgressService.Normalize(SystemConfig.Profile);
+            SystemConfig.Audio.Normalize();
             
             IsInitialized = true;
         }

@@ -14,7 +14,7 @@ namespace System.Service
                 EnsureCollections(data);
                 return;
             }
-            if (data.FlowVersion != 1 && data.FlowVersion != 2 && data.FlowVersion != 3 && data.FlowVersion != 4)
+            if (data.FlowVersion != 1 && data.FlowVersion != 2 && data.FlowVersion != 3 && data.FlowVersion != 4 && data.FlowVersion != 5)
                 throw new InvalidOperationException("この形式のセーブデータには対応していません。");
 
             EnsureCollections(data);
@@ -45,6 +45,7 @@ namespace System.Service
             data.RaceAttempts ??= new List<RaceAttemptRecord>();
             data.SeasonGoalResults ??= new List<SeasonGoalRecord>();
             data.AnnualEndingResult ??= new AnnualEndingRecord();
+            data.ScenarioCheckpoint ??= new ScenarioCheckpoint();
             if (string.IsNullOrWhiteSpace(data.RunId)) data.RunId = Guid.NewGuid().ToString("N");
         }
     }

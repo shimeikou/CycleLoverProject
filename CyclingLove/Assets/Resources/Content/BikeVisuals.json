@@ -1,0 +1,61 @@
+{
+  "Version": 1,
+  "Parts": [
+    {
+      "PartId": "frame_musashi_touring_01",
+      "Slot": "frame",
+      "Address": "bike/part/frame_musashi_touring_01",
+      "FallbackAddress": "bike/fallback/frame",
+      "PackId": "initial_bike_visuals"
+    },
+    {
+      "PartId": "frame_zenith_climber_01",
+      "Slot": "frame",
+      "Address": "bike/part/frame_zenith_climber_01",
+      "FallbackAddress": "bike/fallback/frame",
+      "PackId": "bike_parts_visuals"
+    },
+    {
+      "PartId": "frame_stag_classic_01",
+      "Slot": "frame",
+      "Address": "bike/part/frame_stag_classic_01",
+      "FallbackAddress": "bike/fallback/frame",
+      "PackId": "bike_parts_visuals"
+    },
+    {
+      "PartId": "components_takumi_reliable_01",
+      "Slot": "components",
+      "Address": "bike/part/components_takumi_reliable_01",
+      "FallbackAddress": "bike/fallback/components",
+      "PackId": "initial_bike_visuals"
+    },
+    {
+      "PartId": "components_quantum_electronic_01",
+      "Slot": "components",
+      "Address": "bike/part/components_quantum_electronic_01",
+      "FallbackAddress": "bike/fallback/components",
+      "PackId": "bike_parts_visuals"
+    },
+    {
+      "PartId": "wheels_takumi_endurance_01",
+      "Slot": "wheels",
+      "Address": "bike/part/wheels_takumi_endurance_01",
+      "FallbackAddress": "bike/fallback/wheels",
+      "PackId": "initial_bike_visuals"
+    },
+    {
+      "PartId": "wheels_heliocentric_aero_01",
+      "Slot": "wheels",
+      "Address": "bike/part/wheels_heliocentric_aero_01",
+      "FallbackAddress": "bike/fallback/wheels",
+      "PackId": "bike_parts_visuals"
+    },
+    {
+      "PartId": "wheels_ryusho_value_01",
+      "Slot": "wheels",
+      "Address": "bike/part/wheels_ryusho_value_01",
+      "FallbackAddress": "bike/fallback/wheels",
+      "PackId": "bike_parts_visuals"
+    }
+  ]
+}

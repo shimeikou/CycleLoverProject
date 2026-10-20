@@ -13,14 +13,17 @@ namespace Scene.Init
     {
         [SerializeField] private InitSceneViewer view;
         private bool _busy;
+        private AudioSettingsData _audioSettingsBeforeEdit;
         private async void Start()
         {
             try
             {
                 await new InitSceneModel().Init();
+                GameAudioService.Instance.RefreshConfiguration();
+                GameAudioService.Instance.ResetToSilence();
                 StandardUIManager.Instance?.HideLoading();
                 view.Init(() => Open(false).Forget(), () => Open(true).Forget(),
-                    () => view.SetMessage("設定画面は準備中です。"), () => Application.Quit());
+                    OpenAudioSettings, () => Application.Quit());
                 view.SetLoadAvailable(SaveDataService.Exists(GameSession.CurrentSaveSlot));
                 view.Show();
             }
@@ -44,6 +47,58 @@ namespace Scene.Init
                 view.SetMessage(load ? "読み込めませんでした。セーブが破損しているか、この試作に対応していません。新しく始めることはできます。" : "開始できませんでした。もう一度お試しください。");
                 StandardUIManager.Instance?.HideLoading();
                 _busy = false; view.SetBusy(false);
+            }
+        }
+
+        private void OpenAudioSettings()
+        {
+            if (_busy) return;
+            GameSession.SystemConfig.Audio ??= new AudioSettingsData();
+            GameSession.SystemConfig.Audio.Normalize();
+            _audioSettingsBeforeEdit = GameSession.SystemConfig.Audio.Snapshot();
+            view.ShowAudioSettings(
+                _audioSettingsBeforeEdit,
+                PreviewAudioSettings,
+                settings => PersistAudioSettings(settings).Forget(),
+                CancelAudioSettings);
+        }
+
+        private void PreviewAudioSettings(AudioSettingsData settings)
+        {
+            GameSession.SystemConfig.Audio.CopyFrom(settings);
+            GameAudioService.Instance.RefreshConfiguration();
+        }
+
+        private void CancelAudioSettings()
+        {
+            if (_audioSettingsBeforeEdit != null)
+                GameSession.SystemConfig.Audio.CopyFrom(_audioSettingsBeforeEdit);
+            GameAudioService.Instance.RefreshConfiguration();
+            _audioSettingsBeforeEdit = null;
+            view.SetMessage("サウンド設定の変更を取り消しました。");
+        }
+
+        private async UniTask PersistAudioSettings(AudioSettingsData settings)
+        {
+            if (_busy) return;
+            _busy = true;
+            view.SetBusy(true);
+            PreviewAudioSettings(settings);
+            try
+            {
+                await SaveDataService.SaveSystem(GameSession.SystemConfig);
+                _audioSettingsBeforeEdit = null;
+                view.SetMessage("サウンド設定を保存しました。");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"Audio settings save failed: {ex.GetType().Name}");
+                view.SetMessage("設定を保存できませんでした。変更は今回の起動中だけ反映されます。");
+            }
+            finally
+            {
+                _busy = false;
+                if (view != null) view.SetBusy(false);
             }
         }
     }

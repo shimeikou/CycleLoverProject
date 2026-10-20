@@ -68,13 +68,33 @@ namespace CyclingLove.Content
             RequireUnique(rules.Select(value => value.Id), "day rule");
             if (rules.Select(value => value.Priority).Distinct().Count() != rules.Length)
                 throw new InvalidOperationException("Annual campaign day rule priorities must be unique");
-            foreach (var rule in rules) rule.Validate(calendar, templateIds);
+            var calendarService = new AnnualCalendarService(calendar);
+            foreach (var rule in rules)
+            {
+                rule.Validate(calendar, templateIds);
+                if (!HasMatchingDay(calendar, calendarService, rule.Matches))
+                    throw new InvalidOperationException("Annual campaign day rule has no matching calendar day: " + rule.Id);
+            }
             var conditionalEvents = ConditionalEvents ?? Array.Empty<CampaignConditionalEvent>();
             if (conditionalEvents.Any(value => value == null))
                 throw new InvalidOperationException("Annual campaign schedule contains an empty conditional event");
             RequireUnique(conditionalEvents.Select(value => value.Id), "conditional event");
             foreach (var conditionalEvent in conditionalEvents)
+            {
                 conditionalEvent.Validate(calendar, templateIds);
+                if (!HasMatchingDay(calendar, calendarService, conditionalEvent.MatchesDay))
+                    throw new InvalidOperationException("Conditional event has no matching calendar day: " + conditionalEvent.Id);
+            }
+        }
+
+        private static bool HasMatchingDay(
+            AnnualCalendarDefinition calendar,
+            AnnualCalendarService calendarService,
+            Func<AnnualDayResolution, bool> predicate)
+        {
+            for (var date = calendar.StartDate; date <= calendar.EndDate; date = date.AddDays(1))
+                if (predicate(calendarService.ResolveDay(date))) return true;
+            return false;
         }
 
         private static string DateNodeId(string nodeId, string dayId, string timing) =>

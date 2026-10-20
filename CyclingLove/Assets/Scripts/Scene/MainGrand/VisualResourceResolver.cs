@@ -34,7 +34,11 @@ namespace Scene.MainGrand
                     if (sprite != null) return sprite;
                 }
             }
-            return null;
+            var legacyExpression = Resources.Load<Sprite>($"Images/Characters/{characterId}_{expression}");
+            if (legacyExpression != null) return legacyExpression;
+            return expression == "neutral"
+                ? null
+                : Resources.Load<Sprite>($"Images/Characters/{characterId}_neutral");
         }
 
         private static IEnumerable<string> CharacterPaths(string characterId, string outfitId, string expressionId)
@@ -44,7 +48,6 @@ namespace Scene.MainGrand
                 yield return $"Images/Characters/{characterId}/{outfitId}/{expressionId}";
                 yield return $"Images/Characters/{characterId}_{outfitId}_{expressionId}";
             }
-            yield return $"Images/Characters/{characterId}_{expressionId}";
         }
     }
 }

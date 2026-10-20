@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace System
 {
-    public abstract　class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
         private static bool _quitting = false;
@@ -16,7 +16,7 @@ namespace System
                 if (_instance != null) return _instance;
 
                 // シーン上の既存を検索
-                _instance = FindFirstObjectByType<T>();
+                _instance = FindAnyObjectByType<T>();
                 if (_instance != null) return _instance;
 
                 // 自動生成

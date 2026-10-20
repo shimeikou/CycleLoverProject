@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using System.GameSession;
 
 
 namespace Scene.Init
@@ -35,6 +36,7 @@ namespace Scene.Init
         private Volume volume;
 
         [SerializeField] private TextMeshProUGUI statusText;
+        private AudioSettingsPanel _audioSettingsPanel;
         private bool _loadAvailable;
         public void SetMessage(string message) { if (statusText != null) statusText.text = message; }
         public void SetLoadAvailable(bool available) { _loadAvailable = available; loadButton.interactable = available; }
@@ -104,6 +106,34 @@ namespace Scene.Init
             {
                 IsTransition = false;
             });
+        }
+
+        public bool ShowAudioSettings(
+            AudioSettingsData settings,
+            global::System.Action<AudioSettingsData> onPreview,
+            global::System.Action<AudioSettingsData> onApply,
+            global::System.Action onCancel)
+        {
+            if (_audioSettingsPanel == null)
+            {
+                var canvas = GetComponentInParent<Canvas>();
+                if (canvas == null) canvas = FindAnyObjectByType<Canvas>();
+                if (canvas == null)
+                {
+                    SetMessage("設定画面を表示できませんでした。");
+                    return false;
+                }
+                var font = statusText != null ? statusText.font : text != null ? text.font : null;
+                _audioSettingsPanel = AudioSettingsPanel.Create(canvas.transform, font);
+            }
+
+            SetBusy(true);
+            _audioSettingsPanel.Show(settings, onPreview, onApply, () =>
+            {
+                onCancel?.Invoke();
+                SetBusy(false);
+            });
+            return true;
         }
 
         public void HideAndShowLoading(Color color,UnityAction onComplete = null)

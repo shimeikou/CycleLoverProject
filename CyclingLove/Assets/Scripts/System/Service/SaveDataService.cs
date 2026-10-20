@@ -46,7 +46,15 @@ namespace System.Service
         {
             var json = JsonUtility.ToJson(data, true);
             var encrypted = await Encrypt(json);
-            await File.WriteAllTextAsync(SystemPath, encrypted);
+            Directory.CreateDirectory(Path.GetDirectoryName(SystemPath));
+            var temporary = SystemPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            try
+            {
+                await File.WriteAllTextAsync(temporary, encrypted);
+                if (File.Exists(SystemPath)) File.Replace(temporary, SystemPath, SystemPath + ".bak");
+                else File.Move(temporary, SystemPath);
+            }
+            finally { if (File.Exists(temporary)) File.Delete(temporary); }
         }
 
         public static async UniTask<GamePlayerData> Load(string slot = "1")
@@ -57,6 +65,24 @@ namespace System.Service
                 throw new FileNotFoundException("保存データがありません。", path);
             }
 
+            try { return await LoadPlayerFile(path); }
+            catch (Exception ex) when (IsDamagedSave(ex))
+            {
+                Debug.LogWarning($"Player save is damaged: {ex.GetType().Name}");
+                var backup = path + ".bak";
+                if (!File.Exists(backup)) throw;
+
+                try { return await LoadPlayerFile(backup); }
+                catch (Exception backupEx) when (IsDamagedSave(backupEx))
+                {
+                    Debug.LogWarning($"Player save backup is damaged: {backupEx.GetType().Name}");
+                    throw new InvalidOperationException("保存データとバックアップを読み込めませんでした。", backupEx);
+                }
+            }
+        }
+
+        private static async UniTask<GamePlayerData> LoadPlayerFile(string path)
+        {
             var encrypted = await File.ReadAllTextAsync(path);
             var json = await Decrypt(encrypted);
             var data = JsonUtility.FromJson<GamePlayerData>(json);
@@ -65,14 +91,35 @@ namespace System.Service
             return data;
         }
 
+        private static bool IsDamagedSave(Exception ex) =>
+            ex is FormatException or CryptographicException or ArgumentException or InvalidOperationException;
+
         public static async UniTask<GameSystemConfig> LoadSystem()
         {
             if (!File.Exists(SystemPath))
                 return new GameSystemConfig();
 
-            var encrypted = await File.ReadAllTextAsync(SystemPath);
+            try { return await LoadSystemFile(SystemPath); }
+            catch (Exception ex) when (ex is FormatException or CryptographicException or ArgumentException)
+            {
+                Debug.LogWarning($"System settings are damaged: {ex.GetType().Name}");
+                var backup = SystemPath + ".bak";
+                if (!File.Exists(backup)) return new GameSystemConfig();
+                try { return await LoadSystemFile(backup); }
+                catch (Exception backupEx) when (backupEx is FormatException or CryptographicException or ArgumentException)
+                {
+                    Debug.LogWarning($"System settings backup is damaged: {backupEx.GetType().Name}");
+                    return new GameSystemConfig();
+                }
+            }
+        }
+
+        private static async UniTask<GameSystemConfig> LoadSystemFile(string path)
+        {
+            var encrypted = await File.ReadAllTextAsync(path);
             var json = await Decrypt(encrypted);
-            return JsonUtility.FromJson<GameSystemConfig>(json);
+            return JsonUtility.FromJson<GameSystemConfig>(json) ??
+                   throw new ArgumentException("System settings JSON is empty");
         }
 
         private static async UniTask<string> Encrypt(string plainText)

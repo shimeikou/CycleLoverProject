@@ -128,6 +128,7 @@
     {
       "Id": "evt_bikeshop_hillclimb",
       "Name": "二人のヒルクライム",
+      "AutoSelectChoice": true,
       "NodeId": "event_hillclimb", "BackgroundId": "mountain_road_day",
       "CharacterId": "hero_bikeshop",
       "OutfitId": "cycling", "ExpressionId": "neutral",
@@ -143,6 +144,20 @@
             { "Type": "affection", "Id": "hero_bikeshop", "Value": 3 },
             { "Type": "physical", "Value": 7 },
             { "Type": "toughness", "Value": 7 },
+            { "Type": "event_cleared", "Id": "short_day5_Afternoon" },
+            { "Type": "event_cleared", "Id": "short_day9_Afternoon" }
+          ],
+          "Effects": { "HeroineId": "hero_bikeshop", "RouteStep": 5, "RouteFlag": "result_bikeshop_short_success" }
+        },
+        {
+          "Id": "hill_success_supported", "Label": "前夜の約束を力に頂上を目指す", "Description": "前夜の共感で能力不足を一部補う",
+          "NodeId": "event_hillclimb_success_supported", "BackgroundId": "mountain_summit_day", "ExpressionId": "smile",
+          "Pages": ["苦しい区間で前夜の言葉を思い出し、二人のリズムを崩さず頂上まで走った。\n娘「一緒に見たかった景色、ちゃんと見られましたね」"],
+          "Conditions": [
+            { "Type": "affection", "Id": "hero_bikeshop", "Value": 3 },
+            { "Type": "physical", "Value": 6 },
+            { "Type": "toughness", "Value": 6 },
+            { "Type": "route_flag", "Id": "goal_bikeshop_hill_ready" },
             { "Type": "event_cleared", "Id": "short_day5_Afternoon" },
             { "Type": "event_cleared", "Id": "short_day9_Afternoon" }
           ],

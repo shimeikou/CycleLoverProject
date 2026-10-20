@@ -29,6 +29,7 @@ namespace System.Manager
             RaceCatalog, EquipmentCatalog);
         public System.Collections.Generic.IReadOnlyList<GameActionOption> GetActionOptions() => Flow.GetActionOptions(GameSessionState.PlayerData);
         public GameFlowPhase CurrentPhase => GameSessionState.PlayerData?.SavedPhase ?? GameFlowPhase.None;
+        public bool CanUseBikeMenu => CurrentPhase == GameFlowPhase.ActionSelection;
         public GameSceneRequest CurrentRequest { get; private set; }
 
         public async UniTask StartNewGameFlow()

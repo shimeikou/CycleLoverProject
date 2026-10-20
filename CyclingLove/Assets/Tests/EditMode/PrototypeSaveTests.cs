@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Threading;
+using System.Flow;
 using System.GameSession;
 using System.Service;
 using Cysharp.Threading.Tasks;
@@ -28,8 +29,13 @@ public sealed class PrototypeSaveTests
     private async UniTask VerifyRoundTrip()
     {
         int thread = Thread.CurrentThread.ManagedThreadId;
-        var d = new ThreeDayGameService().NewGame();
-        d.NarrativePage = 1;
+        var flow = new ThreeDayGameService();
+        var d = flow.NewGame();
+        Assert.IsTrue(flow.Submit(d, new GameSceneResult
+        {
+            CompletionType = GameFlowCompletionType.NovelClosed,
+            ExpectedRevision = d.Revision
+        }));
         var heroine = d.EnsureHeroineProgress("hero_bikeshop");
         heroine.Affection = 12;
         heroine.RouteStep = 3;
@@ -65,5 +71,30 @@ public sealed class PrototypeSaveTests
         try { await SaveDataService.Load(slot); } catch (Exception ex) { failure = ex; }
         Assert.IsNotNull(failure);
         Assert.AreEqual("corrupt-test-payload", File.ReadAllText(path));
+    }
+
+    [UnityTest]
+    public IEnumerator CorruptMainFileFallsBackToLastValidBackup()
+    {
+        return VerifyBackupRecovery().ToCoroutine();
+    }
+    private async UniTask VerifyBackupRecovery()
+    {
+        var flow = new ThreeDayGameService();
+        var original = flow.NewGame();
+        original.Money = 1200;
+        await SaveDataService.Save(original, slot);
+
+        original.Money = 2400;
+        await SaveDataService.Save(original, slot);
+        var path = SaveDataService.SavePath(slot);
+        Assert.IsTrue(File.Exists(path + ".bak"));
+
+        File.WriteAllText(path, "corrupt-main-payload");
+        var recovered = await SaveDataService.Load(slot);
+
+        Assert.AreEqual(1200, recovered.Money);
+        Assert.AreEqual("corrupt-main-payload", File.ReadAllText(path),
+            "Loading must not overwrite the damaged file before the player saves again.");
     }
 }

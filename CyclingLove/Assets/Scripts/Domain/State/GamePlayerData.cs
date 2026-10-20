@@ -34,6 +34,7 @@ namespace System.GameSession
         public int ContentVersion;
         public System.Flow.GameFlowPhase SavedPhase = System.Flow.GameFlowPhase.Novel;
         public int NarrativePage;
+        public ScenarioCheckpoint ScenarioCheckpoint = new();
         public string SelectedActionId;
         public string SelectedChoiceId;
         public string ResolvedDayEventId;
@@ -91,6 +92,24 @@ namespace System.GameSession
             progress = new HeroineProgress { HeroineId = heroineId };
             HeroineProgresses.Add(progress);
             return progress;
+        }
+    }
+
+    [Serializable]
+    public sealed class ScenarioCheckpoint
+    {
+        public string ScenarioId;
+        public string NodeId;
+        public string PageId;
+
+        public bool IsEmpty => string.IsNullOrWhiteSpace(ScenarioId) &&
+            string.IsNullOrWhiteSpace(NodeId) && string.IsNullOrWhiteSpace(PageId);
+
+        public void Clear()
+        {
+            ScenarioId = null;
+            NodeId = null;
+            PageId = null;
         }
     }
 

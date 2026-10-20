@@ -93,6 +93,7 @@ namespace CyclingLove.Content
     public sealed class CampaignDay
     {
         public string Id, Title, SummaryNote;
+        public bool IsHoliday;
         public string MorningScenarioId, MorningNodeId;
         public string MorningBackgroundId, MorningCharacterId, MorningOutfitId, MorningExpressionId;
         public string AfternoonScenarioId, AfternoonNodeId;
@@ -114,6 +115,7 @@ namespace CyclingLove.Content
     public sealed class ActionDefinition
     {
         public string Id, Name, ChoicePrompt;
+        public bool AutoSelectChoice;
         public string ScenarioId, NodeId;
         public string BackgroundId, CharacterId, OutfitId, ExpressionId;
         public int StaminaCost, MoneyCost;

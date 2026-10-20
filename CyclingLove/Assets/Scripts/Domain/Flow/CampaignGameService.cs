@@ -19,6 +19,14 @@ namespace System.Service
         private readonly AnnualProgressService annualProgress;
         private readonly CyclingLove.Content.CampaignConditionalEvent[] conditionalEvents;
         private readonly bool supportsSkipping;
+
+        private sealed class NarrativeSegment
+        {
+            public string ScenarioId;
+            public string NodeId;
+            public string[] Pages;
+            public string[] PageIds;
+        }
         public CampaignGameService(
             CyclingLove.Content.CampaignDefinition definition,
             BikeEquipmentCatalog equipmentCatalog = null,
@@ -91,6 +99,7 @@ namespace System.Service
             ProfileProgressService.ApplyUnlocks(profile, data);
             equipment?.ValidateLoadout(data.OwnedPartIds, data.EquippedBike);
             data.DayStartStats = Stats(data);
+            SynchronizeScenarioCheckpoint(data);
             return data;
         }
 
@@ -122,8 +131,7 @@ namespace System.Service
                 GameFlowPhase.Novel => day >= 0 && day < content.Days.Length &&
                     (data.Timing == ActionTiming.Morning && string.IsNullOrEmpty(data.SelectedChoiceId) ||
                      data.Timing == ActionTiming.Afternoon && Day(data).ActionIds.Contains(data.SelectedActionId) &&
-                     (string.IsNullOrEmpty(data.SelectedChoiceId) || Choice(data, data.SelectedChoiceId) != null)) &&
-                    data.NarrativePage < Narrative(data).Length,
+                     (string.IsNullOrEmpty(data.SelectedChoiceId) || Choice(data, data.SelectedChoiceId) != null)),
                 GameFlowPhase.ActionSelection => day >= 0 && day < content.Days.Length && data.Timing == ActionTiming.Afternoon &&
                     data.NarrativePage == 0 && string.IsNullOrEmpty(data.SelectedChoiceId),
                 GameFlowPhase.NovelChoice => day >= 0 && day < content.Days.Length && data.Timing == ActionTiming.Afternoon && data.NarrativePage == 0 &&
@@ -134,6 +142,13 @@ namespace System.Service
                 _ => false
             };
             if (!valid) throw new InvalidOperationException("セーブデータの進行位置が不正です。");
+            if (data.SavedPhase == GameFlowPhase.Novel)
+            {
+                RestoreScenarioCheckpoint(data);
+                if (data.NarrativePage >= Narrative(data).Length)
+                    throw new InvalidOperationException("セーブデータの本文位置が不正です。");
+            }
+            else data.ScenarioCheckpoint.Clear();
         }
 
         public bool CanChoose(GamePlayerData data, string action)
@@ -195,6 +210,7 @@ namespace System.Service
             data.ResolvedDayKey = null;
             data.ResolvedDayEventId = null;
             data.DayStartStats = Stats(data);
+            SynchronizeScenarioCheckpoint(data);
             data.Revision++;
             return true;
         }
@@ -206,6 +222,7 @@ namespace System.Service
             Validate(data);
             var phase = data.SavedPhase;
             var visual = ResolveVisual(data);
+            var narrative = phase == GameFlowPhase.Novel ? ResolveNarrative(data) : null;
             var calendarDay = phase == GameFlowPhase.Finished
                 ? null
                 : annualCalendar?.ResolveDay(new DateTime(data.Year, data.Month, data.Day));
@@ -227,10 +244,12 @@ namespace System.Service
                 DayNumber = Math.Min(DayIndex(data) + 1, content.Days.Length), TotalDays = content.Days.Length,
                 CurrentDateText = $"{data.Month}月{data.Day}日", DisplayName = title, Revision = data.Revision,
                 SeasonId = calendarDay?.SeasonId, SeasonDisplayName = calendarDay?.SeasonDisplayName,
-                IsHoliday = calendarDay?.IsHoliday == true, IsAnnualFinalDay = calendarDay?.IsFinalDay == true,
+                IsHoliday = calendarDay?.IsHoliday ?? Day(data).IsHoliday, IsAnnualFinalDay = calendarDay?.IsFinalDay == true,
                 SpecialSlotIds = calendarDay?.SpecialSlotIds ?? Array.Empty<string>(),
                 EventKey = phase == GameFlowPhase.Finished ? null : EventKey(data), ActionId = data.SelectedActionId,
-                ScenarioId = visual.scenario, NodeId = visual.node,
+                ScenarioId = narrative?.ScenarioId ?? visual.scenario,
+                NodeId = narrative?.NodeId ?? visual.node,
+                PageId = narrative == null ? null : narrative.PageIds[data.NarrativePage],
                 BackgroundId = visual.background, CharacterId = visual.character,
                 OutfitId = visual.outfit, ExpressionId = visual.expression,
                 BodyText = phase switch
@@ -242,18 +261,18 @@ namespace System.Service
                     _ => content.ChoiceDescription
                 },
                 ContinueLabel = phase == GameFlowPhase.DailySummary ? "翌日へ" : phase == GameFlowPhase.Finished ? "タイトルへ" :
-                    phase == GameFlowPhase.ActionSelection || phase == GameFlowPhase.NovelChoice ? "選ぶ" : data.NarrativePage < Narrative(data).Length - 1 ? "次へ" : "読み終える"
+                    phase == GameFlowPhase.ActionSelection || phase == GameFlowPhase.NovelChoice ? "選ぶ" : data.NarrativePage < narrative.Pages.Length - 1 ? "次へ" : "読み終える"
             };
         }
 
         private (string scenario, string node, string background, string character, string outfit, string expression) ResolveVisual(GamePlayerData data)
         {
             if (data.SavedPhase == GameFlowPhase.Finished)
-                return (content.ScenarioId, "ending", null, null, null, null);
+                return (Pick(content.ScenarioId, content.Id), "ending", null, null, null, null);
             var day = Day(data);
             if (data.Timing == ActionTiming.Morning)
                 return (
-                    Pick(day.MorningScenarioId, content.ScenarioId),
+                    Pick(day.MorningScenarioId, content.ScenarioId, content.Id),
                     Pick(day.MorningNodeId, $"{day.Id}_morning"),
                     day.MorningBackgroundId,
                     day.MorningCharacterId,
@@ -262,8 +281,19 @@ namespace System.Service
                 );
             var action = Action(data.SelectedActionId);
             var choice = Choice(data, data.SelectedChoiceId);
+            var usesDayIntroduction = data.SavedPhase == GameFlowPhase.Novel && choice == null &&
+                data.NarrativePage < (day.AfternoonPages?.Length ?? 0);
+            if (usesDayIntroduction)
+                return (
+                    Pick(day.AfternoonScenarioId, content.ScenarioId, content.Id),
+                    Pick(day.AfternoonNodeId, $"{day.Id}_afternoon"),
+                    day.AfternoonBackgroundId,
+                    day.AfternoonCharacterId,
+                    day.AfternoonOutfitId,
+                    day.AfternoonExpressionId
+                );
             return (
-                Pick(choice?.ScenarioId, action?.ScenarioId, day.AfternoonScenarioId, content.ScenarioId),
+                Pick(choice?.ScenarioId, action?.ScenarioId, day.AfternoonScenarioId, content.ScenarioId, content.Id),
                 Pick(choice?.NodeId, action?.NodeId, day.AfternoonNodeId, $"{day.Id}_afternoon"),
                 Pick(choice?.BackgroundId, action?.BackgroundId, day.AfternoonBackgroundId),
                 Pick(choice?.CharacterId, action?.CharacterId, day.AfternoonCharacterId),
@@ -298,7 +328,14 @@ namespace System.Service
                     if (data.Timing == ActionTiming.Afternoon && string.IsNullOrEmpty(data.SelectedChoiceId) && Choices(data).Length > 0)
                     {
                         data.NarrativePage = 0;
-                        data.SavedPhase = GameFlowPhase.NovelChoice;
+                        var action = Action(data.SelectedActionId);
+                        if (action.AutoSelectChoice)
+                        {
+                            var selected = Choices(data).FirstOrDefault(choice => choice.CanChoose(data));
+                            if (selected == null) return false;
+                            data.SelectedChoiceId = selected.Id;
+                        }
+                        else data.SavedPhase = GameFlowPhase.NovelChoice;
                         break;
                     }
                     CompleteEvent(data);
@@ -331,6 +368,7 @@ namespace System.Service
                     break;
                 default: return false;
             }
+            SynchronizeScenarioCheckpoint(data);
             data.Revision++;
             return true;
         }
@@ -353,7 +391,7 @@ namespace System.Service
 
         private string NarrativeBody(GamePlayerData d)
         {
-            var pages = Narrative(d);
+            var pages = ResolveNarrative(d).Pages;
             var body = pages[d.NarrativePage];
             if (d.NarrativePage != pages.Length - 1) return body;
             string effects = d.Timing == ActionTiming.Morning ? Day(d).MorningEffects.Describe() : Action(d.SelectedActionId).Describe();
@@ -369,9 +407,107 @@ namespace System.Service
             }
             return string.IsNullOrEmpty(effects) ? body : body + "\n［" + effects + "］";
         }
-        private string[] Narrative(GamePlayerData d) => d.Timing == ActionTiming.Morning ? Day(d).MorningPages :
-            !string.IsNullOrEmpty(d.SelectedChoiceId) ? Choice(d, d.SelectedChoiceId).Pages :
-            Day(d).AfternoonPages.Concat(Action(d.SelectedActionId).Pages).ToArray();
+        private string[] Narrative(GamePlayerData d) => ResolveNarrative(d).Pages;
+
+        private NarrativeSegment ResolveNarrative(GamePlayerData data)
+        {
+            var day = Day(data);
+            if (data.Timing == ActionTiming.Morning)
+                return CreateNarrative(
+                    Pick(day.MorningScenarioId, content.ScenarioId, content.Id),
+                    Pick(day.MorningNodeId, $"{day.Id}_morning"),
+                    day.MorningPages);
+
+            var action = Action(data.SelectedActionId);
+            var dayNode = Pick(day.AfternoonNodeId, $"{day.Id}_afternoon");
+            var actionNode = Pick(action?.NodeId, action?.Id, "action");
+            var choice = Choice(data, data.SelectedChoiceId);
+            if (choice != null)
+                return CreateNarrative(
+                    Pick(choice.ScenarioId, action?.ScenarioId, day.AfternoonScenarioId, content.ScenarioId, content.Id),
+                    ComposeNodeId(dayNode, actionNode, Pick(choice.NodeId, choice.Id, "choice")),
+                    choice.Pages);
+
+            return CreateNarrative(
+                Pick(action?.ScenarioId, day.AfternoonScenarioId, content.ScenarioId, content.Id),
+                ComposeNodeId(dayNode, actionNode),
+                day.AfternoonPages.Concat(action.Pages).ToArray());
+        }
+
+        private static NarrativeSegment CreateNarrative(string scenarioId, string nodeId, string[] pages) => new()
+        {
+            ScenarioId = scenarioId,
+            NodeId = nodeId,
+            Pages = pages,
+            PageIds = BuildPageIds(pages)
+        };
+
+        private static string ComposeNodeId(params string[] parts) =>
+            string.Join("::", parts.Where(value => !string.IsNullOrWhiteSpace(value)));
+
+        private static string[] BuildPageIds(string[] pages)
+        {
+            var occurrences = new Dictionary<string, int>(StringComparer.Ordinal);
+            return pages.Select(page =>
+            {
+                var fingerprint = TextFingerprint(page);
+                occurrences.TryGetValue(fingerprint, out var occurrence);
+                occurrences[fingerprint] = occurrence + 1;
+                return occurrence == 0 ? fingerprint : $"{fingerprint}_{occurrence + 1}";
+            }).ToArray();
+        }
+
+        private static string TextFingerprint(string text)
+        {
+            unchecked
+            {
+                const ulong offset = 14695981039346656037UL;
+                const ulong prime = 1099511628211UL;
+                var hash = offset;
+                foreach (var value in text)
+                {
+                    hash ^= value;
+                    hash *= prime;
+                }
+                return "text_" + hash.ToString("x16");
+            }
+        }
+
+        private void RestoreScenarioCheckpoint(GamePlayerData data)
+        {
+            var narrative = ResolveNarrative(data);
+            var checkpoint = data.ScenarioCheckpoint;
+            if (!checkpoint.IsEmpty && checkpoint.ScenarioId == narrative.ScenarioId && checkpoint.NodeId == narrative.NodeId)
+            {
+                var restoredPage = Array.IndexOf(narrative.PageIds, checkpoint.PageId);
+                data.NarrativePage = restoredPage >= 0 ? restoredPage : 0;
+            }
+            else if (checkpoint.IsEmpty && data.NarrativePage < narrative.Pages.Length)
+            {
+                // v5 and older saves only had the numeric page index. Preserve it once, then write the stable key.
+            }
+            else data.NarrativePage = 0;
+            WriteScenarioCheckpoint(data, narrative);
+        }
+
+        private void SynchronizeScenarioCheckpoint(GamePlayerData data)
+        {
+            if (data.SavedPhase != GameFlowPhase.Novel)
+            {
+                data.ScenarioCheckpoint.Clear();
+                return;
+            }
+            var narrative = ResolveNarrative(data);
+            if (data.NarrativePage < 0 || data.NarrativePage >= narrative.Pages.Length) data.NarrativePage = 0;
+            WriteScenarioCheckpoint(data, narrative);
+        }
+
+        private static void WriteScenarioCheckpoint(GamePlayerData data, NarrativeSegment narrative)
+        {
+            data.ScenarioCheckpoint.ScenarioId = narrative.ScenarioId;
+            data.ScenarioCheckpoint.NodeId = narrative.NodeId;
+            data.ScenarioCheckpoint.PageId = narrative.PageIds[data.NarrativePage];
+        }
         public string ActionName(string id) => Action(id)?.Name ?? "自由行動";
         private static int[] Stats(GamePlayerData d) => new[] { d.Money, d.Physical, d.Toughness, d.Smart, d.Empathy, d.Appeal, d.Stamina };
         private string Summary(GamePlayerData d)

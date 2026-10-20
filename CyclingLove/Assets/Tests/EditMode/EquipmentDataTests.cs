@@ -11,10 +11,12 @@ public sealed class EquipmentDataTests
     public void RuntimeCatalogAndStarterLoadoutAreValidAndRoundTrip()
     {
         var catalog = EquipmentContentLoader.LoadRuntime();
+        var visuals = BikeVisualContentLoader.LoadRuntime(catalog);
         var flow = new CampaignGameService(CampaignContentLoader.LoadRuntime(), catalog);
         var data = flow.NewGame();
 
         Assert.AreEqual(8, catalog.Parts.Length);
+        Assert.AreEqual(catalog.Parts.Length, visuals.Parts.Length);
         Assert.AreEqual(3, data.OwnedPartIds.Count);
         Assert.AreEqual("frame_musashi_touring_01", data.EquippedBike.FramePartId);
         Assert.AreEqual("components_takumi_reliable_01", data.EquippedBike.ComponentsPartId);

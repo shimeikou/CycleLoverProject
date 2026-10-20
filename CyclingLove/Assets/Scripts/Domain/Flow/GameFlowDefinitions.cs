@@ -66,6 +66,7 @@ namespace System.Flow
         public string EventKey;
         public string ScenarioId;
         public string NodeId;
+        public string PageId;
         public string BackgroundId;
         public string CharacterId;
         public string OutfitId;
@@ -75,6 +76,25 @@ namespace System.Flow
         public string BodyText;
         public string ContinueLabel;
         public int Revision;
+
+        public string DisplayDateText
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(CurrentDateText))
+                    return CurrentDateText;
+                if (string.IsNullOrWhiteSpace(SeasonDisplayName))
+                    return IsHoliday ? CurrentDateText + "（休日）" : CurrentDateText;
+                var details = new System.Collections.Generic.List<string>
+                {
+                    SeasonDisplayName,
+                    IsHoliday ? "休日" : "平日"
+                };
+                if (SpecialSlotIds?.Length > 0) details.Add("特別日");
+                if (IsAnnualFinalDay) details.Add("最終日");
+                return CurrentDateText + "（" + string.Join("・", details) + "）";
+            }
+        }
     }
 
     public sealed class GameSceneResult

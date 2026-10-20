@@ -1,5 +1,9 @@
 {
     "name": "Game.Editor",
-    "references": ["Game.System", "Game.Domain"],
+    "references": [
+        "Game.System",
+        "Game.Domain",
+        "GUID:69448af7b92c7f342b298e06a37122aa"
+    ],
     "includePlatforms": ["Editor"]
 }

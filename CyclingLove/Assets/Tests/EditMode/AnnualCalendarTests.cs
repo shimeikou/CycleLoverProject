@@ -110,6 +110,7 @@ public sealed class AnnualCalendarTests
         Assert.AreEqual("spring", opening.SeasonId);
         Assert.AreEqual("春", opening.SeasonDisplayName);
         CollectionAssert.Contains(opening.SpecialSlotIds, "season_spring_review");
+        Assert.AreEqual("6月30日（春・平日・特別日）", opening.DisplayDateText);
 
         for (var step = 0; step < 20 && data.SavedPhase != GameFlowPhase.DailySummary; step++)
         {
@@ -262,6 +263,25 @@ public sealed class AnnualCalendarTests
         var error = Assert.Throws<InvalidOperationException>(() =>
             CampaignContentLoader.Load(CampaignContentLoader.AnnualResourceKey, Read));
         StringAssert.Contains("start date", error.Message);
+    }
+
+    [Test]
+    public void AnnualScheduleRejectsEventWhoseDateAndHolidayRulesCannotOverlap()
+    {
+        var calendar = AnnualCalendarContentLoader.LoadRuntime();
+        var schedule = JsonUtility.FromJson<CampaignScheduleDefinition>(
+            Resources.Load<TextAsset>("Content/AnnualSchedule").text);
+        var target = schedule.ConditionalEvents[0];
+        target.StartYear = target.EndYear = 2026;
+        target.StartMonth = target.EndMonth = 4;
+        target.StartDay = target.EndDay = 4; // Saturday
+        target.SeasonId = null;
+        target.SpecialSlotId = null;
+        target.HolidayMode = "workday";
+
+        var error = Assert.Throws<InvalidOperationException>(() => schedule.Validate(calendar));
+        StringAssert.Contains("no matching calendar day", error.Message);
+        StringAssert.Contains(target.Id, error.Message);
     }
 
     [Test]

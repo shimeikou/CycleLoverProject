@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Flow;
 using System.GameSession;
 using System.Manager;
@@ -35,10 +36,13 @@ namespace Scene.MainGrand
             try
             {
                 await GameFlowManager.Instance.ResumeCurrentFlow();
+                GameAudioService.Instance.RefreshConfiguration();
                 view.Init(HandleSelection,
-                    () => Advance(GameFlowCompletionType.NovelClosed).Forget(),
-                    () => { }, () => Advance(GameFlowCompletionType.SummaryClosed).Forget());
+                    () => { GameAudioService.Instance.PlaySe("se_page"); Advance(GameFlowCompletionType.NovelClosed).Forget(); },
+                    () => { },
+                    () => { GameAudioService.Instance.PlaySe("se_ui_confirm"); Advance(GameFlowCompletionType.SummaryClosed).Forget(); });
                 view.BindSessionControls(() => Save().Forget(), () => ReturnToTitle().Forget(), ShowBikeHub, ShowSkip);
+                view.BindBikePreview(PreviewBikePart);
                 StandardUIManager.Instance?.HideLoading();
                 Render();
             }
@@ -50,6 +54,8 @@ namespace Scene.MainGrand
             var request = GameFlowManager.Instance.BuildNextRequest();
             _shownRevision = request.Revision;
             view.Render(request, GameSession.PlayerData, GameFlowManager.Instance.GetActionOptions(), "");
+            GameAudioService.Instance.Synchronize(request);
+            view.SetBikeMenuControl(GameFlowManager.Instance.CanUseBikeMenu);
             var skip = GameFlowManager.Instance.GetSkipPreview(7);
             view.SetSkipControl(skip.SkippableDays > 0, "日程");
         }
@@ -57,6 +63,7 @@ namespace Scene.MainGrand
         private void HandleSelection(string id)
         {
             if (_busy) return;
+            GameAudioService.Instance.PlaySe(id == "menu:close" ? "se_ui_cancel" : "se_ui_confirm");
             if (_utilityScreen != UtilityScreen.None) HandleUtilitySelection(id);
             else AdvanceSelection(id).Forget();
         }
@@ -104,6 +111,11 @@ namespace Scene.MainGrand
         private void ShowBikeHub()
         {
             if (_busy) return;
+            if (!GameFlowManager.Instance.CanUseBikeMenu)
+            {
+                view.SetMessage("自転車メニューは午後の行動選択中に利用できます。");
+                return;
+            }
             _utilityScreen = UtilityScreen.Hub;
             var performance = GameFlowManager.Instance.GetBikePerformance();
             var options = new List<GameActionOption>
@@ -114,6 +126,7 @@ namespace Scene.MainGrand
                 Option("menu:close", "ゲームへ戻る", "現在の進行画面へ戻る")
             };
             ShowUtility("自転車", BikeOverview(performance), options);
+            ShowCurrentBike("現在の愛車");
         }
 
         private void ShowShop()
@@ -136,6 +149,7 @@ namespace Scene.MainGrand
             }
             options.Add(Option("menu:hub", "戻る", "自転車メニューへ戻る"));
             ShowUtility("機材ショップ", $"所持金　{data.Money:N0}円", options);
+            ShowCurrentBike("現在の装備｜候補へポインターを合わせて比較");
         }
 
         private void ShowEquipment()
@@ -158,6 +172,7 @@ namespace Scene.MainGrand
             }
             options.Add(Option("menu:hub", "戻る", "自転車メニューへ戻る"));
             ShowUtility("装備・性能比較", BikeOverview(GameFlowManager.Instance.GetBikePerformance()), options);
+            ShowCurrentBike("現在の装備｜候補へポインターを合わせて比較");
         }
 
         private void ShowRaces()
@@ -178,6 +193,7 @@ namespace Scene.MainGrand
             }
             options.Add(Option("menu:hub", "戻る", "自転車メニューへ戻る"));
             ShowUtility("レース", "挑戦すると結果が記録されます。同じレースへの挑戦は1日1回です。失敗してもゲームは終了しません。", options);
+            GameAudioService.Instance.PlayBgm("bgm_race");
         }
 
         private void ShowSkip()
@@ -201,6 +217,7 @@ namespace Scene.MainGrand
 
         private void RunRace(string raceId)
         {
+            GameAudioService.Instance.PlaySe("se_race_start");
             var result = GameFlowManager.Instance.RunRace(raceId);
             _utilityScreen = UtilityScreen.RaceResult;
             var title = result.Succeeded ? "レース成功" : "レース完走・目標未達";
@@ -213,6 +230,7 @@ namespace Scene.MainGrand
                 Option("menu:races", "レース一覧へ", "別のレースまたは再挑戦を選ぶ"),
                 Option("menu:close", "ゲームへ戻る", "現在の進行画面へ戻る")
             });
+            GameAudioService.Instance.PlayBgm("bgm_race");
         }
 
         private void CloseUtility()
@@ -225,6 +243,28 @@ namespace Scene.MainGrand
         {
             Render();
             view.ShowOptionPanel(title, body, options);
+        }
+
+        private void ShowCurrentBike(string caption)
+        {
+            view.ShowBikePreview(GameSession.PlayerData?.EquippedBike, caption);
+        }
+
+        private void PreviewBikePart(string partId)
+        {
+            if (_utilityScreen != UtilityScreen.Shop && _utilityScreen != UtilityScreen.Equipment) return;
+            var part = GameFlowManager.Instance.GetBikeParts().FirstOrDefault(candidate => candidate.Id == partId);
+            var equipped = GameSession.PlayerData?.EquippedBike;
+            if (part == null || equipped == null) return;
+            var preview = equipped.Snapshot();
+            switch (part.Slot)
+            {
+                case BikePartSlots.Frame: preview.FramePartId = part.Id; break;
+                case BikePartSlots.Components: preview.ComponentsPartId = part.Id; break;
+                case BikePartSlots.Wheels: preview.WheelPartId = part.Id; break;
+                default: return;
+            }
+            view.ShowBikePreview(preview, "候補｜" + part.Name);
         }
 
         private static GameActionOption Option(string id, string label, string description) =>
@@ -303,7 +343,12 @@ namespace Scene.MainGrand
         {
             if (_busy) return;
             _busy = true; view.SetBusy(true);
-            try { await GameSession.Save(); view.SetMessage("保存しました。続きから再開できます。"); }
+            try
+            {
+                await GameSession.Save();
+                GameAudioService.Instance.PlaySe("se_save");
+                view.SetMessage("保存しました。続きから再開できます。");
+            }
             catch (Exception ex) { Debug.LogWarning($"Save failed: {ex.GetType().Name}"); view.SetMessage("保存できませんでした。空き容量などを確認して再度お試しください。"); }
             finally { _busy = false; if (view != null) view.SetBusy(false); }
         }
@@ -312,6 +357,7 @@ namespace Scene.MainGrand
         {
             if (_busy) return;
             _busy = true; view.SetBusy(true);
+            GameAudioService.Instance.ResetToSilence();
             await SceneManager.LoadSceneAsync("InitScene");
         }
     }

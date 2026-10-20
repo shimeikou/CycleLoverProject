@@ -27,6 +27,22 @@ public sealed class BikeshopShortRouteTests
     }
 
     [Test]
+    public void ShortRouteMarksItsTwoSpecialHolidays()
+    {
+        var definition = CampaignContentLoader.LoadRuntime();
+        Assert.IsTrue(definition.Days[4].IsHoliday);
+        Assert.IsTrue(definition.Days[9].IsHoliday);
+        Assert.IsFalse(definition.Days[0].IsHoliday);
+
+        var flow = new CampaignGameService(definition);
+        var data = flow.NewGame();
+        data.Day = 5;
+        var request = flow.Request(data);
+        Assert.IsTrue(request.IsHoliday);
+        Assert.AreEqual("4月5日（休日）", request.DisplayDateText);
+    }
+
+    [Test]
     public void PreparedRouteReachesSuccessEndingAndSurvivesEveryCheckpoint()
     {
         var actions = new Dictionary<int, string>
@@ -38,7 +54,7 @@ public sealed class BikeshopShortRouteTests
         };
         var choices = new Dictionary<int, string>
         {
-            [5] = "lesson_safe", [7] = "conflict_ask", [9] = "eve_fun", [10] = "hill_success"
+            [5] = "lesson_safe", [7] = "conflict_ask", [9] = "eve_fun"
         };
 
         var result = Play(actions, choices);
@@ -49,6 +65,29 @@ public sealed class BikeshopShortRouteTests
         Assert.GreaterOrEqual(result.Toughness, 7);
         Assert.GreaterOrEqual(result.FindHeroineProgress("hero_bikeshop").Affection, 3);
         Assert.AreEqual(5, result.FindHeroineProgress("hero_bikeshop").RouteStep);
+    }
+
+    [Test]
+    public void EvePromiseCoversOneMissingThresholdAndEndingIsSelectedAutomatically()
+    {
+        var actions = new Dictionary<int, string>
+        {
+            [1] = "act_training_roadwork_001", [2] = "act_rest_home_001", [3] = "act_rest_home_001",
+            [4] = "act_bikeshop_visit", [5] = "evt_bikeshop_first_lesson", [6] = "act_bikeshop_visit",
+            [7] = "evt_bikeshop_conflict", [8] = "act_rest_home_001", [9] = "evt_bikeshop_eve",
+            [10] = "evt_bikeshop_hillclimb"
+        };
+        var choices = new Dictionary<int, string>
+        {
+            [5] = "lesson_speed", [7] = "conflict_ask", [9] = "eve_fun"
+        };
+
+        var result = Play(actions, choices);
+
+        Assert.AreEqual(6, result.Toughness, "The promise path should cover exactly one missing threshold.");
+        Assert.Contains("goal_bikeshop_hill_ready", result.ActiveRouteFlags);
+        Assert.Contains("result_bikeshop_short_success", result.ActiveRouteFlags);
+        Assert.IsFalse(result.ActiveRouteFlags.Contains("result_bikeshop_short_retry"));
     }
 
     [Test]
@@ -63,7 +102,7 @@ public sealed class BikeshopShortRouteTests
         };
         var choices = new Dictionary<int, string>
         {
-            [5] = "lesson_speed", [7] = "conflict_fallback", [9] = "eve_win", [10] = "hill_retry"
+            [5] = "lesson_speed", [7] = "conflict_fallback", [9] = "eve_win"
         };
 
         var result = Play(actions, choices);
