@@ -1,8 +1,9 @@
-using System;
-using System.Flow;
 using System.Linq;
-using System.Service;
+using System;
 using CyclingLove.Content;
+using CyclingLove.Flow;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 
 public sealed class CampaignChoiceTests
@@ -114,7 +115,7 @@ public sealed class CampaignChoiceTests
         Assert.IsFalse(new CampaignCondition { Type = "route_flag", Id = "route_started", Not = true }.IsMet(data));
     }
 
-    private static void Submit(CampaignGameService flow, System.GameSession.GamePlayerData data,
+    private static void Submit(CampaignGameService flow, CyclingLove.State.GamePlayerData data,
         GameFlowCompletionType type, string action = null, string choice = null)
     {
         Assert.IsTrue(flow.Submit(data, new GameSceneResult

@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Flow;
-using System.GameSession;
+using CyclingLove.Calendar;
 using CyclingLove.Equipment;
+using CyclingLove.Flow;
+using CyclingLove.State;
 using TMPro;
-using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine;
 
 namespace Scene.MainGrand
 {
@@ -417,7 +418,7 @@ namespace Scene.MainGrand
 
             if (timingText != null)
             {
-                timingText.text = request?.Phase == GameFlowPhase.Finished ? "" : playerData.Timing switch { System.Data.Schedule.ActionTiming.Morning => "午前・仕事", System.Data.Schedule.ActionTiming.Afternoon => "午後・自由時間", _ => "夜・振り返り" };
+                timingText.text = request?.Phase == GameFlowPhase.Finished ? "" : playerData.Timing switch { CyclingLove.Calendar.ActionTiming.Morning => "午前・仕事", CyclingLove.Calendar.ActionTiming.Afternoon => "午後・自由時間", _ => "夜・振り返り" };
             }
 
             if (playerStatusText != null && playerData != null)

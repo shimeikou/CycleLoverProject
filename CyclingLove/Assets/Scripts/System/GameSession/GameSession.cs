@@ -1,10 +1,11 @@
-using System.Data.Schedule;
-using System.Service;
+using System;
 using CyclingLove.Progression;
+using CyclingLove.Services;
+using CyclingLove.State;
 using Cysharp.Threading.Tasks;
 using Util;
 
-namespace System.GameSession
+namespace CyclingLove.Session
 {
     public static class GameSession
     {

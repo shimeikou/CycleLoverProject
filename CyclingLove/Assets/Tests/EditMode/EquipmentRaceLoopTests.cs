@@ -1,5 +1,8 @@
-using System.Service;
 using CyclingLove.Content;
+using CyclingLove.Flow;
+using CyclingLove.Persistence;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -29,7 +32,7 @@ public sealed class EquipmentRaceLoopTests
         Assert.AreEqual(7000, result.RewardMoney);
         Assert.Contains("race_hillclimb_trial_cleared", data.ActiveRouteFlags);
 
-        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        var restored = JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(data));
         PlayerSaveMigration.UpgradeToCurrent(restored);
         PlayerSaveValidator.Validate(restored);
         equipment.ValidateLoadout(restored.OwnedPartIds, restored.EquippedBike);

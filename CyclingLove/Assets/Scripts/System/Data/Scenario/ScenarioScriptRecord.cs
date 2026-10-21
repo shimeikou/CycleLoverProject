@@ -1,4 +1,5 @@
-namespace System.Data.Scenario
+using System;
+namespace CyclingLove.Scenario
 {
     [System.Serializable]
     public class ScenarioScriptRecord

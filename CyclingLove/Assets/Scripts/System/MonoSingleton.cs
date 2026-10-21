@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-namespace System
+namespace CyclingLove
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {

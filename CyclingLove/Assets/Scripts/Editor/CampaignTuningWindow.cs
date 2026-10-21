@@ -1,14 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.GameSession;
 using System.Linq;
-using System.Manager;
-using System.Service;
+using System;
+using CyclingLove.Flow;
+using CyclingLove.Manager;
+using CyclingLove.Services;
+using CyclingLove.Session;
+using CyclingLove.State;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-using GameSessionState = global::System.GameSession.GameSession;
+using UnityEngine;
 
 namespace CyclingLove.Editor
 {
@@ -120,7 +121,7 @@ namespace CyclingLove.Editor
 
         private void RunLive(Action action)
         {
-            if (!EditorApplication.isPlaying || GameSessionState.SystemConfig == null)
+            if (!EditorApplication.isPlaying || GameSession.SystemConfig == null)
             {
                 SetText("statusLabel", "Playを開始してタイトル画面を表示してから使ってください。");
                 return;
@@ -139,7 +140,7 @@ namespace CyclingLove.Editor
 
         private void LoadLive()
         {
-            var data = GameSessionState.PlayerData ?? throw new InvalidOperationException("Play中のゲームがありません。");
+            var data = GameSession.PlayerData ?? throw new InvalidOperationException("Play中のゲームがありません。");
             SetInt("yearField", data.Year);
             SetInt("monthField", data.Month);
             SetInt("dayField", data.Day);
@@ -174,7 +175,7 @@ namespace CyclingLove.Editor
 
         private void ApplyLive()
         {
-            var live = GameSessionState.PlayerData ?? throw new InvalidOperationException("Play中のゲームがありません。");
+            var live = GameSession.PlayerData ?? throw new InvalidOperationException("Play中のゲームがありません。");
             var data = JsonUtility.FromJson<GamePlayerData>(JsonUtility.ToJson(live));
             ApplyInputs(data);
             data.Revision++;
@@ -187,7 +188,7 @@ namespace CyclingLove.Editor
         {
             var date = ReadDate();
             var flow = CreateFlow();
-            var data = flow.NewGame(GameSessionState.SystemConfig.Profile);
+            var data = flow.NewGame(GameSession.SystemConfig.Profile);
             ApplyInputs(data);
             flow.MoveToMorning(data, date);
             ReplaceSession(data);
@@ -199,7 +200,7 @@ namespace CyclingLove.Editor
 
         private static void ReplaceSession(GamePlayerData data)
         {
-            GameSessionState.PlayerData = data;
+            GameSession.PlayerData = data;
             GameFlowManager.Instance.BuildNextRequest();
             SceneManager.LoadScene("MainGameScene");
         }

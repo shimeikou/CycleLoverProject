@@ -1,12 +1,15 @@
 using System;
-using System.Flow;
-using System.Service;
+using CyclingLove.Flow;
+using CyclingLove.Persistence;
+using CyclingLove.Services;
+using CyclingLove.State;
+using CyclingLove.Tests;
 using NUnit.Framework;
 using UnityEngine;
 
 public sealed class CampaignParameterTests
 {
-    private static void Step(CampaignGameService flow, System.GameSession.GamePlayerData d, GameFlowCompletionType type, string action = null)
+    private static void Step(CampaignGameService flow, CyclingLove.State.GamePlayerData d, GameFlowCompletionType type, string action = null)
     {
         Assert.IsTrue(flow.Submit(d, new GameSceneResult { ExpectedRevision = d.Revision, CompletionType = type, SelectedActionId = action }));
     }
@@ -27,7 +30,7 @@ public sealed class CampaignParameterTests
         Assert.AreEqual(2000, d.Money); Assert.AreEqual(12, d.Physical); Assert.AreEqual("テスト", d.PlayerName);
         Assert.AreEqual(160, flow.Request(d).MaxStamina);
         PlayerSaveValidator.Validate(d); // Storage validation has no campaign-specific cap.
-        flow.Validate(JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(d)));
+        flow.Validate(JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(d)));
         Step(flow, d, GameFlowCompletionType.NovelClosed); Step(flow, d, GameFlowCompletionType.NovelClosed);
         Step(flow, d, GameFlowCompletionType.ActionSelected, ThreeDayGameService.Rest);
         Step(flow, d, GameFlowCompletionType.NovelClosed); Step(flow, d, GameFlowCompletionType.NovelClosed);

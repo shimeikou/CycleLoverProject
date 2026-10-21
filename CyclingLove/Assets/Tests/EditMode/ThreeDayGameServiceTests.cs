@@ -1,7 +1,7 @@
 using System;
-using System.Flow;
-using System.GameSession;
-using System.Service;
+using CyclingLove.Flow;
+using CyclingLove.State;
+using CyclingLove.Tests;
 using NUnit.Framework;
 using UnityEngine;
 

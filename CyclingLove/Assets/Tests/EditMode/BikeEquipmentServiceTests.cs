@@ -1,4 +1,6 @@
-using System.Service;
+using CyclingLove.Flow;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -24,7 +26,7 @@ public sealed class BikeEquipmentServiceTests
         Assert.IsTrue(equip.Succeeded);
         Assert.AreEqual("frame_zenith_climber_01", data.EquippedBike.FramePartId);
 
-        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        var restored = JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(data));
         catalog.ValidateLoadout(restored.OwnedPartIds, restored.EquippedBike);
         Assert.AreEqual("frame_zenith_climber_01", restored.EquippedBike.FramePartId);
         Assert.AreEqual(20000, restored.Money);

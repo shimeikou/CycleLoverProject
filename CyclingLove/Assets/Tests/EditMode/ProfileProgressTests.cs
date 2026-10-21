@@ -1,8 +1,8 @@
-using System.Flow;
-using System.GameSession;
-using System.Service;
 using System.Linq;
+using CyclingLove.Flow;
 using CyclingLove.Progression;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 
 public sealed class ProfileProgressTests

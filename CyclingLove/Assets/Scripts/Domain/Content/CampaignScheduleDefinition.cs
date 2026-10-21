@@ -1,7 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using CyclingLove.Calendar;
+using CyclingLove.State;
 
 namespace CyclingLove.Content
 {
@@ -133,10 +134,10 @@ namespace CyclingLove.Content
             return copy;
         }
 
-        public bool Matches(AnnualDayResolution day, System.GameSession.GamePlayerData data)
+        public bool Matches(AnnualDayResolution day, CyclingLove.State.GamePlayerData data)
         {
             if (!MatchesDay(day)) return false;
-            if (!Repeatable && data.ClearedEventKeys.Contains($"{Id}_{System.Data.Schedule.ActionTiming.Morning}")) return false;
+            if (!Repeatable && data.ClearedEventKeys.Contains($"{Id}_{CyclingLove.Calendar.ActionTiming.Morning}")) return false;
             return (Conditions ?? Array.Empty<CampaignCondition>()).All(value => value.IsMet(data));
         }
 

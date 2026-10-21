@@ -1,8 +1,10 @@
-using System.Data.Schedule;
 using System.Collections.Generic;
+using System;
+using CyclingLove.Calendar;
 using CyclingLove.Equipment;
+using CyclingLove.Flow;
 
-namespace System.GameSession
+namespace CyclingLove.State
 {
     [Serializable]
     public class GamePlayerData
@@ -32,7 +34,7 @@ namespace System.GameSession
         public string RunId;
         public string CampaignId;
         public int ContentVersion;
-        public System.Flow.GameFlowPhase SavedPhase = System.Flow.GameFlowPhase.Novel;
+        public CyclingLove.Flow.GameFlowPhase SavedPhase = CyclingLove.Flow.GameFlowPhase.Novel;
         public int NarrativePage;
         public ScenarioCheckpoint ScenarioCheckpoint = new();
         public string SelectedActionId;

@@ -1,4 +1,5 @@
-namespace System
+using System;
+namespace CyclingLove
 {
     public abstract class Singleton<T> where T : class, new()
     {

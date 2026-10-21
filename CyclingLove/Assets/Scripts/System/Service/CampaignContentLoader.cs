@@ -1,9 +1,10 @@
-using CyclingLove.Content;
-using CyclingLove.Calendar;
 using System.Linq;
+using System;
+using CyclingLove.Calendar;
+using CyclingLove.Content;
 using UnityEngine;
 
-namespace System.Service
+namespace CyclingLove.Services
 {
     // Only this adapter knows where content is stored. Domain receives an assembled snapshot.
     public static class CampaignContentLoader

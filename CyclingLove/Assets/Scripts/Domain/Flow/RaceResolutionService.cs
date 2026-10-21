@@ -1,8 +1,9 @@
-using System.GameSession;
+using System;
 using CyclingLove.Equipment;
 using CyclingLove.Racing;
+using CyclingLove.State;
 
-namespace System.Service
+namespace CyclingLove.Flow
 {
     public sealed class RaceResolution
     {

@@ -1,13 +1,14 @@
 using System.Collections.Generic;
-using System.Data.Schedule;
-using System.Flow;
-using System.GameSession;
 using System.Linq;
+using System;
 using CyclingLove.Calendar;
+using CyclingLove.Content;
 using CyclingLove.Equipment;
+using CyclingLove.Persistence;
 using CyclingLove.Progression;
+using CyclingLove.State;
 
-namespace System.Service
+namespace CyclingLove.Flow
 {
     // Data-driven daily loop. Content is copied on construction and never mutated.
     public class CampaignGameService
@@ -79,15 +80,15 @@ namespace System.Service
         private CyclingLove.Content.CampaignChoiceDefinition[] Choices(GamePlayerData d) =>
             Action(d.SelectedActionId)?.Choices ?? Array.Empty<CyclingLove.Content.CampaignChoiceDefinition>();
         private string EventKey(GamePlayerData d) => $"{Day(d).Id}_{d.Timing}";
-        public IReadOnlyList<System.Flow.GameActionOption> GetActionOptions(GamePlayerData d)
+        public IReadOnlyList<CyclingLove.Flow.GameActionOption> GetActionOptions(GamePlayerData d)
         {
             if (d.SavedPhase == GameFlowPhase.NovelChoice)
-                return Choices(d).Select(choice => new System.Flow.GameActionOption {
+                return Choices(d).Select(choice => new CyclingLove.Flow.GameActionOption {
                     ActionId = choice.Id, Label = choice.Label, Description = choice.Description,
                     CanExecute = choice.CanChoose(d)
                 }).ToArray();
-            if (d.SavedPhase == GameFlowPhase.Finished) return Array.Empty<System.Flow.GameActionOption>();
-            return Day(d).ActionIds.Select(id => { var a = Action(id); return new System.Flow.GameActionOption {
+            if (d.SavedPhase == GameFlowPhase.Finished) return Array.Empty<CyclingLove.Flow.GameActionOption>();
+            return Day(d).ActionIds.Select(id => { var a = Action(id); return new CyclingLove.Flow.GameActionOption {
                 ActionId = id, Label = a.Name, Description = a.Describe(), CanExecute = CanChoose(d, id)
             }; }).ToArray();
         }

@@ -1,4 +1,5 @@
-namespace System.Data.Schedule
+using System;
+namespace CyclingLove.Calendar
 {
     public enum ActionTiming
     {

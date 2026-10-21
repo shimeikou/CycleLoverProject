@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.GameSession;
+using System;
+using CyclingLove.State;
 
 namespace CyclingLove.Content
 {

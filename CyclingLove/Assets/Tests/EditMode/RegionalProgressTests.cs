@@ -1,11 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Flow;
-using System.GameSession;
 using System.Linq;
-using System.Service;
+using System;
+using CyclingLove.Calendar;
 using CyclingLove.Content;
 using CyclingLove.Editor;
+using CyclingLove.Flow;
+using CyclingLove.Persistence;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -192,7 +194,7 @@ public sealed class RegionalProgressTests
         data.Month = date.Month;
         data.Day = date.Day;
         data.SavedPhase = GameFlowPhase.Novel;
-        data.Timing = System.Data.Schedule.ActionTiming.Morning;
+        data.Timing = CyclingLove.Calendar.ActionTiming.Morning;
         data.NarrativePage = 0;
         data.SelectedActionId = null;
         data.SelectedChoiceId = null;

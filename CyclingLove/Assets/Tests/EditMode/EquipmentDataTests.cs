@@ -1,7 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Service;
+using System;
 using CyclingLove.Equipment;
+using CyclingLove.Flow;
+using CyclingLove.Persistence;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -22,7 +25,7 @@ public sealed class EquipmentDataTests
         Assert.AreEqual("components_takumi_reliable_01", data.EquippedBike.ComponentsPartId);
         Assert.AreEqual("wheels_takumi_endurance_01", data.EquippedBike.WheelPartId);
 
-        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        var restored = JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(data));
         PlayerSaveMigration.UpgradeToCurrent(restored);
         PlayerSaveValidator.Validate(restored);
         catalog.ValidateLoadout(restored.OwnedPartIds, restored.EquippedBike);
@@ -59,7 +62,7 @@ public sealed class EquipmentDataTests
         data.OwnedPartIds = null;
         data.EquippedBike = null;
 
-        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        var restored = JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(data));
         flow.Validate(restored);
 
         Assert.AreEqual(3, restored.OwnedPartIds.Count);

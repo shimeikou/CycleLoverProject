@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System;
 
-namespace System.Data.Scenario
+namespace CyclingLove.Scenario
 {
     [Serializable]
     public class ScenarioScriptData

@@ -1,9 +1,11 @@
-using System;
-using System.Flow;
 using System.Linq;
-using System.Service;
+using System;
 using CyclingLove.Calendar;
 using CyclingLove.Content;
+using CyclingLove.Flow;
+using CyclingLove.Persistence;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -32,7 +34,7 @@ public sealed class AnnualCalendarTests
     public void SeasonalGoalsUseExternalConditionsAndReturnOutcomeFlags()
     {
         var service = new AnnualCalendarService(AnnualCalendarContentLoader.LoadRuntime());
-        var data = new System.GameSession.GamePlayerData();
+        var data = new CyclingLove.State.GamePlayerData();
 
         var incomplete = service.EvaluateSeasonGoal(data, "spring");
         Assert.IsFalse(incomplete.Succeeded);
@@ -48,7 +50,7 @@ public sealed class AnnualCalendarTests
     public void EndingResolutionUsesPriorityAndAlwaysHasFallback()
     {
         var service = new AnnualCalendarService(AnnualCalendarContentLoader.LoadRuntime());
-        var data = new System.GameSession.GamePlayerData();
+        var data = new CyclingLove.State.GamePlayerData();
 
         Assert.AreEqual("annual_incomplete", service.ResolveEnding(data).Id);
         MakeConfessionReady(data);
@@ -72,7 +74,7 @@ public sealed class AnnualCalendarTests
         Assert.IsFalse(repeated.Applied);
         Assert.AreEqual(1, data.SeasonGoalResults.Count);
         CollectionAssert.Contains(data.ActiveRouteFlags, "goal_spring_succeeded");
-        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        var restored = JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(data));
         PlayerSaveValidator.Validate(restored);
         Assert.AreEqual("goal_spring", restored.SeasonGoalResults[0].GoalId);
     }
@@ -195,7 +197,7 @@ public sealed class AnnualCalendarTests
         var repeated = flow.Request(data);
         Assert.AreEqual("高優先イベント", repeated.DisplayName);
 
-        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        var restored = JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(data));
         var afterLoad = flow.Request(restored);
         Assert.AreEqual("event_high", restored.ResolvedDayEventId);
         Assert.AreEqual("高優先イベント", afterLoad.DisplayName);
@@ -492,7 +494,7 @@ public sealed class AnnualCalendarTests
         var calendar = AnnualCalendarContentLoader.LoadRuntime();
         var flow = new CampaignGameService(CampaignContentLoader.LoadAnnual(), null, calendar);
         var progress = new AnnualProgressService(calendar);
-        var profile = new System.GameSession.ProfileProgress
+        var profile = new CyclingLove.State.ProfileProgress
         {
             CompletedAnnualRuns = 1,
             RecordedRunIds = new System.Collections.Generic.List<string> { "first-run" },
@@ -538,7 +540,7 @@ public sealed class AnnualCalendarTests
         var calendar = AnnualCalendarContentLoader.LoadRuntime();
         var flow = new CampaignGameService(CampaignContentLoader.LoadAnnual(), null, calendar);
         var progress = new AnnualProgressService(calendar);
-        var profile = new System.GameSession.ProfileProgress
+        var profile = new CyclingLove.State.ProfileProgress
         {
             CompletedAnnualRuns = 1,
             RecordedRunIds = new System.Collections.Generic.List<string> { "normal-success-run" },
@@ -635,9 +637,9 @@ public sealed class AnnualCalendarTests
         Assert.Less(fallbackPath.FindHeroineProgress(heroineId).Affection, 7);
     }
 
-    private static System.GameSession.GamePlayerData BalancePlayer(string heroineId)
+    private static CyclingLove.State.GamePlayerData BalancePlayer(string heroineId)
     {
-        var data = new System.GameSession.GamePlayerData
+        var data = new CyclingLove.State.GamePlayerData
         {
             Money = 99999,
             Stamina = 100,
@@ -676,7 +678,7 @@ public sealed class AnnualCalendarTests
 
     private static void PlayEvent(
         CampaignGameService flow,
-        System.GameSession.GamePlayerData data,
+        CyclingLove.State.GamePlayerData data,
         DateTime date,
         string eventId,
         string choiceId)
@@ -712,13 +714,13 @@ public sealed class AnnualCalendarTests
         Assert.AreEqual(GameFlowPhase.DailySummary, data.SavedPhase);
     }
 
-    private static void SetDate(System.GameSession.GamePlayerData data, DateTime date)
+    private static void SetDate(CyclingLove.State.GamePlayerData data, DateTime date)
     {
         data.Year = date.Year;
         data.Month = date.Month;
         data.Day = date.Day;
         data.SavedPhase = GameFlowPhase.Novel;
-        data.Timing = System.Data.Schedule.ActionTiming.Morning;
+        data.Timing = CyclingLove.Calendar.ActionTiming.Morning;
         data.NarrativePage = 0;
         data.SelectedActionId = null;
         data.SelectedChoiceId = null;
@@ -731,7 +733,7 @@ public sealed class AnnualCalendarTests
         };
     }
 
-    private static void MakeConfessionReady(System.GameSession.GamePlayerData data)
+    private static void MakeConfessionReady(CyclingLove.State.GamePlayerData data)
     {
         data.ActiveRouteFlags.AddRange(new[]
         {
@@ -747,7 +749,7 @@ public sealed class AnnualCalendarTests
         heroine.RouteStep = 8;
     }
 
-    private static System.GameSession.GamePlayerData AnnualPlayer(int year, int month, int day) => new()
+    private static CyclingLove.State.GamePlayerData AnnualPlayer(int year, int month, int day) => new()
     {
         FlowVersion = PlayerSaveValidator.SchemaVersion,
         RunId = "annual-test-run",

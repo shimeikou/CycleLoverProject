@@ -1,7 +1,7 @@
-using System;
-using System.GameSession;
 using System.Linq;
+using System;
 using CyclingLove.Content;
+using CyclingLove.State;
 
 namespace CyclingLove.Calendar
 {

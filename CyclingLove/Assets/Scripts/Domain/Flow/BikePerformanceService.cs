@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using System.GameSession;
 using System.Linq;
+using System;
 using CyclingLove.Equipment;
+using CyclingLove.State;
 
-namespace System.Service
+namespace CyclingLove.Flow
 {
     public enum RiderStyle
     {

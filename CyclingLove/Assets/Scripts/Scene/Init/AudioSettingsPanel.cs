@@ -1,4 +1,5 @@
-using System.GameSession;
+using System;
+using CyclingLove.Session;
 using TMPro;
 using UnityEngine;
 
@@ -24,9 +25,9 @@ namespace Scene.Init
         private UnityEngine.UI.Toggle _muteToggle;
         private UnityEngine.UI.Button _applyButton;
         private AudioSettingsData _working;
-        private global::System.Action<AudioSettingsData> _onPreview;
-        private global::System.Action<AudioSettingsData> _onApply;
-        private global::System.Action _onCancel;
+        private Action<AudioSettingsData> _onPreview;
+        private Action<AudioSettingsData> _onApply;
+        private Action _onCancel;
         private bool _suppressEvents;
 
         public bool IsOpen => gameObject.activeSelf;
@@ -57,9 +58,9 @@ namespace Scene.Init
 
         public void Show(
             AudioSettingsData settings,
-            global::System.Action<AudioSettingsData> onPreview,
-            global::System.Action<AudioSettingsData> onApply,
-            global::System.Action onCancel)
+            Action<AudioSettingsData> onPreview,
+            Action<AudioSettingsData> onApply,
+            Action onCancel)
         {
             _working = (settings ?? new AudioSettingsData()).Snapshot();
             _working.Normalize();
@@ -146,7 +147,7 @@ namespace Scene.Init
         }
 
         private (UnityEngine.UI.Slider, TextMeshProUGUI) CreateSliderRow(
-            Transform parent, string objectName, string label, global::System.Action<float> onChanged)
+            Transform parent, string objectName, string label, Action<float> onChanged)
         {
             var row = CreateObject(objectName + "Row", parent, typeof(UnityEngine.UI.HorizontalLayoutGroup),
                 typeof(UnityEngine.UI.LayoutElement));
@@ -289,7 +290,7 @@ namespace Scene.Init
             return label;
         }
 
-        private static GameObject CreateObject(string objectName, Transform parent, params global::System.Type[] components)
+        private static GameObject CreateObject(string objectName, Transform parent, params Type[] components)
         {
             var gameObject = new GameObject(objectName, typeof(RectTransform));
             gameObject.transform.SetParent(parent, false);

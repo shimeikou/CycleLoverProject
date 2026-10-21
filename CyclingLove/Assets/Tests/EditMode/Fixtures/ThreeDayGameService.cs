@@ -1,4 +1,7 @@
-namespace System.Service
+using System;
+using CyclingLove.Flow;
+using CyclingLove.Services;
+namespace CyclingLove.Tests
 {
     // Compatibility facade for the original prototype API; runtime uses CampaignGameService.
     public sealed class ThreeDayGameService : CampaignGameService

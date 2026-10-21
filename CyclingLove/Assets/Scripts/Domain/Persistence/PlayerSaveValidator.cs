@@ -1,7 +1,10 @@
-using System.GameSession;
 using System.Linq;
+using System;
+using CyclingLove.Calendar;
+using CyclingLove.Flow;
+using CyclingLove.State;
 
-namespace System.Service
+namespace CyclingLove.Persistence
 {
     // Structural validation only. The active campaign validates content references and progress.
     public static class PlayerSaveValidator
@@ -17,7 +20,7 @@ namespace System.Service
                 d.DayStartStats == null || d.DayStartStats.Length != 7 || d.ClearedEventKeys == null || d.ActiveRouteFlags == null || d.MetHeroineIds == null || d.HeroineProgresses == null ||
                 d.CompletedQuestIds == null ||
                 d.OwnedPartIds == null || d.EquippedBike == null || d.BikeMasteries == null || d.RaceAttempts == null || d.SeasonGoalResults == null || d.AnnualEndingResult == null ||
-                !Enum.IsDefined(typeof(System.Flow.GameFlowPhase), d.SavedPhase) || !Enum.IsDefined(typeof(System.Data.Schedule.ActionTiming), d.Timing))
+                !Enum.IsDefined(typeof(CyclingLove.Flow.GameFlowPhase), d.SavedPhase) || !Enum.IsDefined(typeof(CyclingLove.Calendar.ActionTiming), d.Timing))
                 throw new InvalidOperationException("セーブデータの内容を確認できませんでした。");
             var checkpointValues = new[] { d.ScenarioCheckpoint.ScenarioId, d.ScenarioCheckpoint.NodeId, d.ScenarioCheckpoint.PageId };
             if (checkpointValues.Any(value => string.IsNullOrWhiteSpace(value)) &&

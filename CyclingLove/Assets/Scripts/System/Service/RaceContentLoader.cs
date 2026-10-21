@@ -1,7 +1,8 @@
+using System;
 using CyclingLove.Racing;
 using UnityEngine;
 
-namespace System.Service
+namespace CyclingLove.Services
 {
     public static class RaceContentLoader
     {

@@ -1,15 +1,16 @@
 using System.Collections.Generic;
-using System.Flow;
-using System.GameSession;
 using System.Threading;
+using System;
 using CyclingLove.Audio;
+using CyclingLove.Flow;
+using CyclingLove.Session;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Audio;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine;
 
-namespace System.Service
+namespace CyclingLove.Services
 {
     public interface IAudioClipProvider
     {
@@ -118,7 +119,7 @@ namespace System.Service
 
         public void RefreshConfiguration()
         {
-            var settings = global::System.GameSession.GameSession.SystemConfig?.Audio ?? new AudioSettingsData();
+            var settings = GameSession.SystemConfig?.Audio ?? new AudioSettingsData();
             settings.Normalize();
             ApplyLoopVolume(_bgmSources, _activeBgm, _requestedBgmId, settings.BgmVolume);
             ApplyLoopVolume(_ambientSources, _activeAmbient, _requestedAmbientId, settings.AmbientVolume);
@@ -357,7 +358,7 @@ namespace System.Service
         private void OnDestroy() => ReleaseCachedClips();
 
         private AudioSettingsData Settings =>
-            global::System.GameSession.GameSession.SystemConfig?.Audio ?? new AudioSettingsData();
+            GameSession.SystemConfig?.Audio ?? new AudioSettingsData();
 
         private float EffectiveVolume(float value) => Settings.Muted
             ? 0f

@@ -1,5 +1,8 @@
-using System.Service;
 using CyclingLove.Content;
+using CyclingLove.Flow;
+using CyclingLove.Persistence;
+using CyclingLove.Services;
+using CyclingLove.State;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -81,7 +84,7 @@ public sealed class RaceResolutionServiceTests
         Assert.IsTrue(new CampaignCondition { Type = "race_attempted", Id = "race_hillclimb_trial" }.IsMet(data));
         Assert.IsTrue(new CampaignCondition { Type = "race_succeeded", Id = "race_hillclimb_trial" }.IsMet(data));
 
-        var restored = JsonUtility.FromJson<System.GameSession.GamePlayerData>(JsonUtility.ToJson(data));
+        var restored = JsonUtility.FromJson<CyclingLove.State.GamePlayerData>(JsonUtility.ToJson(data));
         PlayerSaveValidator.Validate(restored);
         Assert.AreEqual(first.Score, restored.RaceAttempts[0].Score);
         Assert.AreEqual(first.ResultRouteFlag, restored.RaceAttempts[0].ResultRouteFlag);

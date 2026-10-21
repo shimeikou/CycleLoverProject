@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.GameSession;
+using System;
 using CyclingLove.Equipment;
+using CyclingLove.State;
 
-namespace System.Service
+namespace CyclingLove.Persistence
 {
     public static class PlayerSaveMigration
     {

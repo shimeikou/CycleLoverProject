@@ -1,13 +1,13 @@
-using System.Flow;
-using System.GameSession;
-using System.Service;
+using System;
 using CyclingLove.Equipment;
+using CyclingLove.Flow;
 using CyclingLove.Progression;
 using CyclingLove.Racing;
+using CyclingLove.Services;
+using CyclingLove.Session;
 using Cysharp.Threading.Tasks;
-using GameSessionState = global::System.GameSession.GameSession;
 
-namespace System.Manager
+namespace CyclingLove.Manager
 {
     public sealed class GameFlowManager : MonoSingleton<GameFlowManager>
     {
@@ -27,86 +27,86 @@ namespace System.Manager
         private RaceResolutionService RacePreview => _racePreview ??= new RaceResolutionService(RaceCatalog, EquipmentCatalog);
         private RaceProgressService Races => _races ??= new RaceProgressService(
             RaceCatalog, EquipmentCatalog);
-        public System.Collections.Generic.IReadOnlyList<GameActionOption> GetActionOptions() => Flow.GetActionOptions(GameSessionState.PlayerData);
-        public GameFlowPhase CurrentPhase => GameSessionState.PlayerData?.SavedPhase ?? GameFlowPhase.None;
+        public System.Collections.Generic.IReadOnlyList<GameActionOption> GetActionOptions() => Flow.GetActionOptions(GameSession.PlayerData);
+        public GameFlowPhase CurrentPhase => GameSession.PlayerData?.SavedPhase ?? GameFlowPhase.None;
         public bool CanUseBikeMenu => CurrentPhase == GameFlowPhase.ActionSelection;
         public GameSceneRequest CurrentRequest { get; private set; }
 
         public async UniTask StartNewGameFlow()
         {
-            await GameSessionState.InitConfig();
-            GameSessionState.PlayerData = Flow.NewGame(GameSessionState.SystemConfig.Profile);
+            await GameSession.InitConfig();
+            GameSession.PlayerData = Flow.NewGame(GameSession.SystemConfig.Profile);
             BuildNextRequest();
         }
 
         public async UniTask LoadGameFlow()
         {
             // Do not replace a live session until the load has been validated.
-            var loaded = await SaveDataService.Load(GameSessionState.CurrentSaveSlot);
+            var loaded = await SaveDataService.Load(GameSession.CurrentSaveSlot);
             Flow.Validate(loaded);
-            GameSessionState.PlayerData = loaded;
+            GameSession.PlayerData = loaded;
             BuildNextRequest();
         }
 
         public async UniTask ResumeCurrentFlow()
         {
-            await GameSessionState.InitConfig();
-            if (GameSessionState.PlayerData == null)
-                GameSessionState.PlayerData = Flow.NewGame(GameSessionState.SystemConfig.Profile);
+            await GameSession.InitConfig();
+            if (GameSession.PlayerData == null)
+                GameSession.PlayerData = Flow.NewGame(GameSession.SystemConfig.Profile);
             BuildNextRequest();
         }
 
         public async UniTask PersistProfileProgress()
         {
-            if (!ProfileProgressService.RegisterCompletedRun(GameSessionState.SystemConfig.Profile, GameSessionState.PlayerData)) return;
-            await SaveDataService.SaveSystem(GameSessionState.SystemConfig);
+            if (!ProfileProgressService.RegisterCompletedRun(GameSession.SystemConfig.Profile, GameSession.PlayerData)) return;
+            await SaveDataService.SaveSystem(GameSession.SystemConfig);
         }
 
         public GameSceneRequest PeekCurrentRequest() => CurrentRequest;
         public GameSceneRequest BuildNextRequest()
         {
-            return CurrentRequest = Flow.Request(GameSessionState.PlayerData);
+            return CurrentRequest = Flow.Request(GameSession.PlayerData);
         }
 
         public GameSceneRequest SubmitSceneResult(GameSceneResult result)
         {
-            Flow.Submit(GameSessionState.PlayerData, result);
+            Flow.Submit(GameSession.PlayerData, result);
             return BuildNextRequest();
         }
 
         public EquipmentOperationResult PurchasePart(string partId) =>
-            Equipment.Purchase(GameSessionState.PlayerData, partId);
+            Equipment.Purchase(GameSession.PlayerData, partId);
 
         public EquipmentOperationResult EquipPart(string partId) =>
-            Equipment.Equip(GameSessionState.PlayerData, partId);
+            Equipment.Equip(GameSession.PlayerData, partId);
 
         public System.Collections.Generic.IReadOnlyList<BikePartDefinition> GetBikeParts() =>
             Array.ConvertAll(EquipmentCatalog.Parts, part => part.Snapshot());
 
         public BikePerformanceResult GetBikePerformance() =>
-            Performance.Calculate(GameSessionState.PlayerData);
+            Performance.Calculate(GameSession.PlayerData);
 
         public BikePerformanceComparison CompareBikePart(string partId) =>
-            Performance.Compare(GameSessionState.PlayerData, partId);
+            Performance.Compare(GameSession.PlayerData, partId);
 
         public System.Collections.Generic.IReadOnlyList<RaceDefinition> GetRaces() =>
             Array.ConvertAll(RaceCatalog.Races, race => race.Snapshot());
 
         public RaceResolution PreviewRace(string raceId) =>
-            RacePreview.Evaluate(GameSessionState.PlayerData, raceId);
+            RacePreview.Evaluate(GameSession.PlayerData, raceId);
 
         public RaceApplicationResult RunRace(string raceId) =>
-            Races.ResolveAndApply(GameSessionState.PlayerData, raceId);
+            Races.ResolveAndApply(GameSession.PlayerData, raceId);
 
         public bool HasAttemptedRaceToday(string raceId) =>
-            RaceProgressService.HasAttemptedToday(GameSessionState.PlayerData, raceId);
+            RaceProgressService.HasAttemptedToday(GameSession.PlayerData, raceId);
 
         public GameSkipPreview GetSkipPreview(int maxDays) =>
-            Flow.GetSkipPreview(GameSessionState.PlayerData, maxDays);
+            Flow.GetSkipPreview(GameSession.PlayerData, maxDays);
 
         public bool SkipNormalDays(int maxDays)
         {
-            var skipped = Flow.SkipNormalDays(GameSessionState.PlayerData, maxDays);
+            var skipped = Flow.SkipNormalDays(GameSession.PlayerData, maxDays);
             if (skipped) BuildNextRequest();
             return skipped;
         }

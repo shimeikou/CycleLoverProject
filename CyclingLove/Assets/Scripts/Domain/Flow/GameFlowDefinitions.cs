@@ -1,6 +1,7 @@
-using System.Data.Schedule;
+using System;
+using CyclingLove.Calendar;
 
-namespace System.Flow
+namespace CyclingLove.Flow
 {
     public enum GameFlowPhase
     {

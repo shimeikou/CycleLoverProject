@@ -1,4 +1,6 @@
-namespace System.GameSession
+using System;
+using CyclingLove.State;
+namespace CyclingLove.Session
 {
     [Serializable]
     public class GameSystemConfig

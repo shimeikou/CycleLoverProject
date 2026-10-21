@@ -1,9 +1,8 @@
-using System;
 using System.Linq;
-using System.Flow;
-using System.GameSession;
-using System.Service;
+using System;
 using CyclingLove.Content;
+using CyclingLove.Flow;
+using CyclingLove.Services;
 using NUnit.Framework;
 using UnityEngine;
 

@@ -1,8 +1,9 @@
+using System;
 using CyclingLove.Equipment;
 using CyclingLove.Presentation;
 using UnityEngine;
 
-namespace System.Service
+namespace CyclingLove.Services
 {
     public static class BikeVisualContentLoader
     {

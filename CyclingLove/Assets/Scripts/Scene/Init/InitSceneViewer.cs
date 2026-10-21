@@ -1,11 +1,12 @@
 using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
+using System;
+using CyclingLove.Session;
 using TMPro;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using System.GameSession;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
+using UnityEngine;
 
 
 namespace Scene.Init
@@ -96,9 +97,9 @@ namespace Scene.Init
 
         public bool ShowAudioSettings(
             AudioSettingsData settings,
-            global::System.Action<AudioSettingsData> onPreview,
-            global::System.Action<AudioSettingsData> onApply,
-            global::System.Action onCancel)
+            Action<AudioSettingsData> onPreview,
+            Action<AudioSettingsData> onApply,
+            Action onCancel)
         {
             if (_audioSettingsPanel == null)
             {
