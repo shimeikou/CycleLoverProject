@@ -294,6 +294,21 @@ public sealed class AnnualCalendarTests
     }
 
     [Test]
+    public void BuildingRequestsDoesNotChangeTheSavedState()
+    {
+        var flow = new CampaignGameService(CampaignContentLoader.LoadAnnual(), null, AnnualCalendarContentLoader.LoadRuntime());
+        var data = flow.NewGame();
+        Assert.AreEqual("2026-04-01", data.ResolvedDayKey);
+        var before = JsonUtility.ToJson(data);
+
+        flow.Request(data);
+        flow.GetActionOptions(data);
+        flow.GetSkipPreview(data, 7);
+
+        Assert.AreEqual(before, JsonUtility.ToJson(data));
+    }
+
+    [Test]
     public void SkipStopsOnFinalDayEvenWhenItIsANormalWorkday()
     {
         var definition = CampaignContentLoader.LoadAnnual();

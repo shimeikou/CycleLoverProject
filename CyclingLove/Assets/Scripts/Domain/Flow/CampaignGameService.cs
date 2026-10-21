@@ -66,10 +66,20 @@ namespace CyclingLove.Flow
                     throw new InvalidOperationException("保存された条件イベントを解決できません。");
                 return persisted.Day;
             }
-            var selected = ResolveConditionalEvent(calendarDay, d);
+            throw new InvalidOperationException("当日の条件イベントが確定していません。");
+        }
+
+        // Fixes the day's conditional event at the start of the day so stat changes during the day cannot swap it.
+        private void ResolveToday(GamePlayerData d)
+        {
+            if (annualCalendar == null || conditionalEvents.Length == 0) return;
+            var index = DayIndex(d);
+            if (index < 0 || index >= content.Days.Length) return;
+            var date = new DateTime(d.Year, d.Month, d.Day);
+            var dateKey = date.ToString("yyyy-MM-dd");
+            if (d.ResolvedDayKey == dateKey) return;
             d.ResolvedDayKey = dateKey;
-            d.ResolvedDayEventId = selected?.Id;
-            return selected?.Day ?? BaseDay(d);
+            d.ResolvedDayEventId = ResolveConditionalEvent(annualCalendar.ResolveDay(date), d)?.Id;
         }
 
         private CyclingLove.Content.CampaignConditionalEvent ResolveConditionalEvent(AnnualDayResolution day, GamePlayerData data) =>
@@ -100,6 +110,7 @@ namespace CyclingLove.Flow
             ProfileProgressService.ApplyUnlocks(profile, data);
             equipment?.ValidateLoadout(data.OwnedPartIds, data.EquippedBike);
             data.DayStartStats = Stats(data);
+            ResolveToday(data);
             SynchronizeScenarioCheckpoint(data);
             return data;
         }
@@ -126,6 +137,7 @@ namespace CyclingLove.Flow
             if (legacy ? content.Id != "prototype" || content.Version != 1 : data.CampaignId != content.Id || data.ContentVersion != content.Version)
                 throw new InvalidOperationException("セーブとシナリオのバージョンが一致しません。");
             if (data.Stamina > content.Rules.MaxStamina) throw new InvalidOperationException("体力が上限を超えています。");
+            if (data.SavedPhase != GameFlowPhase.Finished) ResolveToday(data);
             int day = DayIndex(data);
             bool valid = data.SavedPhase switch
             {
@@ -220,6 +232,7 @@ namespace CyclingLove.Flow
             data.ResolvedDayKey = null;
             data.ResolvedDayEventId = null;
             data.DayStartStats = Stats(data);
+            ResolveToday(data);
             SynchronizeScenarioCheckpoint(data);
             data.Revision++;
             return true;
@@ -241,6 +254,7 @@ namespace CyclingLove.Flow
             data.ResolvedDayEventId = null;
             data.ScenarioCheckpoint?.Clear();
             data.DayStartStats = Stats(data);
+            ResolveToday(data);
             data.Revision++;
             Validate(data);
             SynchronizeScenarioCheckpoint(data);
@@ -397,6 +411,7 @@ namespace CyclingLove.Flow
                     data.Stamina = (int)Math.Min(content.Rules.MaxStamina, (long)data.Stamina + content.Rules.OvernightRecovery);
                     data.DayStartStats = Stats(data);
                     data.SavedPhase = DayIndex(data) >= content.Days.Length ? GameFlowPhase.Finished : GameFlowPhase.Novel;
+                    ResolveToday(data);
                     break;
                 default: return false;
             }
