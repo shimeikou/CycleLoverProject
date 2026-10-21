@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scene.MainGrand
+namespace CyclingLove.Services
 {
     /// <summary>
     /// Keeps the current Resources layout out of presentation code. Replace this
     /// adapter when visual assets move to Addressables or external AssetBundles.
     /// </summary>
-    internal static class VisualResourceResolver
+    public static class VisualResourceResolver
     {
         public static Sprite LoadBackground(string backgroundId)
         {

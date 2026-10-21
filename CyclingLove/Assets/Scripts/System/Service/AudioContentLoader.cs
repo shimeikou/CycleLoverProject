@@ -1,6 +1,4 @@
-using System;
 using CyclingLove.Audio;
-using UnityEngine;
 
 namespace CyclingLove.Services
 {
@@ -10,20 +8,9 @@ namespace CyclingLove.Services
 
         public static AudioContentCatalog LoadRuntime()
         {
-            var source = UnityEngine.Resources.Load<TextAsset>(RuntimeResourceKey);
-            if (source == null || string.IsNullOrWhiteSpace(source.text))
-                throw new InvalidOperationException("Audio content catalog is missing: " + RuntimeResourceKey);
-            try
-            {
-                var catalog = JsonUtility.FromJson<AudioContentCatalog>(source.text) ??
-                    throw new InvalidOperationException("Audio content catalog is empty");
-                catalog.Validate();
-                return catalog;
-            }
-            catch (ArgumentException ex)
-            {
-                throw new InvalidOperationException("Invalid audio content catalog JSON", ex);
-            }
+            var catalog = JsonContentReader.Load<AudioContentCatalog>(RuntimeResourceKey);
+            catalog.Validate();
+            return catalog;
         }
     }
 }

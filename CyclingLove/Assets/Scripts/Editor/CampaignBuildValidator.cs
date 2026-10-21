@@ -163,7 +163,7 @@ namespace CyclingLove.Editor
         {
             var missing = FindMissingVisualAssets(
                 campaigns,
-                backgroundId => Resources.Load<Sprite>($"Images/Backgrounds/{backgroundId}") != null,
+                backgroundId => VisualResourceResolver.LoadBackground(backgroundId) != null,
                 HasCharacterSprite);
             if (missing.Length == 0) return;
             Debug.LogWarning(
@@ -227,21 +227,8 @@ namespace CyclingLove.Editor
             }
         }
 
-        private static bool HasCharacterSprite(string characterId, string outfitId, string expressionId)
-        {
-            if (!string.IsNullOrWhiteSpace(outfitId))
-            {
-                if (Resources.Load<Sprite>($"Images/Characters/{characterId}/{outfitId}/{expressionId}") != null ||
-                    Resources.Load<Sprite>($"Images/Characters/{characterId}_{outfitId}_{expressionId}") != null)
-                    return true;
-                if (expressionId != "neutral" &&
-                    (Resources.Load<Sprite>($"Images/Characters/{characterId}/{outfitId}/neutral") != null ||
-                     Resources.Load<Sprite>($"Images/Characters/{characterId}_{outfitId}_neutral") != null))
-                    return true;
-            }
-            if (Resources.Load<Sprite>($"Images/Characters/{characterId}_{expressionId}") != null) return true;
-            return Resources.Load<Sprite>($"Images/Characters/{characterId}_neutral") != null;
-        }
+        private static bool HasCharacterSprite(string characterId, string outfitId, string expressionId) =>
+            VisualResourceResolver.LoadCharacter(characterId, outfitId, expressionId) != null;
 
         private sealed class VisualReference
         {

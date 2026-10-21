@@ -1,5 +1,5 @@
-using System.Linq;
 using System;
+using System.Linq;
 using CyclingLove.Calendar;
 using CyclingLove.Content;
 using UnityEngine;
@@ -60,20 +60,9 @@ namespace CyclingLove.Services
             definition.Validate();
             return definition;
         }
-        private static string ReadResourceText(string key)
-        {
-            var source = UnityEngine.Resources.Load<TextAsset>(key);
-            return source == null ? null : source.text;
-        }
-        private static T Read<T>(string key, Func<string, string> readText) where T : class
-        {
-            if (string.IsNullOrWhiteSpace(key)) throw new InvalidOperationException("Missing content resource key");
-            var source = readText(key);
-            if (source == null) throw new InvalidOperationException("Content resource missing: " + key);
-            if (string.IsNullOrWhiteSpace(source)) throw new InvalidOperationException("Empty content: " + key);
-            try { return JsonUtility.FromJson<T>(source) ?? throw new InvalidOperationException("Empty content: " + key); }
-            catch (ArgumentException ex) { throw new InvalidOperationException("Invalid JSON content: " + key, ex); }
-        }
+        private static string ReadResourceText(string key) => JsonContentReader.ReadResourceText(key);
+        private static T Read<T>(string key, Func<string, string> readText) where T : class =>
+            JsonContentReader.Parse<T>(key, string.IsNullOrWhiteSpace(key) ? null : readText(key));
         [Serializable] private sealed class CampaignManifest
         {
             public string Id, ScenarioId, EndingTitle, EndingBody, ChoiceDescription;
