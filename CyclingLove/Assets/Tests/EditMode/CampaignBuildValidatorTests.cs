@@ -126,4 +126,15 @@ public sealed class CampaignBuildValidatorTests
         StringAssert.Contains(CampaignContentLoader.PrototypeResourceKey, error.Message);
         StringAssert.Contains(reason, error.Message);
     }
+
+    [Test]
+    public void FontAuditReportsCharactersOutsideTheJapaneseFont()
+    {
+        var font = UnityEditor.AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>(FontAtlasTools.RegularAssetPath);
+
+        var missing = FontAtlasTools.FindMissingCharacters(font, "亜あ\uE000\uE000 \n");
+
+        CollectionAssert.AreEqual(new[] { '\uE000' }, missing);
+        StringAssert.Contains("狐の依頼", FontAtlasTools.CollectGameText());
+    }
 }

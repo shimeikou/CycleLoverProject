@@ -109,8 +109,7 @@ namespace Scene.Init
                     SetMessage("設定画面を表示できませんでした。");
                     return false;
                 }
-                var font = statusText != null ? statusText.font : text != null ? text.font : null;
-                _audioSettingsPanel = AudioSettingsPanel.Create(canvas.transform, font);
+                _audioSettingsPanel = AudioSettingsPanel.Create(canvas.transform);
             }
 
             SetBusy(true);

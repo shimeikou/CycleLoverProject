@@ -118,7 +118,7 @@ public sealed class AudioContentTests
         var canvasObject = new GameObject("TestCanvas", typeof(Canvas));
         try
         {
-            var panel = AudioSettingsPanel.Create(canvasObject.transform, null);
+            var panel = AudioSettingsPanel.Create(canvasObject.transform);
             AudioSettingsData preview = null;
             AudioSettingsData applied = null;
             var canceled = false;

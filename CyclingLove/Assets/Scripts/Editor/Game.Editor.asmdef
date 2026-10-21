@@ -3,6 +3,7 @@
     "references": [
         "Game.System",
         "Game.Domain",
+        "Unity.TextMeshPro",
         "GUID:69448af7b92c7f342b298e06a37122aa"
     ],
     "includePlatforms": ["Editor"]

@@ -60,6 +60,11 @@ namespace CyclingLove.Editor
                 });
                 return true;
             });
+            ValidateSource("font glyphs", () =>
+            {
+                FontAtlasTools.WarnForMissingGlyphs();
+                return true;
+            });
             ValidateSource(AudioContentLoader.RuntimeResourceKey, AudioContentLoader.LoadRuntime);
             ValidateSource("present audio assets", () =>
             {

@@ -13,7 +13,6 @@ namespace Scene.Init
         private static readonly Color TextColor = new(0.94f, 0.96f, 0.98f, 1f);
         private static readonly Color SubTextColor = new(0.72f, 0.78f, 0.84f, 1f);
 
-        private TMP_FontAsset _font;
         private UnityEngine.UI.Slider _masterSlider;
         private UnityEngine.UI.Slider _bgmSlider;
         private UnityEngine.UI.Slider _ambientSlider;
@@ -32,7 +31,7 @@ namespace Scene.Init
 
         public bool IsOpen => gameObject.activeSelf;
 
-        public static AudioSettingsPanel Create(Transform canvasTransform, TMP_FontAsset font)
+        public static AudioSettingsPanel Create(Transform canvasTransform)
         {
             var root = new GameObject(
                 "AudioSettingsPanel",
@@ -51,7 +50,6 @@ namespace Scene.Init
             blocker.raycastTarget = true;
 
             var panel = root.GetComponent<AudioSettingsPanel>();
-            panel._font = font;
             panel.Build();
             root.SetActive(false);
             return panel;
@@ -279,7 +277,6 @@ namespace Scene.Init
         {
             var textObject = CreateObject(objectName, parent, typeof(TextMeshProUGUI));
             var label = textObject.GetComponent<TextMeshProUGUI>();
-            if (_font != null) label.font = _font;
             label.text = value;
             label.fontSize = size;
             label.fontStyle = style;
