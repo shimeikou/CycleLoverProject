@@ -224,6 +224,27 @@ namespace System.Service
             return true;
         }
 
+        public void MoveToMorning(GamePlayerData data, DateTime date)
+        {
+            var index = (date - new DateTime(content.StartYear, content.StartMonth, content.StartDay)).Days;
+            if (index < 0 || index >= content.Days.Length) throw new ArgumentOutOfRangeException(nameof(date));
+            data.Year = date.Year;
+            data.Month = date.Month;
+            data.Day = date.Day;
+            data.Timing = ActionTiming.Morning;
+            data.SavedPhase = GameFlowPhase.Novel;
+            data.NarrativePage = 0;
+            data.SelectedActionId = null;
+            data.SelectedChoiceId = null;
+            data.ResolvedDayKey = null;
+            data.ResolvedDayEventId = null;
+            data.ScenarioCheckpoint?.Clear();
+            data.DayStartStats = Stats(data);
+            data.Revision++;
+            Validate(data);
+            SynchronizeScenarioCheckpoint(data);
+        }
+
         private static string CurrentDateText(GamePlayerData data) => $"{data.Month}月{data.Day}日";
 
         public GameSceneRequest Request(GamePlayerData data)

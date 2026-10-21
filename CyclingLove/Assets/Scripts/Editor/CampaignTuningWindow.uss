@@ -110,6 +110,12 @@
   background-color: #df6645;
 }
 
+.debug-button {
+  height: 30px;
+  margin-top: 4px;
+  border-radius: 4px;
+}
+
 .status-label {
   padding: 10px 12px;
   margin-bottom: 10px;

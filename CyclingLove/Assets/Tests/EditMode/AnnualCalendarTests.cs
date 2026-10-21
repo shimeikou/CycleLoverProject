@@ -274,6 +274,24 @@ public sealed class AnnualCalendarTests
     }
 
     [Test]
+    public void DebugStartMovesNewGameToRequestedMorningWithCustomStats()
+    {
+        var flow = new CampaignGameService(CampaignContentLoader.LoadAnnual(), null, AnnualCalendarContentLoader.LoadRuntime());
+        var data = flow.NewGame();
+        data.Physical = 9;
+        data.ActiveRouteFlags.Add("goal_spring_ready");
+
+        flow.MoveToMorning(data, new DateTime(2026, 6, 30));
+
+        var request = flow.Request(data);
+        Assert.AreEqual("6月30日", request.CurrentDateText);
+        Assert.AreEqual("季節の振り返り", request.DisplayName);
+        Assert.AreEqual(GameFlowPhase.Novel, data.SavedPhase);
+        Assert.AreEqual(9, data.DayStartStats[1]);
+        Assert.Throws<ArgumentOutOfRangeException>(() => flow.MoveToMorning(data, new DateTime(2027, 4, 1)));
+    }
+
+    [Test]
     public void SkipStopsOnFinalDayEvenWhenItIsANormalWorkday()
     {
         var definition = CampaignContentLoader.LoadAnnual();

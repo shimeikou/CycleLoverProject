@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.GameSession;
 using System.Linq;
+using System.Manager;
 using System.Service;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using GameSessionState = global::System.GameSession.GameSession;
 
 namespace CyclingLove.Editor
 {
@@ -34,6 +37,9 @@ namespace CyclingLove.Editor
             visualTree.CloneTree(rootVisualElement);
             SetDefaults();
             rootVisualElement.Q<Button>("evaluateButton").clicked += Evaluate;
+            rootVisualElement.Q<Button>("loadLiveButton").clicked += () => RunLive(LoadLive);
+            rootVisualElement.Q<Button>("applyLiveButton").clicked += () => RunLive(ApplyLive);
+            rootVisualElement.Q<Button>("startAtDateButton").clicked += () => RunLive(StartAtDate);
             Evaluate();
         }
 
@@ -79,41 +85,118 @@ namespace CyclingLove.Editor
 
         private GamePlayerData BuildPlayerData(DateTime date)
         {
-            var data = new GamePlayerData
-            {
-                Year = date.Year,
-                Month = date.Month,
-                Day = date.Day,
-                Money = GetInt("moneyField"),
-                Stamina = GetInt("staminaField"),
-                Physical = GetInt("physicalField"),
-                Toughness = GetInt("toughnessField"),
-                Smart = GetInt("smartField"),
-                Empathy = GetInt("empathyField"),
-                Appeal = GetInt("appealField"),
-                RegionalContribution = GetInt("regionalContributionField"),
-                PublicAwareness = GetInt("publicAwarenessField"),
-                FoxFavor = GetInt("foxFavorField"),
-                ActiveRouteFlags = ParseIds("routeFlagsField"),
-                ClearedEventKeys = ParseIds("clearedEventsField"),
-                CompletedQuestIds = ParseIds("completedQuestsField")
-            };
+            var data = new GamePlayerData { Year = date.Year, Month = date.Month, Day = date.Day };
+            ApplyInputs(data);
+            return data;
+        }
+
+        private void ApplyInputs(GamePlayerData data)
+        {
+            data.Money = GetInt("moneyField");
+            data.Stamina = GetInt("staminaField");
+            data.Physical = GetInt("physicalField");
+            data.Toughness = GetInt("toughnessField");
+            data.Smart = GetInt("smartField");
+            data.Empathy = GetInt("empathyField");
+            data.Appeal = GetInt("appealField");
+            data.RegionalContribution = GetInt("regionalContributionField");
+            data.PublicAwareness = GetInt("publicAwarenessField");
+            data.FoxFavor = GetInt("foxFavorField");
+            data.ActiveRouteFlags = ParseIds("routeFlagsField");
+            data.ClearedEventKeys = ParseIds("clearedEventsField");
+            data.CompletedQuestIds = ParseIds("completedQuestsField");
 
             var heroineId = rootVisualElement.Q<TextField>("heroineIdField").value?.Trim();
-            if (!string.IsNullOrEmpty(heroineId))
-            {
-                data.HeroineProgresses.Add(new HeroineProgress
-                {
-                    HeroineId = heroineId,
-                    Affection = GetInt("affectionField"),
-                    RouteStep = GetInt("routeStepField"),
-                    IsMet = rootVisualElement.Q<Toggle>("metToggle").value,
-                    IsUnlocked = rootVisualElement.Q<Toggle>("unlockedToggle").value
-                });
-                if (data.HeroineProgresses[0].IsMet) data.MetHeroineIds.Add(heroineId);
-            }
+            if (string.IsNullOrEmpty(heroineId)) return;
+            var progress = data.EnsureHeroineProgress(heroineId);
+            progress.Affection = GetInt("affectionField");
+            progress.RouteStep = GetInt("routeStepField");
+            progress.IsMet = rootVisualElement.Q<Toggle>("metToggle").value;
+            progress.IsUnlocked = rootVisualElement.Q<Toggle>("unlockedToggle").value;
+            data.MetHeroineIds.Remove(heroineId);
+            if (progress.IsMet) data.MetHeroineIds.Add(heroineId);
+        }
 
-            return data;
+        private void RunLive(Action action)
+        {
+            if (!EditorApplication.isPlaying || GameSessionState.SystemConfig == null)
+            {
+                SetText("statusLabel", "Playを開始してタイトル画面を表示してから使ってください。");
+                return;
+            }
+            try { action(); }
+            catch (Exception ex)
+            {
+                SetText("statusLabel", "反映できませんでした: " + ex.Message);
+                Debug.LogError("Campaign debug operation failed: " + ex);
+            }
+        }
+
+        private void LoadLive()
+        {
+            var data = GameSessionState.PlayerData ?? throw new InvalidOperationException("Play中のゲームがありません。");
+            SetInt("yearField", data.Year);
+            SetInt("monthField", data.Month);
+            SetInt("dayField", data.Day);
+            SetInt("moneyField", data.Money);
+            SetInt("staminaField", data.Stamina);
+            SetInt("physicalField", data.Physical);
+            SetInt("toughnessField", data.Toughness);
+            SetInt("smartField", data.Smart);
+            SetInt("empathyField", data.Empathy);
+            SetInt("appealField", data.Appeal);
+            SetInt("regionalContributionField", data.RegionalContribution);
+            SetInt("publicAwarenessField", data.PublicAwareness);
+            SetInt("foxFavorField", data.FoxFavor);
+            SetIds("routeFlagsField", data.ActiveRouteFlags);
+            SetIds("clearedEventsField", data.ClearedEventKeys);
+            SetIds("completedQuestsField", data.CompletedQuestIds);
+
+            var heroineField = rootVisualElement.Q<TextField>("heroineIdField");
+            var progress = data.FindHeroineProgress(heroineField.value?.Trim()) ??
+                data.HeroineProgresses.FirstOrDefault(value => value != null && value.IsUnlocked);
+            if (progress != null)
+            {
+                heroineField.value = progress.HeroineId;
+                SetInt("affectionField", progress.Affection);
+                SetInt("routeStepField", progress.RouteStep);
+                rootVisualElement.Q<Toggle>("metToggle").value = progress.IsMet;
+                rootVisualElement.Q<Toggle>("unlockedToggle").value = progress.IsUnlocked;
+            }
+            Evaluate();
+            SetText("statusLabel", "Play中の値を読み込みました。");
+        }
+
+        private void ApplyLive()
+        {
+            var live = GameSessionState.PlayerData ?? throw new InvalidOperationException("Play中のゲームがありません。");
+            var data = JsonUtility.FromJson<GamePlayerData>(JsonUtility.ToJson(live));
+            ApplyInputs(data);
+            data.Revision++;
+            CreateFlow().Validate(data);
+            ReplaceSession(data);
+            SetText("statusLabel", "Play中の値を書き換えました。日付と進行位置は変えていません。");
+        }
+
+        private void StartAtDate()
+        {
+            var date = new DateTime(GetInt("yearField"), GetInt("monthField"), GetInt("dayField"));
+            var flow = CreateFlow();
+            var data = flow.NewGame(GameSessionState.SystemConfig.Profile);
+            ApplyInputs(data);
+            flow.MoveToMorning(data, date);
+            ReplaceSession(data);
+            SetText("statusLabel", $"{date:yyyy-MM-dd} の朝から開始しました。保存すると通常のセーブに上書きされます。");
+        }
+
+        private static CampaignGameService CreateFlow() => new(
+            CampaignContentLoader.LoadAnnual(), EquipmentContentLoader.LoadRuntime(), AnnualCalendarContentLoader.LoadRuntime());
+
+        private static void ReplaceSession(GamePlayerData data)
+        {
+            GameSessionState.PlayerData = data;
+            GameFlowManager.Instance.BuildNextRequest();
+            SceneManager.LoadScene("MainGameScene");
         }
 
         private void Render(CampaignTuningReport report)
@@ -154,6 +237,8 @@ namespace CyclingLove.Editor
         private int GetInt(string name) => rootVisualElement.Q<IntegerField>(name).value;
         private void SetInt(string name, int value) => rootVisualElement.Q<IntegerField>(name).value = value;
         private void SetText(string name, string value) => rootVisualElement.Q<Label>(name).text = value;
+        private void SetIds(string name, IEnumerable<string> values) =>
+            rootVisualElement.Q<TextField>(name).value = string.Join("\n", values ?? Array.Empty<string>());
 
         private List<string> ParseIds(string fieldName) =>
             rootVisualElement.Q<TextField>(fieldName).value

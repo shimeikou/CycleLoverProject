@@ -76,22 +76,22 @@ namespace Scene.MainGrand
 
         private void HandleUtilitySelection(string id)
         {
+            try { RunUtilitySelection(id); }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                view.SetMessage("操作を完了できませんでした。");
+            }
+        }
+
+        private void RunUtilitySelection(string id)
+        {
             if (id == "menu:close") { CloseUtility(); return; }
             if (id == "menu:hub") { ShowBikeHub(); return; }
             if (id == "menu:shop") { ShowShop(); return; }
             if (id == "menu:equipment") { ShowEquipment(); return; }
             if (id == "menu:races") { ShowRaces(); return; }
-            if (id == "skip:confirm")
-            {
-                var preview = GameFlowManager.Instance.GetSkipPreview(MaxSkipDays);
-                if (GameFlowManager.Instance.SkipNormalDays(MaxSkipDays))
-                {
-                    _utilityScreen = UtilityScreen.None;
-                    view.SetMessage($"{preview.SkippableDays}日進めました。停止理由：{preview.StopReason}");
-                    Render();
-                }
-                return;
-            }
+            if (id == "skip:confirm") { SkipDays().Forget(); return; }
             if (id.StartsWith("buy:", StringComparison.Ordinal))
             {
                 var result = GameFlowManager.Instance.PurchasePart(id.Substring(4));
@@ -317,6 +317,36 @@ namespace Scene.MainGrand
             _ => "機材データを確認できませんでした。"
         };
 
+        private async UniTask SkipDays()
+        {
+            _busy = true; view.SetBusy(true);
+            try
+            {
+                var preview = GameFlowManager.Instance.GetSkipPreview(MaxSkipDays);
+                if (!GameFlowManager.Instance.SkipNormalDays(MaxSkipDays)) return;
+                _utilityScreen = UtilityScreen.None;
+                Render();
+                view.SetMessage($"{preview.SkippableDays}日進めました。停止理由：{preview.StopReason}");
+                await AutoSave();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                view.SetMessage("日程を進められませんでした。");
+            }
+            finally { _busy = false; if (view != null) view.SetBusy(false); }
+        }
+
+        private async UniTask AutoSave()
+        {
+            try { await GameSession.Save(); }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"Auto save failed: {ex.GetType().Name}");
+                view.SetMessage("自動保存できませんでした。手動で保存してください。");
+            }
+        }
+
         private async UniTask Advance(GameFlowCompletionType completion, string action = null, string choice = null)
         {
             if (_busy) return;
@@ -334,10 +364,16 @@ namespace Scene.MainGrand
                 });
                 await GameFlowManager.Instance.PersistProfileProgress();
                 Render();
+                if (completion == GameFlowCompletionType.SummaryClosed) await AutoSave();
                 // One click cannot cascade through newly displayed panels in the same frame.
                 await UniTask.Delay(150, ignoreTimeScale: true, cancellationToken: this.GetCancellationTokenOnDestroy());
             }
             catch (OperationCanceledException) { }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                view.SetMessage("進行中にエラーが発生しました。保存した地点から再開してください。");
+            }
             finally { _busy = false; if (view != null) view.SetBusy(false); }
         }
 
@@ -359,8 +395,17 @@ namespace Scene.MainGrand
         {
             if (_busy) return;
             _busy = true; view.SetBusy(true);
-            GameAudioService.Instance.ResetToSilence();
-            await SceneManager.LoadSceneAsync("InitScene");
+            try
+            {
+                GameAudioService.Instance.ResetToSilence();
+                await SceneManager.LoadSceneAsync("InitScene");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                _busy = false; view.SetBusy(false);
+                view.SetMessage("タイトルへ戻れませんでした。");
+            }
         }
     }
 }

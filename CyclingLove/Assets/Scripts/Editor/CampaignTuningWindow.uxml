@@ -41,6 +41,11 @@
             <ui:Toggle name="unlockedToggle" label="解放済み" />
           </ui:Foldout>
           <ui:Button name="evaluateButton" text="この条件で評価" class="evaluate-button" />
+          <ui:Foldout text="デバッグ（Play中のみ）" value="true" class="section">
+            <ui:Button name="loadLiveButton" text="Play中の値を読み込む" class="debug-button" />
+            <ui:Button name="applyLiveButton" text="Play中へ値を反映" class="debug-button" />
+            <ui:Button name="startAtDateButton" text="指定日の朝から開始" class="debug-button" />
+          </ui:Foldout>
         </ui:VisualElement>
         <ui:VisualElement class="column result-column">
           <ui:Label name="statusLabel" class="status-label" />
