@@ -62,7 +62,7 @@ namespace CyclingLove.Editor
         {
             try
             {
-                var date = new DateTime(GetInt("yearField"), GetInt("monthField"), GetInt("dayField"));
+                var date = ReadDate();
                 var playerData = BuildPlayerData(date);
                 var report = CampaignTuningEvaluator.Evaluate(
                     CampaignContentLoader.LoadAnnual(),
@@ -79,7 +79,8 @@ namespace CyclingLove.Editor
                 SetText("choiceResult", string.Empty);
                 SetText("goalResult", string.Empty);
                 SetText("endingResult", string.Empty);
-                Debug.LogError("Campaign tuning evaluation failed: " + ex);
+                if (ex is not InvalidOperationException and not ArgumentException)
+                    Debug.LogError("Campaign tuning evaluation failed: " + ex);
             }
         }
 
@@ -125,6 +126,10 @@ namespace CyclingLove.Editor
                 return;
             }
             try { action(); }
+            catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
+            {
+                SetText("statusLabel", "反映できませんでした: " + ex.Message);
+            }
             catch (Exception ex)
             {
                 SetText("statusLabel", "反映できませんでした: " + ex.Message);
@@ -180,7 +185,7 @@ namespace CyclingLove.Editor
 
         private void StartAtDate()
         {
-            var date = new DateTime(GetInt("yearField"), GetInt("monthField"), GetInt("dayField"));
+            var date = ReadDate();
             var flow = CreateFlow();
             var data = flow.NewGame(GameSessionState.SystemConfig.Profile);
             ApplyInputs(data);
@@ -232,6 +237,16 @@ namespace CyclingLove.Editor
             SetText("endingResult",
                 $"{report.Ending.Id} / {(report.Ending.IsSuccess ? "成功" : "未達")} / " +
                 $"Heroine: {TextOrDash(report.Ending.HeroineId)} / Flag: {report.Ending.ResultFlag}");
+        }
+
+        private DateTime ReadDate()
+        {
+            var year = GetInt("yearField");
+            var month = GetInt("monthField");
+            var day = GetInt("dayField");
+            if (year < 1 || year > 9999 || month < 1 || month > 12 || day < 1 || day > DateTime.DaysInMonth(year, month))
+                throw new InvalidOperationException($"日付が正しくありません: {year}/{month}/{day}");
+            return new DateTime(year, month, day);
         }
 
         private int GetInt(string name) => rootVisualElement.Q<IntegerField>(name).value;

@@ -227,7 +227,7 @@ namespace System.Service
         public void MoveToMorning(GamePlayerData data, DateTime date)
         {
             var index = (date - new DateTime(content.StartYear, content.StartMonth, content.StartDay)).Days;
-            if (index < 0 || index >= content.Days.Length) throw new ArgumentOutOfRangeException(nameof(date));
+            if (index < 0 || index >= content.Days.Length) throw new ArgumentOutOfRangeException(nameof(date), "キャンペーン期間外の日付です。");
             data.Year = date.Year;
             data.Month = date.Month;
             data.Day = date.Day;

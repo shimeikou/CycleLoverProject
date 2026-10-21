@@ -18,7 +18,7 @@ Unity エディタ上で何を置いて、何を Inspector で結線するかを
 
 ## 追加したスクリプト
 
-- [MainSceneViewer.cs](../../Assets/Scripts/Scene/MainGrand/MainSceneViewer.cs)
+- [MainSceneViewer.cs](../../../Assets/Scripts/Scene/MainGrand/MainSceneViewer.cs)
 
 ## シーン上で必要な構成
 
@@ -130,4 +130,4 @@ Summary:
 - 見た目はまだ仮でよい
 - ボタンの文言も仮でよい
 - 配色やレイアウト調整より、まず進行がつながることを優先する
-- 本番表示の解像度、セーフエリア、素材寸法は [25_macOS表示・素材制作仕様.md](25_macOS表示・素材制作仕様.md) に従う
+- 本番表示の解像度、セーフエリア、素材寸法は [25_macOS表示・素材制作仕様.md](../素材/25_macOS表示・素材制作仕様.md) に従う
