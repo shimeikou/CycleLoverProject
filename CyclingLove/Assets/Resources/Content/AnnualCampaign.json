@@ -9,7 +9,7 @@
   "EndingBody": "春から積み重ねた一年が終わった。選んだ道と築いた関係は、次の季節へ続いていく。",
   "ChoiceDescription": "育成、交流、休息から午後の過ごし方を選びます。休日と特別日は内容が変わります。",
   "RulesResource": "Content/PrototypeRules",
-  "ActionsResource": "Content/BikeshopShortActions",
+  "ActionsResource": "Content/CommonActions",
   "AdditionalActionsResources": [
     "Content/AnnualRouteActions",
     "Content/AnnualBikeshopActions",

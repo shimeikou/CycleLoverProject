@@ -6,21 +6,37 @@ using UnityEngine;
 public sealed class RaceResolutionServiceTests
 {
     [Test]
-    public void RaceEvaluationIsDeterministicAndTrainingCanReachTarget()
+    public void RaceTargetsRequireTwoRoadworkEquivalentTrainingStepsWithStarterBike()
     {
         var equipment = EquipmentContentLoader.LoadRuntime();
         var data = new CampaignGameService(CampaignContentLoader.LoadRuntime(), equipment).NewGame();
         var service = new RaceResolutionService(RaceContentLoader.LoadRuntime(), equipment);
 
-        var initial = service.Evaluate(data, "race_hillclimb_trial");
-        Assert.IsFalse(initial.Succeeded);
-        Assert.AreEqual(initial.Score, service.Evaluate(data, "race_hillclimb_trial").Score);
+        var initialFlat = service.Evaluate(data, "race_town_flat_trial");
+        var initialClimb = service.Evaluate(data, "race_hillclimb_trial");
+        Assert.AreEqual(56, initialFlat.Score);
+        Assert.AreEqual(71, initialClimb.Score);
+        Assert.IsFalse(initialFlat.Succeeded);
+        Assert.IsFalse(initialClimb.Succeeded);
+        Assert.AreEqual(initialClimb.Score, service.Evaluate(data, "race_hillclimb_trial").Score);
 
-        data.Physical = 8;
-        data.Toughness = 8;
-        var trained = service.Evaluate(data, "race_hillclimb_trial");
-        Assert.IsTrue(trained.Succeeded);
-        Assert.GreaterOrEqual(trained.Score, trained.TargetScore);
+        data.Physical = 7;
+        data.Toughness = 6;
+        var onceFlat = service.Evaluate(data, "race_town_flat_trial");
+        var onceClimb = service.Evaluate(data, "race_hillclimb_trial");
+        Assert.AreEqual(65, onceFlat.Score);
+        Assert.AreEqual(80, onceClimb.Score);
+        Assert.IsFalse(onceFlat.Succeeded);
+        Assert.IsFalse(onceClimb.Succeeded);
+
+        data.Physical = 9;
+        data.Toughness = 7;
+        var twiceFlat = service.Evaluate(data, "race_town_flat_trial");
+        var twiceClimb = service.Evaluate(data, "race_hillclimb_trial");
+        Assert.AreEqual(74, twiceFlat.Score);
+        Assert.AreEqual(89, twiceClimb.Score);
+        Assert.IsTrue(twiceFlat.Succeeded);
+        Assert.IsTrue(twiceClimb.Succeeded);
     }
 
     [Test]

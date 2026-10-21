@@ -168,6 +168,7 @@ namespace CyclingLove.Content
     {
         public string Type, Id;
         public int Value;
+        public bool Not;
 
         public CampaignCondition Snapshot() => (CampaignCondition)MemberwiseClone();
 
@@ -182,7 +183,9 @@ namespace CyclingLove.Content
             if (Value < 0) throw new InvalidOperationException("Condition value cannot be negative");
         }
 
-        public bool IsMet(GamePlayerData data)
+        public bool IsMet(GamePlayerData data) => Evaluate(data) != Not;
+
+        private bool Evaluate(GamePlayerData data)
         {
             return Type switch
             {

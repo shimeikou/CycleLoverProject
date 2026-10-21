@@ -72,9 +72,9 @@ public sealed class BikeshopShortRouteTests
     {
         var actions = new Dictionary<int, string>
         {
-            [1] = "act_training_roadwork_001", [2] = "act_rest_home_001", [3] = "act_rest_home_001",
+            [1] = "act_training_roadwork_001", [2] = "act_town_walk_001", [3] = "act_town_walk_001",
             [4] = "act_bikeshop_visit", [5] = "evt_bikeshop_first_lesson", [6] = "act_bikeshop_visit",
-            [7] = "evt_bikeshop_conflict", [8] = "act_rest_home_001", [9] = "evt_bikeshop_eve",
+            [7] = "evt_bikeshop_conflict", [8] = "act_maintenance_study", [9] = "evt_bikeshop_eve",
             [10] = "evt_bikeshop_hillclimb"
         };
         var choices = new Dictionary<int, string>

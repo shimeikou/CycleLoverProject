@@ -48,6 +48,8 @@
           <ui:Label name="dayResult" class="result-card" />
           <ui:Label text="成立イベント" class="result-heading" />
           <ui:Label name="eventResult" class="result-card result-list" />
+          <ui:Label text="選択肢と条件境界" class="result-heading" />
+          <ui:Label name="choiceResult" class="result-card result-list" />
           <ui:Label text="四季目標" class="result-heading" />
           <ui:Label name="goalResult" class="result-card result-list" />
           <ui:Label text="年末結末プレビュー" class="result-heading" />

@@ -115,6 +115,7 @@ namespace CyclingLove.Content
     public sealed class CampaignConditionalEvent
     {
         public string Id, TemplateId, SeasonId, SpecialSlotId, HolidayMode;
+        public string[] DaysOfWeek;
         public int Priority;
         public int StartYear, StartMonth, StartDay;
         public int EndYear, EndMonth, EndDay;
@@ -127,6 +128,7 @@ namespace CyclingLove.Content
             var copy = (CampaignConditionalEvent)MemberwiseClone();
             copy.Conditions = (Conditions ?? Array.Empty<CampaignCondition>())
                 .Select(value => value.Snapshot()).ToArray();
+            copy.DaysOfWeek = (string[])DaysOfWeek?.Clone();
             copy.Day = Day?.Snapshot();
             return copy;
         }
@@ -145,7 +147,7 @@ namespace CyclingLove.Content
             if (!string.IsNullOrWhiteSpace(SpecialSlotId) && !day.SpecialSlotIds.Contains(SpecialSlotId)) return false;
             if (HolidayMode == "holiday" && !day.IsHoliday) return false;
             if (HolidayMode == "workday" && day.IsHoliday) return false;
-            return true;
+            return CampaignWeekdays.Matches(DaysOfWeek, day.DayOfWeek);
         }
 
         public void Validate()
@@ -154,6 +156,7 @@ namespace CyclingLove.Content
                 throw new InvalidOperationException("Invalid conditional event: " + Id);
             if (HolidayMode != "any" && HolidayMode != "holiday" && HolidayMode != "workday")
                 throw new InvalidOperationException("Invalid conditional event holiday mode: " + Id);
+            CampaignWeekdays.Validate(DaysOfWeek, Id);
             if (HasPartialPeriod || HasPeriod && StartDate > EndDate)
                 throw new InvalidOperationException("Invalid conditional event period: " + Id);
             foreach (var condition in Conditions ?? Array.Empty<CampaignCondition>()) condition.Validate();
@@ -198,6 +201,7 @@ namespace CyclingLove.Content
     public sealed class CampaignDayRule
     {
         public string Id, TemplateId, SeasonId, SpecialSlotId, HolidayMode;
+        public string[] DaysOfWeek;
         public int Priority;
         public int Year, Month, Day;
 
@@ -208,7 +212,7 @@ namespace CyclingLove.Content
             if (!string.IsNullOrWhiteSpace(SpecialSlotId) && !day.SpecialSlotIds.Contains(SpecialSlotId)) return false;
             if (HolidayMode == "holiday" && !day.IsHoliday) return false;
             if (HolidayMode == "workday" && day.IsHoliday) return false;
-            return true;
+            return CampaignWeekdays.Matches(DaysOfWeek, day.DayOfWeek);
         }
 
         public void Validate(AnnualCalendarDefinition calendar, IReadOnlyCollection<string> templateIds)
@@ -217,6 +221,7 @@ namespace CyclingLove.Content
                 throw new InvalidOperationException("Invalid annual campaign day rule: " + Id);
             if (HolidayMode != "any" && HolidayMode != "holiday" && HolidayMode != "workday")
                 throw new InvalidOperationException("Invalid annual campaign holiday rule: " + Id);
+            CampaignWeekdays.Validate(DaysOfWeek, Id);
             if (HasPartialDate)
                 throw new InvalidOperationException("Annual campaign day rule date must be complete: " + Id);
             if (HasDate)
@@ -231,11 +236,26 @@ namespace CyclingLove.Content
                 !(calendar.DateOverrides ?? Array.Empty<CalendarDateOverride>()).Any(value =>
                     (value.SpecialSlotIds ?? Array.Empty<string>()).Contains(SpecialSlotId)))
                 throw new InvalidOperationException("Annual campaign day rule references a missing special slot: " + Id);
-            if (!HasDate && string.IsNullOrWhiteSpace(SeasonId) && string.IsNullOrWhiteSpace(SpecialSlotId) && HolidayMode == "any")
+            if (!HasDate && string.IsNullOrWhiteSpace(SeasonId) && string.IsNullOrWhiteSpace(SpecialSlotId) && HolidayMode == "any" &&
+                (DaysOfWeek == null || DaysOfWeek.Length == 0))
                 throw new InvalidOperationException("Annual campaign day rule has no condition: " + Id);
         }
 
         private bool HasDate => Year != 0 && Month != 0 && Day != 0;
         private bool HasPartialDate => (Year != 0 || Month != 0 || Day != 0) && !HasDate;
+    }
+
+    internal static class CampaignWeekdays
+    {
+        public static bool Matches(string[] days, DayOfWeek dayOfWeek) =>
+            days == null || days.Length == 0 ||
+            days.Any(value => string.Equals(value, dayOfWeek.ToString(), StringComparison.OrdinalIgnoreCase));
+
+        public static void Validate(string[] days, string ownerId)
+        {
+            var names = Enum.GetNames(typeof(DayOfWeek));
+            if ((days ?? Array.Empty<string>()).Any(value => !names.Contains(value, StringComparer.OrdinalIgnoreCase)))
+                throw new InvalidOperationException("Invalid day of week: " + ownerId);
+        }
     }
 }

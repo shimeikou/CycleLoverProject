@@ -1,0 +1,28 @@
+{
+  "Actions": [
+    {
+      "Id": "act_training_roadwork_001",
+      "Name": "基礎練習",
+      "NodeId": "action_roadwork", "BackgroundId": "riverside_day",
+      "StaminaCost": 20,
+      "Pages": ["川沿いでペダリングと呼吸を意識して走った。昨日より少しだけ、体をうまく使えた気がする。"],
+      "Effects": { "Physical": 2, "Toughness": 1, "BikeMastery": 2 }
+    },
+    {
+      "Id": "act_town_walk_001",
+      "Name": "町へ行く",
+      "NodeId": "action_town_walk", "BackgroundId": "town_street",
+      "StaminaCost": 10,
+      "MoneyCost": 100,
+      "Pages": ["町を歩き、店先で地元の人と話した。知らなかった道と、新しい顔を覚えた。"],
+      "Effects": { "Empathy": 2, "Appeal": 1 }
+    },
+    {
+      "Id": "act_rest_home_001",
+      "Name": "家で休む",
+      "NodeId": "action_rest_home", "BackgroundId": "grandmother_veranda_day",
+      "Pages": ["縁側でゆっくり体を休めた。焦らず続けることも、走るための準備だ。"],
+      "Effects": { "Toughness": 1, "Stamina": 30 }
+    }
+  ]
+}

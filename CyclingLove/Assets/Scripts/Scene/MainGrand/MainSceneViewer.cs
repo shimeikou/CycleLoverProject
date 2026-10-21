@@ -83,12 +83,10 @@ namespace Scene.MainGrand
             _bikeMenuButton.interactable = visible && !_busy;
         }
 
-        public void SetSkipControl(bool visible, string label)
+        public void SetSkipControl(bool visible)
         {
             if (_skipButton == null) return;
             _skipButton.gameObject.SetActive(visible);
-            var text = _skipButton.GetComponentInChildren<TextMeshProUGUI>();
-            if (text != null) text.text = label;
             _skipButton.interactable = visible && !_busy;
         }
 

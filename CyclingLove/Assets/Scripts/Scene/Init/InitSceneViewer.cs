@@ -1,4 +1,4 @@
-using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -37,6 +37,7 @@ namespace Scene.Init
 
         [SerializeField] private TextMeshProUGUI statusText;
         private AudioSettingsPanel _audioSettingsPanel;
+        private Coroutine _colorTransition;
         private bool _loadAvailable;
         public void SetMessage(string message) { if (statusText != null) statusText.text = message; }
         public void SetLoadAvailable(bool available) { _loadAvailable = available; loadButton.interactable = available; }
@@ -90,22 +91,7 @@ namespace Scene.Init
 
         public void Show()
         {
-            if (!_colorAdjustments)
-            {
-                if (volume != null && volume.profile != null) volume.profile.TryGet(out _colorAdjustments);
-            }
-
-            if(!_colorAdjustments) return;
-            IsTransition = true;
-            DOTween.To(
-                () => _colorAdjustments.colorFilter.value,
-                x => _colorAdjustments.colorFilter.value = x,
-                Color.white,
-                1.0f
-            ).OnComplete(() =>
-            {
-                IsTransition = false;
-            });
+            BeginColorTransition(Color.white);
         }
 
         public bool ShowAudioSettings(
@@ -139,25 +125,45 @@ namespace Scene.Init
         public void HideAndShowLoading(Color color,UnityAction onComplete = null)
         {
             if(IsTransition) return;
-            
+
+            BeginColorTransition(color, onComplete);
+        }
+
+        private void BeginColorTransition(Color target, UnityAction onComplete = null)
+        {
             if (!_colorAdjustments)
             {
                 if (volume != null && volume.profile != null) volume.profile.TryGet(out _colorAdjustments);
             }
 
-            if(!_colorAdjustments) return;
-
-            IsTransition = true;
-            DOTween.To(
-                () => _colorAdjustments.colorFilter.value,
-                x => _colorAdjustments.colorFilter.value = x,
-                color,
-                1.0f
-            ).OnComplete(() =>
+            if (!_colorAdjustments)
             {
-                onComplete?.Invoke();
                 IsTransition = false;
-            });
+                onComplete?.Invoke();
+                return;
+            }
+
+            if (_colorTransition != null) StopCoroutine(_colorTransition);
+            _colorTransition = StartCoroutine(AnimateColor(target, onComplete));
+        }
+
+        private IEnumerator AnimateColor(Color target, UnityAction onComplete)
+        {
+            IsTransition = true;
+            var source = _colorAdjustments.colorFilter.value;
+            var elapsed = 0f;
+            const float duration = 1f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                _colorAdjustments.colorFilter.value = Color.Lerp(source, target, Mathf.Clamp01(elapsed / duration));
+                yield return null;
+            }
+
+            _colorAdjustments.colorFilter.value = target;
+            _colorTransition = null;
+            IsTransition = false;
+            onComplete?.Invoke();
         }
     }
 }

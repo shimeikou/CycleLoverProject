@@ -16,7 +16,7 @@
       "BackgroundId": "flower_road_day", "CharacterId": "hero_announcer", "OutfitId": "work", "ExpressionId": "smile",
       "ChoicePrompt": "町らしさを伝える番組を、どう作ろう。",
       "Pages": ["桜の道を自転車で巡る短い特集に協力することになった。決まり文句ではない町の魅力が必要だ。"],
-      "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteStep": 2, "RouteFlag": "goal_spring_ready" },
+      "Effects": { "HeroineId": "hero_announcer", "RouteStep": 2, "RouteFlag": "goal_spring_ready" },
       "Choices": [
         { "Id": "announcer_spring_people", "Label": "町の人の言葉を中心にする", "Description": "アピールと好感度", "NodeId": "announcer_spring_people", "Pages": ["住民の言葉をつないだ特集は、彼女自身の言葉で締めくくられた。"], "Effects": { "Appeal": 1, "HeroineId": "hero_announcer", "Affection": 1 } },
         { "Id": "announcer_spring_route", "Label": "走りやすい道を詳しく紹介する", "Description": "スマート", "NodeId": "announcer_spring_route", "Pages": ["勾配や休憩地点を整理し、実用的な案内に仕上げた。"], "Effects": { "Smart": 1 } }
@@ -27,7 +27,7 @@
       "BackgroundId": "cafe_interior_evening", "CharacterId": "hero_announcer", "OutfitId": "casual", "ExpressionId": "troubled",
       "ChoicePrompt": "異動を失敗だと話す彼女へ、どう応えよう。",
       "Pages": ["放送後のカフェで、彼女は都会の同期が活躍する画面を閉じた。ここへ来たことを、まだ受け入れられないという。"],
-      "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteStep": 3 },
+      "Effects": { "HeroineId": "hero_announcer", "RouteStep": 3 },
       "Choices": [
         { "Id": "announcer_regret_listen", "Label": "悔しさを最後まで聞く", "Description": "エンパシーと好感度", "NodeId": "announcer_regret_listen", "Pages": ["励まさずに聞くと、彼女は初めて異動の日のことを詳しく話した。"], "Effects": { "Empathy": 2, "HeroineId": "hero_announcer", "Affection": 1 } },
         { "Id": "announcer_regret_plan", "Label": "次の企画案を整理する", "Description": "スマート", "NodeId": "announcer_regret_plan", "Pages": ["今できる仕事を並べるうちに、彼女の視線が少し前へ向いた。"], "Effects": { "Smart": 2 } }
@@ -38,7 +38,7 @@
       "BackgroundId": "coast_road_day", "CharacterId": "hero_announcer", "OutfitId": "cycling", "ExpressionId": "neutral",
       "ChoicePrompt": "予定外の雨で取材が崩れた。何を優先しよう。",
       "Pages": ["海沿いの取材中に天気が崩れ、予定していた映像が撮れなくなった。彼女は中継車へ戻るか迷っている。"],
-      "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteStep": 4, "BikeMastery": 3, "RouteFlag": "goal_summer_ready" },
+      "Effects": { "HeroineId": "hero_announcer", "RouteStep": 4, "BikeMastery": 3, "RouteFlag": "goal_summer_ready" },
       "Choices": [
         { "Id": "announcer_summer_story", "Label": "雨宿り先の人を取材する", "Description": "好感度", "NodeId": "announcer_summer_story", "Pages": ["漁師の小屋で聞いた話が、予定にはなかった特集の中心になった。"], "Effects": { "HeroineId": "hero_announcer", "Affection": 1 } },
         { "Id": "announcer_summer_safe", "Label": "安全を優先して構成を変える", "Description": "タフネス", "NodeId": "announcer_summer_safe", "Pages": ["無理をせず、撮影済みの映像で伝わる構成を二人で考えた。"], "Effects": { "Toughness": 1 } }
@@ -49,7 +49,7 @@
       "BackgroundId": "station_evening", "CharacterId": "hero_announcer", "OutfitId": "work", "ExpressionId": "troubled",
       "ChoicePrompt": "数字を求める局と自分の企画の間で悩む彼女を支えよう。",
       "Pages": ["視聴率を優先する修正案に、彼女は町の人の言葉が消えると反発した。だが自分の意見を通す自信もない。"],
-      "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteStep": 5 },
+      "Effects": { "HeroineId": "hero_announcer", "RouteStep": 5 },
       "Choices": [
         { "Id": "announcer_camera_voice", "Label": "君の言葉で企画意図を説明しよう", "Description": "アピール7・好感度5", "NodeId": "announcer_camera_voice", "Pages": ["彼女は会議で、自分がこの町で見つけた価値をまっすぐに語った。"], "Conditions": [{ "Type": "appeal", "Value": 7 }, { "Type": "affection", "Id": "hero_announcer", "Value": 5 }], "Effects": { "Appeal": 1, "HeroineId": "hero_announcer", "Affection": 1 } },
         { "Id": "announcer_camera_edit", "Label": "両方を残す構成を考える", "Description": "いつでも選べる", "NodeId": "announcer_camera_edit", "Pages": ["入口は分かりやすく、最後に町の声を残す構成へ練り直した。"], "Effects": { "Smart": 1 } }
@@ -60,7 +60,7 @@
       "BackgroundId": "town_square_day", "CharacterId": "hero_announcer", "OutfitId": "work", "ExpressionId": "neutral",
       "ChoicePrompt": "生放送で町の魅力を伝えるため、何を任せよう。",
       "Pages": ["秋の祭りを伝える生放送を、彼女が初めて中心となって担当する。台本にはない瞬間を拾う覚悟が必要だ。"],
-      "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteStep": 6, "RouteFlag": "goal_autumn_ready" },
+      "Effects": { "HeroineId": "hero_announcer", "RouteStep": 6, "RouteFlag": "goal_autumn_ready" },
       "Choices": [
         { "Id": "announcer_autumn_live", "Label": "町の人との即興会話を任せる", "Description": "スマート7・アピール7", "NodeId": "announcer_autumn_live", "ExpressionId": "smile", "Pages": ["彼女は台本を閉じ、目の前の人と笑いながら町の今を伝えた。"], "Conditions": [{ "Type": "smart", "Value": 7 }, { "Type": "appeal", "Value": 7 }], "Effects": { "Appeal": 1, "HeroineId": "hero_announcer", "Affection": 1 } },
         { "Id": "announcer_autumn_script", "Label": "要点だけ確認して送り出す", "Description": "いつでも選べる", "NodeId": "announcer_autumn_script", "Pages": ["要点を確認した彼女は、自分の言葉を足しながら放送を終えた。"], "Effects": { "Toughness": 1 } }
@@ -71,7 +71,7 @@
       "BackgroundId": "hill_overlook_winter", "CharacterId": "hero_announcer", "OutfitId": "casual", "ExpressionId": "neutral",
       "ChoicePrompt": "都会へ戻る打診を受けた彼女へ、何を伝えよう。",
       "Pages": ["冬の丘で、彼女は本社へ戻る話があると打ち明けた。以前なら迷わなかったはずなのに、今は町を離れる理由が見つからない。"],
-      "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteStep": 7 },
+      "Effects": { "HeroineId": "hero_announcer", "RouteStep": 7 },
       "Choices": [
         { "Id": "announcer_choice_self", "Label": "肩書きではなく自分で選んでほしい", "Description": "好感度", "NodeId": "announcer_choice_self", "Pages": ["彼女は長く黙ったあと、この町で続けたい仕事を一つずつ話した。"], "Effects": { "HeroineId": "hero_announcer", "Affection": 1 } },
         { "Id": "announcer_choice_future", "Label": "どちらでも応援すると伝える", "Description": "エンパシー", "NodeId": "announcer_choice_future", "Pages": ["決断を急かさない言葉に、彼女は安心したように息をついた。"], "Effects": { "Empathy": 1 } }
@@ -82,7 +82,7 @@
       "BackgroundId": "station_evening", "CharacterId": "hero_announcer", "OutfitId": "work", "ExpressionId": "smile",
       "ChoicePrompt": "新しい番組を任された彼女へ、気持ちを伝えよう。",
       "Pages": ["彼女は地域を自転車で巡る番組を来年も続けると決めた。この町で見つけた未来を、自分の声で伝えていく。"],
-      "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteStep": 8, "RouteFlag": "goal_winter_ready" },
+      "Effects": { "HeroineId": "hero_announcer", "RouteStep": 8, "RouteFlag": "goal_winter_ready" },
       "Choices": [
         { "Id": "announcer_final_confess", "Label": "君が選んだ未来を隣で見たい", "Description": "好感度7で告白", "NodeId": "announcer_final_confess", "Pages": ["彼女はマイクを置き、今度は誰にも向けない笑顔でうなずいた。"], "Conditions": [{ "Type": "affection", "Id": "hero_announcer", "Value": 7 }], "Effects": { "HeroineId": "hero_announcer", "Affection": 1, "RouteFlag": "annual_confession_announcer_ready" } },
         { "Id": "announcer_final_support", "Label": "来年の取材も手伝う", "Description": "いつでも選べる", "NodeId": "announcer_final_support", "Pages": ["次の取材ルートを相談しながら、二人で局を出た。"], "Effects": { "HeroineId": "hero_announcer", "Affection": 1 } }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Service;
 using CyclingLove.Content;
 using CyclingLove.Editor;
+using CyclingLove.Calendar;
+using CyclingLove.Racing;
 using NUnit.Framework;
 using UnityEditor.Build;
 using UnityEngine;
@@ -16,6 +18,77 @@ public sealed class CampaignBuildValidatorTests
     public void BuildCallbackAcceptsShippedCampaign()
     {
         Assert.DoesNotThrow(() => new CampaignBuildValidator().OnPreprocessBuild(null));
+    }
+
+    [Test]
+    public void AnnualReachabilityRejectsMissingFlagProducer()
+    {
+        var campaign = CampaignContentLoader.LoadAnnual();
+        var calendar = AnnualCalendarContentLoader.LoadRuntime();
+        var races = RaceContentLoader.LoadRuntime();
+        var routeChoice = Array.Find(campaign.Actions, action => action.Id == "evt_annual_route_select")
+            .Choices[0];
+        routeChoice.Effects.RouteFlag = null;
+
+        var error = Assert.Throws<InvalidOperationException>(() =>
+            CampaignBuildValidator.ValidateAnnualReachability(campaign, calendar, races));
+        StringAssert.Contains("route_bikeshop_annual", error.Message);
+    }
+
+    [Test]
+    public void AnnualReachabilityRejectsUnattainableRouteStep()
+    {
+        var campaign = CampaignContentLoader.LoadAnnual();
+        var calendar = AnnualCalendarContentLoader.LoadRuntime();
+        var races = RaceContentLoader.LoadRuntime();
+        var ending = Array.Find(calendar.Endings, value => value.Id == "annual_confession_bikeshop");
+        Array.Find(ending.Conditions, value => value.Type == "route_step").Value = 99;
+
+        var error = Assert.Throws<InvalidOperationException>(() =>
+            CampaignBuildValidator.ValidateAnnualReachability(campaign, calendar, races));
+        StringAssert.Contains("hero_bikeshop:99", error.Message);
+    }
+
+    [Test]
+    public void VisualAuditReportsOnlyUnresolvedUniqueReferences()
+    {
+        var campaign = new CampaignDefinition
+        {
+            Days = new[]
+            {
+                new CampaignDay
+                {
+                    MorningBackgroundId = "present_bg",
+                    AfternoonBackgroundId = "missing_bg",
+                    AfternoonCharacterId = "missing_character",
+                    AfternoonOutfitId = "casual",
+                    AfternoonExpressionId = "smile"
+                }
+            },
+            Actions = new[]
+            {
+                new ActionDefinition
+                {
+                    BackgroundId = "missing_bg",
+                    CharacterId = "present_character",
+                    OutfitId = "shop",
+                    ExpressionId = "neutral",
+                    Effects = new CampaignEffects(),
+                    Pages = new[] { "test" }
+                }
+            }
+        };
+
+        var missing = CampaignBuildValidator.FindMissingVisualAssets(
+            new[] { campaign },
+            id => id == "present_bg",
+            (id, outfit, expression) => id == "present_character");
+
+        CollectionAssert.AreEqual(new[]
+        {
+            "background:missing_bg",
+            "character:missing_character/casual/smile"
+        }, missing);
     }
 
     [TestCase("missing", "Content/PrototypeRules")]

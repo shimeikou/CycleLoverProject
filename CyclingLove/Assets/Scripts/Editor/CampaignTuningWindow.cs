@@ -70,6 +70,7 @@ namespace CyclingLove.Editor
                 SetText("statusLabel", "入力またはデータを確認してください: " + ex.Message);
                 SetText("dayResult", string.Empty);
                 SetText("eventResult", string.Empty);
+                SetText("choiceResult", string.Empty);
                 SetText("goalResult", string.Empty);
                 SetText("endingResult", string.Empty);
                 Debug.LogError("Campaign tuning evaluation failed: " + ex);
@@ -130,6 +131,17 @@ namespace CyclingLove.Editor
                 : report.MatchingEvents.Select((value, index) =>
                     $"{(index == 0 ? "採用" : "候補")}  P{value.Priority}  {value.Id}  [{value.Day.Title}]");
             SetText("eventResult", string.Join("\n", eventLines));
+
+            var choiceLines = report.Choices.Length == 0
+                ? new[] { "選択肢なし" }
+                : report.Choices.Select(value =>
+                {
+                    var conditions = value.Conditions.Length == 0
+                        ? "条件なし"
+                        : string.Join(" / ", value.Conditions.Select(condition => condition.DisplayText));
+                    return $"{(value.CanChoose ? "選択可" : "選択不可")}  {value.ChoiceId}  {value.Label}\n  {conditions}";
+                });
+            SetText("choiceResult", string.Join("\n", choiceLines));
 
             SetText("goalResult", string.Join("\n", report.SeasonGoals.Select(value =>
                 $"{value.SeasonId}: {(value.Succeeded ? "達成" : "未達")} / {value.ResultFlag} / 締切 {value.Deadline:yyyy-MM-dd}")));

@@ -5,6 +5,7 @@ using System.GameSession;
 using System.Linq;
 using System.Service;
 using CyclingLove.Content;
+using CyclingLove.Editor;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -118,6 +119,35 @@ public sealed class RegionalProgressTests
         Assert.AreEqual(6, data.RegionalContribution);
         Assert.AreEqual(3, data.FoxFavor);
         Assert.AreEqual(affectionBeforeSupport + 1, data.FindHeroineProgress("hero_bikeshop").Affection);
+    }
+
+    [Test]
+    public void FoxQuestUsesExactQuestCountAndContributionBoundaries()
+    {
+        var campaign = CampaignContentLoader.LoadAnnual();
+        var calendar = AnnualCalendarContentLoader.LoadRuntime();
+        var data = ValidPlayer();
+        data.CompletedQuestIds.Add("quest_first");
+
+        var beforeRequest = CampaignTuningEvaluator.Evaluate(
+            campaign, calendar, data, new DateTime(2026, 10, 1));
+        Assert.IsFalse(beforeRequest.MatchingEvents.Any(value => value.Id == "regional_fox_request"));
+
+        data.CompletedQuestIds.Add("quest_second");
+        var atRequestBoundary = CampaignTuningEvaluator.Evaluate(
+            campaign, calendar, data, new DateTime(2026, 10, 1));
+        Assert.IsTrue(atRequestBoundary.MatchingEvents.Any(value => value.Id == "regional_fox_request"));
+
+        data.ActiveRouteFlags.Add("quest_fox_shrine_started");
+        data.RegionalContribution = 2;
+        var beforeCompletion = CampaignTuningEvaluator.Evaluate(
+            campaign, calendar, data, new DateTime(2027, 2, 1));
+        Assert.IsFalse(beforeCompletion.MatchingEvents.Any(value => value.Id == "regional_fox_completion"));
+
+        data.RegionalContribution = 3;
+        var atCompletionBoundary = CampaignTuningEvaluator.Evaluate(
+            campaign, calendar, data, new DateTime(2027, 2, 1));
+        Assert.IsTrue(atCompletionBoundary.MatchingEvents.Any(value => value.Id == "regional_fox_completion"));
     }
 
     private static void PlayEvent(

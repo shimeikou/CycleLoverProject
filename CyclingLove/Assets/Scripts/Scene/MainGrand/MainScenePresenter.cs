@@ -15,6 +15,7 @@ namespace Scene.MainGrand
 {
     public sealed class MainScenePresenter : MonoBehaviour
     {
+        private const int MaxSkipDays = 7;
         [SerializeField] private MainSceneViewer view;
         private bool _busy;
         private int _shownRevision;
@@ -56,8 +57,8 @@ namespace Scene.MainGrand
             view.Render(request, GameSession.PlayerData, GameFlowManager.Instance.GetActionOptions(), "");
             GameAudioService.Instance.Synchronize(request);
             view.SetBikeMenuControl(GameFlowManager.Instance.CanUseBikeMenu);
-            var skip = GameFlowManager.Instance.GetSkipPreview(7);
-            view.SetSkipControl(skip.SkippableDays > 0, "日程");
+            var skip = GameFlowManager.Instance.GetSkipPreview(MaxSkipDays);
+            view.SetSkipControl(skip.SkippableDays > 0);
         }
 
         private void HandleSelection(string id)
@@ -82,10 +83,11 @@ namespace Scene.MainGrand
             if (id == "menu:races") { ShowRaces(); return; }
             if (id == "skip:confirm")
             {
-                if (GameFlowManager.Instance.SkipNormalDays(7))
+                var preview = GameFlowManager.Instance.GetSkipPreview(MaxSkipDays);
+                if (GameFlowManager.Instance.SkipNormalDays(MaxSkipDays))
                 {
                     _utilityScreen = UtilityScreen.None;
-                    view.SetMessage("通常日を進めました。重要な日の前で停止しています。");
+                    view.SetMessage($"{preview.SkippableDays}日進めました。停止理由：{preview.StopReason}");
                     Render();
                 }
                 return;
@@ -199,7 +201,7 @@ namespace Scene.MainGrand
         private void ShowSkip()
         {
             if (_busy) return;
-            var preview = GameFlowManager.Instance.GetSkipPreview(7);
+            var preview = GameFlowManager.Instance.GetSkipPreview(MaxSkipDays);
             if (preview.SkippableDays <= 0)
             {
                 view.SetMessage("ここでは日程を進められません。" + preview.StopReason + "を確認してください。");

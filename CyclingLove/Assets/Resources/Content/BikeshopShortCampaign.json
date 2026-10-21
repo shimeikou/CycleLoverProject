@@ -9,6 +9,9 @@
   "EndingBody": "十日間の挑戦を走り終えた。結果がどうであっても、二人の自転車の物語はここから続いていく。\n\n自転車屋の娘・短期ルートはここまでです。",
   "ChoiceDescription": "練習、交流、休息から午後の過ごし方を選びます。休息はいつでも選べます。",
   "RulesResource": "Content/PrototypeRules",
-  "ActionsResource": "Content/BikeshopShortActions",
+  "ActionsResource": "Content/CommonActions",
+  "AdditionalActionsResources": [
+    "Content/BikeshopShortActions"
+  ],
   "DaysResource": "Content/BikeshopShortDays"
 }

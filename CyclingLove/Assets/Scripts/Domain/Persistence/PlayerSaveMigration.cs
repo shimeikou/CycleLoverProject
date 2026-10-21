@@ -28,7 +28,6 @@ namespace System.Service
                     if (progress.RouteStep == 0) progress.RouteStep = 1;
                 }
             }
-            if (string.IsNullOrWhiteSpace(data.RunId)) data.RunId = Guid.NewGuid().ToString("N");
             data.FlowVersion = PlayerSaveValidator.SchemaVersion;
         }
 

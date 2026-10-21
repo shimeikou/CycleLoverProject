@@ -163,7 +163,7 @@ public sealed class AnnualCalendarTests
         Assert.AreEqual("annual_2027_03_31", definition.Days[^1].Id);
         Assert.AreEqual(365, definition.Days.Select(value => value.MorningNodeId).Distinct().Count());
         Assert.AreEqual(365, definition.Days.Select(value => value.AfternoonNodeId).Distinct().Count());
-        Assert.AreEqual(59, definition.Actions.Length);
+        Assert.AreEqual(52, definition.Actions.Length);
         Assert.AreEqual(49, definition.ConditionalEvents.Length);
         Assert.DoesNotThrow(() => new CampaignGameService(
             definition, null, AnnualCalendarContentLoader.LoadRuntime()));
@@ -183,6 +183,9 @@ public sealed class AnnualCalendarTests
         var flow = new CampaignGameService(definition, null, AnnualCalendarContentLoader.LoadRuntime());
         var data = flow.NewGame();
         data.ActiveRouteFlags.Add("event_ready");
+        data.ResolvedDayKey = null;
+        data.ResolvedDayEventId = null;
+        data.ScenarioCheckpoint.Clear();
 
         var first = flow.Request(data);
         Assert.AreEqual("高優先イベント", first.DisplayName);
@@ -246,6 +249,68 @@ public sealed class AnnualCalendarTests
         Assert.AreEqual(0, preview.SkippableDays);
         Assert.AreEqual("年間キャンペーン外", preview.StopReason);
         Assert.IsFalse(flow.SkipNormalDays(data, 7));
+    }
+
+    [Test]
+    public void ConditionalEventCanBeLimitedToDaysOfWeek()
+    {
+        var definition = CampaignContentLoader.LoadAnnual();
+        var conditionalEvent = ConditionalEvent(definition, "event_friday", 100, "金曜のイベント");
+        conditionalEvent.Conditions = Array.Empty<CampaignCondition>();
+        conditionalEvent.DaysOfWeek = new[] { "friday" };
+        definition.ConditionalEvents = new[] { conditionalEvent };
+        var flow = new CampaignGameService(definition, null, AnnualCalendarContentLoader.LoadRuntime());
+        var data = flow.NewGame();
+
+        Assert.AreNotEqual("金曜のイベント", flow.Request(data).DisplayName);
+        var preview = flow.GetSkipPreview(data, 7);
+        Assert.AreEqual("条件イベント", preview.StopReason);
+        Assert.AreEqual("4月3日", preview.StopDateText);
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            conditionalEvent.DaysOfWeek = new[] { "fri" };
+            conditionalEvent.Validate();
+        });
+    }
+
+    [Test]
+    public void SkipStopsOnFinalDayEvenWhenItIsANormalWorkday()
+    {
+        var definition = CampaignContentLoader.LoadAnnual();
+        definition.ConditionalEvents = Array.Empty<CampaignConditionalEvent>();
+        var calendar = AnnualCalendarContentLoader.LoadRuntime();
+        calendar.WeekendsAreHolidays = false;
+        calendar.DateOverrides = Array.Empty<CalendarDateOverride>();
+        var flow = new CampaignGameService(definition, null, calendar);
+        var data = flow.NewGame();
+        data.Year = 2027; data.Month = 3; data.Day = 27;
+
+        var preview = flow.GetSkipPreview(data, 7);
+        Assert.AreEqual(4, preview.SkippableDays);
+        Assert.AreEqual("最終日", preview.StopReason);
+        Assert.IsTrue(flow.SkipNormalDays(data, 7));
+        Assert.AreEqual(31, data.Day);
+        Assert.AreEqual(GameFlowPhase.Novel, data.SavedPhase);
+        Assert.IsNotNull(flow.Request(data));
+    }
+
+    [Test]
+    public void SkipResolvesSeasonGoalWhoseDeadlineIsASkippedDay()
+    {
+        var definition = CampaignContentLoader.LoadAnnual();
+        definition.ConditionalEvents = Array.Empty<CampaignConditionalEvent>();
+        var calendar = AnnualCalendarContentLoader.LoadRuntime();
+        calendar.DateOverrides = Array.Empty<CalendarDateOverride>();
+        var spring = calendar.SeasonGoals.Single(goal => goal.SeasonId == "spring");
+        spring.DeadlineMonth = 4; spring.DeadlineDay = 2;
+        var flow = new CampaignGameService(definition, null, calendar);
+        var data = flow.NewGame();
+
+        Assert.IsTrue(flow.SkipNormalDays(data, 7));
+        Assert.AreEqual(4, data.Day);
+        var record = data.SeasonGoalResults.Single(value => value.GoalId == spring.Id);
+        Assert.AreEqual(2, record.EvaluatedDay);
+        CollectionAssert.Contains(data.ActiveRouteFlags, "goal_spring_incomplete");
     }
 
     [Test]
@@ -493,6 +558,79 @@ public sealed class AnnualCalendarTests
         Assert.AreEqual("annual_confession_online_rival", data.AnnualEndingResult.EndingId);
         Assert.AreEqual("hero_online_rival", data.AnnualEndingResult.HeroineId);
         CollectionAssert.Contains(data.ActiveRouteFlags, "result_annual_confession_online_rival");
+    }
+
+    [Test]
+    public void AnnualRoutesRequireRelationshipChoicesForConfession()
+    {
+        var definition = CampaignContentLoader.LoadAnnual();
+
+        AssertRouteBalance(definition, "hero_bikeshop", "evt_annual_bikeshop_", "annual_final_confess");
+        AssertRouteBalance(definition, "hero_cafe_master", "evt_annual_cafe_", "cafe_final_confess");
+        AssertRouteBalance(definition, "hero_cousin", "evt_annual_cousin_", "cousin_final_confess");
+        AssertRouteBalance(definition, "hero_announcer", "evt_annual_announcer_", "announcer_final_confess");
+        AssertRouteBalance(definition, "hero_online_rival", "evt_annual_rival_", "rival_final_confess");
+    }
+
+    private static void AssertRouteBalance(
+        CampaignDefinition definition,
+        string heroineId,
+        string actionPrefix,
+        string confessionChoiceId)
+    {
+        var actions = definition.Actions
+            .Where(value => value.Id.StartsWith(actionPrefix, StringComparison.Ordinal))
+            .ToArray();
+        Assert.AreEqual(8, actions.Length, heroineId + " should have eight annual events");
+        Assert.AreEqual(1, actions[0].Effects.Affection, heroineId + " meeting should establish initial affection");
+        Assert.IsTrue(actions.Skip(1).All(value => value.Effects.Affection == 0),
+            heroineId + " should gain later affection from choices, not automatic event entry");
+
+        var finalAction = actions[^1];
+        var confession = finalAction.Choices.Single(value => value.Id == confessionChoiceId);
+
+        var relationshipPath = BalancePlayer(heroineId);
+        foreach (var action in actions.Take(actions.Length - 1))
+        {
+            action.Effects.Apply(relationshipPath, 100);
+            action.Choices
+                .Where(value => value.CanChoose(relationshipPath))
+                .OrderByDescending(value => value.Effects.Affection)
+                .First()
+                .Effects.Apply(relationshipPath, 100);
+        }
+        finalAction.Effects.Apply(relationshipPath, 100);
+        Assert.IsTrue(confession.CanChoose(relationshipPath), heroineId + " relationship path should unlock confession");
+
+        var fallbackPath = BalancePlayer(heroineId);
+        foreach (var action in actions.Take(actions.Length - 1))
+        {
+            action.Effects.Apply(fallbackPath, 100);
+            action.Choices
+                .Where(value => value.Conditions == null || value.Conditions.Length == 0)
+                .OrderBy(value => value.Effects.Affection)
+                .First()
+                .Effects.Apply(fallbackPath, 100);
+        }
+        finalAction.Effects.Apply(fallbackPath, 100);
+        Assert.IsFalse(confession.CanChoose(fallbackPath), heroineId + " fallback path should keep confession locked");
+        Assert.Less(fallbackPath.FindHeroineProgress(heroineId).Affection, 7);
+    }
+
+    private static System.GameSession.GamePlayerData BalancePlayer(string heroineId)
+    {
+        var data = new System.GameSession.GamePlayerData
+        {
+            Money = 99999,
+            Stamina = 100,
+            Physical = 99,
+            Toughness = 99,
+            Smart = 99,
+            Empathy = 99,
+            Appeal = 99
+        };
+        data.EnsureHeroineProgress(heroineId);
+        return data;
     }
 
     private static CampaignConditionalEvent ConditionalEvent(

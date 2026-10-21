@@ -101,6 +101,19 @@ public sealed class CampaignChoiceTests
         Assert.IsTrue(new CampaignCondition { Type = "event_cleared", Id = "event_seen" }.IsMet(data));
     }
 
+    [Test]
+    public void NegatedConditionsExpressBelowThresholdAndMissingFlag()
+    {
+        var data = new CampaignGameService(CampaignContentLoader.LoadPrototype()).NewGame();
+        data.Physical = 6;
+        data.ActiveRouteFlags.Add("route_started");
+
+        Assert.IsTrue(new CampaignCondition { Type = "physical", Value = 7, Not = true }.IsMet(data));
+        Assert.IsFalse(new CampaignCondition { Type = "physical", Value = 6, Not = true }.IsMet(data));
+        Assert.IsTrue(new CampaignCondition { Type = "route_flag", Id = "route_missing", Not = true }.IsMet(data));
+        Assert.IsFalse(new CampaignCondition { Type = "route_flag", Id = "route_started", Not = true }.IsMet(data));
+    }
+
     private static void Submit(CampaignGameService flow, System.GameSession.GamePlayerData data,
         GameFlowCompletionType type, string action = null, string choice = null)
     {

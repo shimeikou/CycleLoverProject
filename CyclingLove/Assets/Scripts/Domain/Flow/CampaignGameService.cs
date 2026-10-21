@@ -178,7 +178,7 @@ namespace System.Service
             {
                 var date = start.AddDays(skippable);
                 var index = (date - new DateTime(content.StartYear, content.StartMonth, content.StartDay)).Days;
-                if (index < 0 || index >= content.Days.Length) { reason = "キャンペーン終了"; break; }
+                if (index < 0 || index >= content.Days.Length - 1) { reason = "最終日"; break; }
                 var calendarDay = annualCalendar.ResolveDay(date);
                 if (calendarDay.IsHoliday) { reason = "休日"; break; }
                 if (calendarDay.SpecialSlotIds.Length > 0) { reason = "特別日"; break; }
@@ -200,7 +200,16 @@ namespace System.Service
         {
             var preview = GetSkipPreview(data, maxDays);
             if (preview.SkippableDays == 0) return false;
-            var nextDate = new DateTime(data.Year, data.Month, data.Day).AddDays(preview.SkippableDays);
+            var start = new DateTime(data.Year, data.Month, data.Day);
+            for (var offset = 0; offset < preview.SkippableDays; offset++)
+            {
+                var skipped = start.AddDays(offset);
+                data.Year = skipped.Year;
+                data.Month = skipped.Month;
+                data.Day = skipped.Day;
+                annualProgress?.ResolveDueMilestones(data);
+            }
+            var nextDate = start.AddDays(preview.SkippableDays);
             data.Year = nextDate.Year;
             data.Month = nextDate.Month;
             data.Day = nextDate.Day;
@@ -244,7 +253,8 @@ namespace System.Service
                 DayNumber = Math.Min(DayIndex(data) + 1, content.Days.Length), TotalDays = content.Days.Length,
                 CurrentDateText = $"{data.Month}月{data.Day}日", DisplayName = title, Revision = data.Revision,
                 SeasonId = calendarDay?.SeasonId, SeasonDisplayName = calendarDay?.SeasonDisplayName,
-                IsHoliday = calendarDay?.IsHoliday ?? Day(data).IsHoliday, IsAnnualFinalDay = calendarDay?.IsFinalDay == true,
+                IsHoliday = phase != GameFlowPhase.Finished && (calendarDay?.IsHoliday ?? Day(data).IsHoliday),
+                IsAnnualFinalDay = calendarDay?.IsFinalDay == true,
                 SpecialSlotIds = calendarDay?.SpecialSlotIds ?? Array.Empty<string>(),
                 EventKey = phase == GameFlowPhase.Finished ? null : EventKey(data), ActionId = data.SelectedActionId,
                 ScenarioId = narrative?.ScenarioId ?? visual.scenario,
