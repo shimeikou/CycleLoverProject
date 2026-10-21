@@ -137,4 +137,13 @@ public sealed class CampaignBuildValidatorTests
         CollectionAssert.AreEqual(new[] { '\uE000' }, missing);
         StringAssert.Contains("狐の依頼", FontAtlasTools.CollectGameText());
     }
+
+    [Test]
+    public void JsonKeyAuditReportsMisspelledAndUnknownKeys()
+    {
+        var unknown = JsonKeyAudit.FindUnknownKeys(typeof(RaceCatalog),
+            "{\"Races\":[{\"Id\":\"flat\"},{\"Id\":\"hill\",\"Nmae\":\"typo\"}],\"Extra\":1}");
+
+        CollectionAssert.AreEquivalent(new[] { "$.Races[1].Nmae", "$.Extra" }, unknown);
+    }
 }

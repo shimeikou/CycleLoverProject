@@ -35,6 +35,18 @@ namespace CyclingLove.Editor
                 return;
             }
 
+            var unknownKeys = new List<string>();
+            void AuditKeys(string key, Type type, string source) =>
+                unknownKeys.AddRange(JsonKeyAudit.FindUnknownKeys(type, source).Select(path => $"{key}: {path}"));
+            JsonContentReader.Parsed += AuditKeys;
+            try { ValidateAllSources(); }
+            finally { JsonContentReader.Parsed -= AuditKeys; }
+            if (unknownKeys.Count > 0)
+                throw new BuildFailedException("Content validation failed [unknown JSON keys]: " + string.Join(", ", unknownKeys.Distinct()));
+        }
+
+        private static void ValidateAllSources()
+        {
             CampaignDefinition annual = null;
             AnnualCalendarDefinition calendar = null;
             RaceCatalog races = null;
