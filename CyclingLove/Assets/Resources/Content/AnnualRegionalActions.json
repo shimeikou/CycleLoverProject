@@ -55,6 +55,34 @@
       "StaminaCost": 0, "MoneyCost": 0,
       "Pages": ["この一年で出会った人たちと、神社まで走る小さな祭りを開いた。", "狐は満足そうに尾を揺らし、次の季節への加護を授けた。"],
       "Effects": { "QuestId": "quest_fox_shrine_festival", "RouteFlag": "quest_fox_shrine_completed", "RegionalContribution": 3, "FoxFavor": 2, "Empathy": 1 }
+    },
+    {
+      "Id": "evt_seasonal_summer_morning_ride", "Name": "早朝の川沿いライド", "NodeId": "seasonal_summer_morning_ride",
+      "BackgroundId": "riverside_day",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["朝もやの残る川沿いを、一定のペースで走り続けた。", "暑さに負けない走り方と、水分補給の間合いを体で覚えた。"],
+      "Effects": { "Physical": 1, "Toughness": 2 }
+    },
+    {
+      "Id": "evt_seasonal_summer_festival", "Name": "夏祭りの手伝い", "NodeId": "seasonal_summer_festival",
+      "BackgroundId": "town_square_day", "CharacterId": "sub_grandmother", "ExpressionId": "smile",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["祖母に誘われ、屋台の設営と臨時駐輪場の案内を手伝った。", "顔を覚えてくれた人たちから、声をかけられることが増えた。"],
+      "Effects": { "Empathy": 2, "Appeal": 1 }
+    },
+    {
+      "Id": "evt_seasonal_autumn_harvest_fair", "Name": "収穫市めぐり", "NodeId": "seasonal_autumn_harvest_fair",
+      "BackgroundId": "town_square_day",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["新米や果物を見て回り、走る体に合う食べ物を教わった。", "補給の知識が増え、分けてもらった食材で体も休まった。"],
+      "Effects": { "Smart": 1, "Empathy": 1, "Stamina": 10 }
+    },
+    {
+      "Id": "evt_seasonal_autumn_foliage_ride", "Name": "紅葉の山道ライド", "NodeId": "seasonal_autumn_foliage_ride",
+      "BackgroundId": "mountain_road_day",
+      "StaminaCost": 0, "MoneyCost": 0,
+      "Pages": ["色づいた木々の間を、長い坂を一つずつ登っていった。", "下りでは愛車の扱いに集中し、季節が変わったことを肌で感じた。"],
+      "Effects": { "Physical": 2, "Toughness": 1, "BikeMastery": 2 }
     }
   ]
 }

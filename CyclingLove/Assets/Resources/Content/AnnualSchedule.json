@@ -1232,6 +1232,98 @@
         "AfternoonEffects": {},
         "SummaryNote": "狐の依頼を達成し、町の縁を結んだ。"
       }
+    },
+    {
+      "Id": "seasonal_summer_morning_ride",
+      "Day": {
+        "Id": "template_seasonal_summer_morning_ride",
+        "Title": "夜明け前のライド",
+        "MorningNodeId": "seasonal_summer_morning_ride_morning",
+        "MorningBackgroundId": "riverside_day",
+        "MorningPages": [
+          "日が昇る前に起きた。昼の暑さを避けて、涼しいうちに走り出す。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "seasonal_summer_morning_ride_afternoon",
+        "AfternoonBackgroundId": "riverside_day",
+        "AfternoonPages": [
+          "川沿いの道へ出よう。"
+        ],
+        "ActionIds": [
+          "evt_seasonal_summer_morning_ride"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "夏の暑さと付き合う走り方をつかんだ。"
+      }
+    },
+    {
+      "Id": "seasonal_summer_festival",
+      "Day": {
+        "Id": "template_seasonal_summer_festival",
+        "Title": "町の夏祭り",
+        "MorningNodeId": "seasonal_summer_festival_morning",
+        "MorningBackgroundId": "town_square_day",
+        "MorningPages": [
+          "広場に提灯が並び、朝から夏祭りの準備が進んでいる。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "seasonal_summer_festival_afternoon",
+        "AfternoonBackgroundId": "town_square_day",
+        "AfternoonPages": [
+          "祭りの手伝いに加わろう。"
+        ],
+        "ActionIds": [
+          "evt_seasonal_summer_festival"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "祭りを通して町の人との距離が縮まった。"
+      }
+    },
+    {
+      "Id": "seasonal_autumn_harvest_fair",
+      "Day": {
+        "Id": "template_seasonal_autumn_harvest_fair",
+        "Title": "秋の収穫市",
+        "MorningNodeId": "seasonal_autumn_harvest_fair_morning",
+        "MorningBackgroundId": "town_square_day",
+        "MorningPages": [
+          "広場で秋の収穫市が開かれている。農家の人たちが朝早くから店を出していた。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "seasonal_autumn_harvest_fair_afternoon",
+        "AfternoonBackgroundId": "town_square_day",
+        "AfternoonPages": [
+          "市を見て回ろう。"
+        ],
+        "ActionIds": [
+          "evt_seasonal_autumn_harvest_fair"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "食べることも練習の一部だと知った。"
+      }
+    },
+    {
+      "Id": "seasonal_autumn_foliage_ride",
+      "Day": {
+        "Id": "template_seasonal_autumn_foliage_ride",
+        "Title": "紅葉の山道",
+        "MorningNodeId": "seasonal_autumn_foliage_ride_morning",
+        "MorningBackgroundId": "mountain_road_day",
+        "MorningPages": [
+          "山が色づいたと聞き、少し遠くまで走る準備をした。"
+        ],
+        "MorningEffects": {},
+        "AfternoonNodeId": "seasonal_autumn_foliage_ride_afternoon",
+        "AfternoonBackgroundId": "mountain_road_day",
+        "AfternoonPages": [
+          "紅葉の山道へ向かおう。"
+        ],
+        "ActionIds": [
+          "evt_seasonal_autumn_foliage_ride"
+        ],
+        "AfternoonEffects": {},
+        "SummaryNote": "秋の山道で走りの幅を広げた。"
+      }
     }
   ],
   "Rules": [
@@ -2222,6 +2314,54 @@
           "Value": 3
         }
       ]
+    },
+    {
+      "Id": "seasonal_summer_morning_ride",
+      "TemplateId": "seasonal_summer_morning_ride",
+      "HolidayMode": "holiday",
+      "Priority": 150,
+      "StartYear": 2026,
+      "StartMonth": 8,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 8,
+      "EndDay": 9
+    },
+    {
+      "Id": "seasonal_summer_festival",
+      "TemplateId": "seasonal_summer_festival",
+      "HolidayMode": "holiday",
+      "Priority": 150,
+      "StartYear": 2026,
+      "StartMonth": 8,
+      "StartDay": 13,
+      "EndYear": 2026,
+      "EndMonth": 8,
+      "EndDay": 16
+    },
+    {
+      "Id": "seasonal_autumn_harvest_fair",
+      "TemplateId": "seasonal_autumn_harvest_fair",
+      "HolidayMode": "holiday",
+      "Priority": 150,
+      "StartYear": 2026,
+      "StartMonth": 11,
+      "StartDay": 1,
+      "EndYear": 2026,
+      "EndMonth": 11,
+      "EndDay": 8
+    },
+    {
+      "Id": "seasonal_autumn_foliage_ride",
+      "TemplateId": "seasonal_autumn_foliage_ride",
+      "HolidayMode": "holiday",
+      "Priority": 150,
+      "StartYear": 2026,
+      "StartMonth": 11,
+      "StartDay": 20,
+      "EndYear": 2026,
+      "EndMonth": 11,
+      "EndDay": 30
     }
   ]
 }

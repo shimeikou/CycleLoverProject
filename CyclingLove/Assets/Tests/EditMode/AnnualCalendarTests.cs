@@ -165,8 +165,8 @@ public sealed class AnnualCalendarTests
         Assert.AreEqual("annual_2027_03_31", definition.Days[^1].Id);
         Assert.AreEqual(365, definition.Days.Select(value => value.MorningNodeId).Distinct().Count());
         Assert.AreEqual(365, definition.Days.Select(value => value.AfternoonNodeId).Distinct().Count());
-        Assert.AreEqual(52, definition.Actions.Length);
-        Assert.AreEqual(49, definition.ConditionalEvents.Length);
+        Assert.AreEqual(56, definition.Actions.Length);
+        Assert.AreEqual(53, definition.ConditionalEvents.Length);
         Assert.DoesNotThrow(() => new CampaignGameService(
             definition, null, AnnualCalendarContentLoader.LoadRuntime()));
 
